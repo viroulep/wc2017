@@ -7,14 +7,13 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 group :development, :test do
+  gem 'dotenv-rails'
   gem 'byebug'
   gem 'web-console', '~> 2.0'
   gem 'spring'
 end
 gem 'bootstrap-sass'
 gem 'high_voltage'
-gem 'omniauth'
-gem 'omniauth-google-oauth2'
 gem 'pg'
 gem 'simple_form'
 group :development do
