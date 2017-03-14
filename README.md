@@ -17,9 +17,18 @@ This application requires:
 Getting Started
 ---------------
 
-Install the gems (locally for the project)
+Install the gems (locally for the project):
 
 - `bundle install --without production --path vendor/bundle`
+
+Setup the db (once):
+
+- `bundle exec rake db:setup`
+
+Run the thing:
+
+- `bundle exec rails s`
+
 
 ## The env file
 
