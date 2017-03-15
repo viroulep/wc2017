@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  require 'net/http'
   CLIENT_ID = ENV["WCA_CLIENT_ID"]
   CALLBACK_URL = ENV["WCA_CALLBACK_URL"]
   WCA_BASE_URL = ENV["WCA_BASE_URL"]
@@ -27,6 +28,7 @@ class SessionsController < ApplicationController
   end
 
   # The WCA.org OAuth code redirects to here after user logs in
+  # From here: https://github.com/larspetrus/Birdflu/blob/1a74b55c1005e3ad74c51881c06b88a9d3f3f8d7/app/controllers/oauth_controller.rb
   def create
     token_params = {
       code: params[:code],

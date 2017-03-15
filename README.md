@@ -23,6 +23,7 @@ Install the gems (locally for the project):
 
 Setup the db (once):
 
+- Until we have better setup for the database config locally, you have to have a "wc2017" user with password "wca".
 - `bundle exec rake db:setup`
 
 Run the thing:
