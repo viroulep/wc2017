@@ -36,9 +36,14 @@ To define the application secrets in dev mode, and define some environment value
 
 Example of the content of such a file:
 
-```
+```sh
 WCA_CLIENT_ID="blablabla"
 WCA_CLIENT_SECRET="coucou"
+# Local url for testing
+WCA_CALLBACK_URL="http://127.0.0.1:3000/wca_callback"
+# Local url for the WCA website
+WCA_BASE_URL="http://localhost:1234"
+WCA_USE_SSL="false"
 ```
 
 `config/initializers/default_environment.rb` contains some default value for the development environment, they are overridable in the `.env` file.
