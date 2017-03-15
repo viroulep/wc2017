@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 class User < ApplicationRecord
+  has_one :registration
+
   # List of fields we accept in the db
   USER_INFO = [
     'id',
@@ -15,7 +17,7 @@ class User < ApplicationRecord
   ];
 
   def self.create_or_update(wca_user)
-    db_record = self.find_by(uid: wca_user[:id])
+    db_record = self.find_by(id: wca_user['id'])
     updated_info = wca_user.select { |key,_| USER_INFO.include?(key) }
 
     if db_record

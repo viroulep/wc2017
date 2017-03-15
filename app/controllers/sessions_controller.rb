@@ -37,6 +37,8 @@ class SessionsController < ApplicationController
       client_id: CLIENT_ID,
       client_secret: Rails.application.secrets.wca_client_secret,
     }
+    # FIXME: we may want to use something easier to use if we are to make many queries to the API
+    # eg: rest-client gem
     token_response = Net::HTTP.post_form(TOKEN_URI, token_params)
 
     access_token = JSON.parse(token_response.body)["access_token"]
