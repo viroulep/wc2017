@@ -10,4 +10,8 @@ class User < ApplicationRecord
     #'dob',
     #'delegate_status',
     #'teams',
+
+  def can_manage_competition?(comp)
+    comp.admin_ids.split(",").include?(id.to_s)
+  end
 end

@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!
-  # TODO authenticate admin !
+  before_action :redirect_unless_admin!
 
   def import_all
     begin
@@ -17,7 +17,7 @@ class RegistrationsController < ApplicationController
       else
         # Using this because params.permit will remove user/event_ids since the're not basic types
         obj_attr = {
-          event_ids: registration["event_ids"]&.join(" "),
+          event_ids: registration["event_ids"]&.join(","),
           user: user
         }
         status, registration = Registration.create_or_update(registration, obj_attr)

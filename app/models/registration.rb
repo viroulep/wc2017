@@ -1,6 +1,7 @@
 class Registration < ApplicationRecord
   include WCAModel
   belongs_to :user
+  belongs_to :competition
   validates :user, presence: true
   validates :event_ids, presence: true, allow_blank: false
   validates :comments, presence: true, allow_blank: true

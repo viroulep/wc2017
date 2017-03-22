@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   helper_method :user_signed_in?
   helper_method :correct_user?
 
+  before_action :check_managed_competition
+
   private
     def current_user
       begin
@@ -34,4 +36,33 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def redirect_unless_admin!
+      unless current_user&.can_manage_competition?(managed_competition)
+        redirect_to root_url, :alert => 'You need to be admin to access this page'
+      end
+    end
+
+    def managed_competition
+      @managed_competition ||= Competition.find_by_id(app_comp_id)
+    end
+
+    def check_managed_competition
+      unless managed_competition
+        begin
+          competition_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}"))
+          competition_data = JSON.parse(competition_response.body)
+          admins = competition_data["organizers"] + competition_data["delegates"]
+          obj_attr = {
+            admin_ids: admins.map { |person| person["id"] }.uniq.join(",")
+          }
+          status, competition = Competition.create_or_update(competition_data, obj_attr)
+          unless status
+            return redirect_to(root_url, alert: "Failed to fetch competition info")
+          end
+          @managed_competition = competition
+        rescue RestClient::ExceptionWithResponse => err
+          redirect_to(root_url, alert: "Failed to fetch competition info")
+        end
+      end
+    end
 end
