@@ -23,9 +23,12 @@
         <div class="col-lg-12">
             <div class="well text-center">
                 This is a well that is a great spot for a business tagline or phone number for easy access!
+                <br/>
                 <%= link_to "Login", signin_path %>
                 <br/>
-                url: "<%= SessionsController::WCA_LOGIN_URL %>"
+                <%= link_to "Import registrations", import_registrations_path, method: 'patch' %>
+                <br/>
+                url: "<%= wca_login_url("public email dob") %>"
                 <br/>
                 env: "<%= Rails.env %>"
             </div>

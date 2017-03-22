@@ -6,8 +6,8 @@ Ruby on Rails
 
 This application requires:
 
-- Ruby 2.3.1
-- Rails 4.2.1
+- Ruby 2.4
+- Rails 5.0.2
 
 
 ## TODO

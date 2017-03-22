@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <h3>Registrations</h3>
+    <p>Welcome <%= render current_user %>!</p>
+    <div class="column">
+      <table class="table">
+        <tbody>
+          <% @registrations.each do |registration| %>
+            <tr>
+              <td><%= registration.id %></td>
+              <td><%= registration.user.name %></td>
+              <td><%= registration.event_ids %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
