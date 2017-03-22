@@ -4,8 +4,7 @@ class Registration < ApplicationRecord
   validates :user, presence: true
   validates :event_ids, presence: true, allow_blank: false
   validates :comments, presence: true, allow_blank: true
-  validates :accepted_at, presence: true, allow_nil: true
-  validates :deleted_at, presence: true, allow_nil: true
+  validates :status, presence: true, allow_blank: false
 
-  @@obj_info = %w(id user competition_id comments accepted_at deleted_at event_ids)
+  @@obj_info = %w(id user competition_id comments status event_ids)
 end

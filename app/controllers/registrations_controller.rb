@@ -4,7 +4,7 @@ class RegistrationsController < ApplicationController
 
   def import_all
     begin
-      registrations_response = RestClient.get(wca_api_url("/registrations/#{app_comp_id}"), { Authorization: "Bearer #{session[:access_token]}"})
+      registrations_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}/registrations"), { Authorization: "Bearer #{session[:access_token]}"})
     rescue RestClient::ExceptionWithResponse => err
       return redirect_to(registrations_url, alert: "Failed to fetch WCA data: #{message}")
     end
