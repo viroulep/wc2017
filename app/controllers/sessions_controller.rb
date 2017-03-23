@@ -30,10 +30,6 @@ class SessionsController < ApplicationController
     end
 
     me_data = JSON.parse(me_response.body)["me"]
-    if me_data.include?(:avatar)
-      me_data[:avatar_url] = me_data[:avatar][:url]
-      me_data[:avatar_thumb_url] = me_data[:avatar][:thumb_url]
-    end
 
     status, user = User.create_or_update(me_data)
     unless status

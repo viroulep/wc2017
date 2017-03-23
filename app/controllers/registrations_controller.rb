@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!
+  before_action :redirect_unless_admin!, except: [:mine]
 
   def import_all
     begin
@@ -20,7 +20,7 @@ class RegistrationsController < ApplicationController
           event_ids: registration["event_ids"]&.join(","),
           user: user
         }
-        status, registration = Registration.create_or_update(registration, obj_attr)
+        status, registration = Registration.wca_create_or_update(registration, obj_attr)
         unless status
           Rails.logger.info "Couldn't create_or_update the registration!"
         else
@@ -34,6 +34,14 @@ class RegistrationsController < ApplicationController
 
   def index
     @registrations = Registration.all.includes(:user)
+  end
+
+  def show
+    @registration = Registration.find(params[:id])
+  end
+
+  def mine
+    @registration = Registration.find_by(user_id: current_user.id)
   end
 
   private
