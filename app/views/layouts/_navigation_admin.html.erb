@@ -1,6 +1,6 @@
 <% if current_user&.can_manage_competition?(managed_competition) %>
   <ul class="nav navbar-nav">
-    <li><%= link_to 'Users', users_path %></li>
-    <li><%= link_to 'Registrations', registrations_path %></li>
+    <li><%= link_to icon('users', 'Users'), users_path %></li>
+    <li><%= link_to icon('bars', 'Registrations'), registrations_path %></li>
   </ul>
 <% end %>
