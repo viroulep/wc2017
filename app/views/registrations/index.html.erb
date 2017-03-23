@@ -2,6 +2,8 @@
   <div class="row">
     <h3>Registrations</h3>
     <p>Welcome <%= render current_user %>!</p>
+
+    <p><%= link_to icon('upload', "Import registrations"), import_registrations_path, method: 'patch' %></p>
     <div class="column">
       <table class="table">
         <tbody>
