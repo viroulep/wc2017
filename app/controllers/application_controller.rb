@@ -56,7 +56,7 @@ class ApplicationController < ActionController::Base
           obj_attr = {
             admin_ids: admins.map { |person| person["id"] }.uniq.join(",")
           }
-          status, competition = Competition.create_or_update(competition_data, obj_attr)
+          status, competition = Competition.wca_create_or_update(competition_data, obj_attr)
           unless status
             return redirect_to(root_url, alert: "Failed to fetch competition info")
           end
