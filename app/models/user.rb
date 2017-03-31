@@ -2,7 +2,7 @@
 class User < ApplicationRecord
   include WCAModel
   include ApplicationHelper
-  has_one :registration
+  has_one :registration, inverse_of: :user
 
   # List of fields we accept in the db
   @@obj_info = %w(id name email wca_id country_iso2 avatar_url avatar_thumb_url)

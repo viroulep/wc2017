@@ -1,0 +1,29 @@
+hr {
+  border-color: black;
+}
+
+.div-label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group.guest {
+  margin: 0;
+  input.existing-record {
+    display: none;
+  }
+}
+
+.action-cell {
+  a {
+    float: left;
+  }
+  .delete-link {
+    float: right;
+  }
+}
+
+.cancel-link, .first-delete {
+  display: none;
+}
+

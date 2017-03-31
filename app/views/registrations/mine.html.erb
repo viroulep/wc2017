@@ -1,22 +1,142 @@
 <div class="container">
-  <div class="row">
-    <h3>Registration</h3>
-    <p>Welcome <%= render current_user %>!</p>
-    <% unless @registration %>
-      <p>You're not registered for the competition</p>
-    <% else %>
-      <div class="column">
-        <table class="table">
-          <tbody>
-            <tr>
-              <td><%= @registration.id %></td>
-              <td><%= @registration.user.name %></td>
-              <td><%= @registration.event_ids %></td>
-              <td><%= @registration.status %></td>
-            </tr>
-          </tbody>
-        </table>
+  <h2>Registration</h2>
+  <p>Welcome <%= current_user.name %>!</p>
+  <% unless @registration %>
+    <p>You're not registered for the competition</p>
+  <% else %>
+    <%= simple_form_for @registration, wrapper: :horizontal_form do |r| %>
+      <div class="row justify-content-center">
+        <div class="col-xs-12 col-sm-6">
+
+          <div class="panel panel-default text-center">
+            <div class="panel-heading">
+              <h3 class="panel-title">Guests</h3>
+            </div>
+            <table class="table table-hover panel-body">
+              <%#FIXME extract this to a separate erb%>
+              <%= r.simple_fields_for :guests do |g| %>
+                <% input_id = get_input_id(g.object_name, "name") %>
+                <tr id="<%= input_id %>_tr" class="guest-line row">
+                  <td class="col-xs-10">
+                    <%= g.input_field :name, as: :guest %>
+                  </td>
+                  <td class="col-xs-2 action-cell">
+                    <%#FIXME create a link_to_with_tooltip helper %>
+                    <%= link_to icon('pencil', class: "text-info"), '#', onclick: raw("startEdit('#{input_id}')"), 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Edit guest', id: "#{input_id}_s" %>
+                    <%= link_to icon('remove', class: "text-warning"), '#', class: 'cancel-link', onclick: "cancelEdit('#{input_id}')", 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Cancel edition', id: "#{input_id}_c" %>
+                    <%= link_to icon('minus-circle', class: "text-danger"), '#', class: 'delete-link', onclick: "removeGuest($(this))", 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Delete guest' %>
+                  </td>
+                </tr>
+              <% end %>
+              <%= r.simple_fields_for :guests, r.object.guests.build do |g| %>
+                <tr class="new-guest-line row" data-rowid="<%= @registration.guests.size %>">
+                  <td class="col-xs-10">
+                    <%= g.input_field :name, as: :guest, new_record: true %>
+                  </td>
+                  <td class="col-xs-2 action-cell">
+                    <%= link_to icon('minus-circle', class: "text-danger"), '#', class: 'delete-link first-delete', onclick: "removeGuest($(this));", 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Delete guest' %>
+                  </td>
+                </tr>
+              <% end %>
+              <tr id="add-row" class="row">
+                <td colspan="2">
+                  <%=link_to icon('plus', class: "text-success"), '#', onclick: "addRow();", 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Add guest' %>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-6">
+          <div class="panel panel-default text-center">
+            <div class="panel-heading">
+              <h3 class="panel-title">Additional information</h3>
+            </div>
+            <div class="panel-body">
+          FIXME change this to some actual fields like tshirt size
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-xs-offset-5 col-xs-2">
+          <%= r.button :submit, value: "Save changes", class: 'btn btn-primary' %>
+        </div>
+      </div>
+      <hr/>
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Your WCA registration</h3>
+          </div>
+          <div class="panel-body">
+            <p>Please contact the organization team if you need to change any of these</p>
+            <div class="row">
+              <div class="col-sm-2 div-label">
+                Events
+              </div>
+              <div class="col-sm-10">
+                <% @registration.events.each do |e| %>
+                  <%= render "shared/event", event_id: e %>
+                <% end %>
+              </div>
+            </div>
+            <% unless @registration.comments.blank? %>
+              <div class="row">
+                <div class="col-sm-2 div-label">
+                  Comment
+                </div>
+                <div class="col-sm-10">
+                  <div class="well">
+                    <%= @registration.comments %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
       </div>
     <% end %>
-  </div>
+  <% end %>
 </div>
+<script>
+
+function startEdit(elemId) {
+  elemId = "#" + elemId;
+  $(elemId).show();
+  $(elemId + "_p").hide();
+  $(elemId + "_c").show();
+  $(elemId + "_s").hide();
+}
+
+function cancelEdit(elemId) {
+  elemId = "#" + elemId;
+  $(elemId).hide();
+  $(elemId + "_p").show();
+  $(elemId + "_s").show();
+  $(elemId + "_c").hide();
+}
+
+function addRow() {
+  // Assumes there is at least an existing row
+  // (which is the case if the user doesn't play with the html)
+  var newRow = $('.new-guest-line').last().clone();
+  // Clear it in case the user already filled it
+  var newInput = newRow.find('input');
+  newRow.find('a').removeClass("first-delete");
+  newRow.find('a').tooltip();
+  newInput.val("");
+  var currentId = newRow.data("rowid") || 0;
+  var oldId = newInput.attr("id");
+  var oldName = newInput.attr("name");
+  newInput.attr("id", oldId.replace(new RegExp(/_[0-9]+_/), "_" + currentId + "_"));
+  newInput.attr("name", oldName.replace(new RegExp(/\[[0-9]+\]/), "[" + currentId + "]"));
+  newRow.attr("data-rowid", currentId + 1);
+  newRow.insertBefore($("#add-row"));
+}
+
+function removeGuest(link) {
+  // Get the 'tr' and remove it
+  link.parent().parent().remove();
+}
+
+</script>
