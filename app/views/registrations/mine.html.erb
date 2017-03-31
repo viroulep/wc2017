@@ -22,7 +22,7 @@
                   </td>
                   <td class="col-xs-2 action-cell">
                     <%#FIXME create a link_to_with_tooltip helper %>
-                    <%= link_to icon('pencil', class: "text-info"), '#', onclick: raw("startEdit('#{input_id}')"), 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Edit guest', id: "#{input_id}_s" %>
+                    <%= link_to icon('pencil', class: "text-info"), '#', class: 'edit-link', onclick: raw("startEdit('#{input_id}')"), 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Edit guest', id: "#{input_id}_s" %>
                     <%= link_to icon('remove', class: "text-warning"), '#', class: 'cancel-link', onclick: "cancelEdit('#{input_id}')", 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Cancel edition', id: "#{input_id}_c" %>
                     <%= link_to icon('minus-circle', class: "text-danger"), '#', class: 'delete-link', onclick: "removeGuest($(this))", 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Delete guest' %>
                   </td>
@@ -40,7 +40,7 @@
               <% end %>
               <tr id="add-row" class="row">
                 <td colspan="2">
-                  <%=link_to icon('plus', class: "text-success"), '#', onclick: "addRow();", 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Add guest' %>
+                  <%= link_to icon('plus', class: "text-success"), '#', class: 'add-link', onclick: "addRow();", 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Add guest' %>
                 </td>
               </tr>
             </table>
@@ -64,9 +64,16 @@
       </div>
       <hr/>
       <div class="row">
-        <div class="panel panel-default">
+        <% panel_class, status = if @registration.status == "a"
+                                   ["success", "Accepted"]
+                                 elsif @registration.status == "p"
+                                   ["warning", "Waiting List"]
+                                 else
+                                   ["danger", "Deleted"]
+                                 end %>
+        <div class="panel panel-<%= panel_class %>">
           <div class="panel-heading">
-            <h3 class="panel-title">Your WCA registration</h3>
+            <h3 class="panel-title">Your WCA registration (<%= status %>)</h3>
           </div>
           <div class="panel-body">
             <p>Please contact the organization team if you need to change any of these</p>
@@ -100,6 +107,12 @@
 </div>
 <script>
 
+var preventDefaultFunc = function(e) {
+  e.preventDefault();
+};
+
+$('td i').on('click', preventDefaultFunc);
+
 function startEdit(elemId) {
   elemId = "#" + elemId;
   $(elemId).show();
@@ -110,6 +123,7 @@ function startEdit(elemId) {
 
 function cancelEdit(elemId) {
   elemId = "#" + elemId;
+  $(elemId).val($(elemId + "_p").text());
   $(elemId).hide();
   $(elemId + "_p").show();
   $(elemId + "_s").show();
@@ -124,6 +138,7 @@ function addRow() {
   var newInput = newRow.find('input');
   newRow.find('a').removeClass("first-delete");
   newRow.find('a').tooltip();
+  newRow.find('i').on('click', preventDefaultFunc);
   newInput.val("");
   var currentId = newRow.data("rowid") || 0;
   var oldId = newInput.attr("id");

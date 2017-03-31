@@ -44,6 +44,27 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find_by(user_id: current_user.id)
   end
 
+  def update
+    @registration = Registration.find(params[:id])
+    unless current_user.can_edit_registration?(managed_competition, @registration)
+      flash[:danger] = "Cannot edit this registration"
+      redirect_to root_url
+      return
+    end
+    guests = params.require(:registration).permit(:guests_attributes => [:name, :id])
+    updated_guests = []
+    guests[:guests_attributes]&.each do |gid, g|
+      unless g[:name].blank?
+        new_guest = Guest.find_by(id: g[:id], registration_id: @registration.id) || Guest.new
+        new_guest.name = g[:name]
+        updated_guests << new_guest
+      end
+    end
+    @registration.guests = updated_guests
+    @registration.save!
+    redirect_to my_registration_path, flash: { success: "Successfully saved details" }
+  end
+
   private
   def fail_and_redirect(message)
       redirect_to(registrations_url, alert: "Signed in failed! Error: #{message}")
