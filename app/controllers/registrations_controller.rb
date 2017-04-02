@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!, except: [:mine]
+  before_action :redirect_unless_admin!, except: [:mine, :update]
 
   def import_all
     begin
@@ -61,6 +61,11 @@ class RegistrationsController < ApplicationController
       end
     end
     @registration.guests = updated_guests
+    details = params.require(:registration).permit(:registration_detail_attributes => [:tshirt])
+	updated_details = RegistrationDetail.find_by(registration_id: @registration.id) || RegistrationDetail.new
+	updated_details.tshirt = details[:registration_detail_attributes][:tshirt]
+
+    @registration.registration_detail = updated_details
     @registration.save!
     redirect_to my_registration_path, flash: { success: "Successfully saved details" }
   end
