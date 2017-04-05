@@ -52,7 +52,10 @@
               <h3 class="panel-title">Additional information</h3>
             </div>
             <div class="panel-body">
-          FIXME change this to some actual fields like tshirt size
+              <% detail_object = @registration.registration_detail || RegistrationDetail.new %>
+              <%= r.simple_fields_for :registration_detail, detail_object do |d| %>
+                <%= d.input :tshirt, as: :radio_buttons, collection: RegistrationDetail::TSHIRT_SIZES, label: "T-shirt", hint: "Your t-shirt size" %>
+              <% end %>
             </div>
           </div>
         </div>
