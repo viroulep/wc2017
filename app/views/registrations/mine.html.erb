@@ -29,7 +29,7 @@
                 </tr>
               <% end %>
               <%= r.simple_fields_for :guests, r.object.guests.build do |g| %>
-                <tr class="new-guest-line row" data-rowid="<%= @registration.guests.size %>">
+                <tr class="new-guest-line row first-delete" data-rowid="<%= @registration.guests.size %>">
                   <td class="col-xs-10">
                     <%= g.input_field :name, as: :guest, new_record: true %>
                   </td>
@@ -147,6 +147,7 @@ function addRow() {
   newInput.attr("name", oldName.replace(new RegExp(/\[[0-9]+\]/), "[" + currentId + "]"));
   newRow.attr("data-rowid", currentId + 1);
   newRow.insertBefore($("#add-row"));
+  newRow.show();
 }
 
 function removeGuest(link) {
