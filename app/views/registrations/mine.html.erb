@@ -4,7 +4,29 @@
   <% unless @registration %>
     <p>You're not registered for the competition</p>
   <% else %>
+    <div class="row text-center">
+      <div class="col-xs-12 col-sm-12">
+        <% unless @registration.details.confirmed_at %>
+          <div class="panel panel-default text-center">
+            <div class="panel-heading">
+              <h3 class="panel-title">Registration confirmation</h3>
+            </div>
+            <div class="panel-body">
+              <p>Please confirm you will be attending by clicking the button below:</p>
+              <%= button_to "Confirm your registration!", confirm_path, method: :patch, class: "btn btn-success"%>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <hr />
     <%= simple_form_for @registration, wrapper: :horizontal_form do |r| %>
+      <% if r.object.errors.any? %>
+
+        <div class="alert alert-danger">
+          The form contains <%= pluralize(r.object.errors.count, "error") %>, please check below.
+        </div>
+      <% end %>
       <div class="row justify-content-center">
         <div class="col-xs-12 col-sm-6">
 
@@ -52,7 +74,7 @@
               <h3 class="panel-title">Additional information</h3>
             </div>
             <div class="panel-body">
-              <% detail_object = @registration.registration_detail || RegistrationDetail.new %>
+              <% detail_object = @registration.details %>
               <%= r.simple_fields_for :registration_detail, detail_object do |d| %>
                 <%= d.input :tshirt, as: :radio_buttons, collection: RegistrationDetail::TSHIRT_SIZES, label: "T-shirt", hint: "Your t-shirt size" %>
               <% end %>
@@ -60,8 +82,8 @@
           </div>
         </div>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-xs-offset-5 col-xs-2">
+      <div class="row text-center">
+        <div class="col-xs-12">
           <%= r.button :submit, value: "Save changes", class: 'btn btn-primary' %>
         </div>
       </div>
@@ -102,6 +124,18 @@
                 </div>
               </div>
             <% end %>
+            <div class="row">
+              <div class="col-sm-2 div-label">
+                Confirmation
+              </div>
+              <div class="col-sm-10">
+                <% if @registration.details.confirmed_at %>
+                  <span class="text-success bg-success">Confirmed!</span>
+                <% else %>
+                  <span class="text-danger bg-danger">Pending confirmation</span>
+                <% end %>
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :show]
 
   resources :registrations, only: [:index, :show, :update]
+  patch '/confirm' => 'registrations#confirm'
   get '/my_registration' => 'registrations#mine'
 
   patch '/import_registrations' => 'registrations#import_all'

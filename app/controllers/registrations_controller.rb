@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!, except: [:mine, :update]
+  before_action :redirect_unless_admin!, except: [:mine, :update, :confirm]
 
   def import_all
     begin
@@ -44,6 +44,25 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find_by(user_id: current_user.id)
   end
 
+  def confirm
+    @registration = Registration.find_by(user_id: current_user.id)
+    flash = {}
+    unless @registration
+      flash[:danger] = "Could not find your registration to confirm it!"
+    else
+      if @registration.details&.confirmed_at
+        flash[:warning] = "Your registration is already confirmed!"
+      else
+        details = @registration.details
+        details.confirmed_at = Time.now
+        # Skip validation because we're fine with a nil tshirt size for now
+        @registration.save!(validate: false)
+        flash[:success] = "Successfully saved details"
+      end
+    end
+    redirect_to my_registration_path, flash: flash
+  end
+
   def update
     @registration = Registration.find(params[:id])
     unless current_user.can_edit_registration?(managed_competition, @registration)
@@ -62,12 +81,15 @@ class RegistrationsController < ApplicationController
     end
     @registration.guests = updated_guests
     details = params.require(:registration).permit(:registration_detail_attributes => [:tshirt])
-	updated_details = RegistrationDetail.find_by(registration_id: @registration.id) || RegistrationDetail.new
-	updated_details.tshirt = details[:registration_detail_attributes][:tshirt]
+    updated_details = @registration.details
+    updated_details.tshirt = details[:registration_detail_attributes][:tshirt]
 
-    @registration.registration_detail = updated_details
-    @registration.save!
-    redirect_to my_registration_path, flash: { success: "Successfully saved details" }
+    if @registration.valid?
+      @registration.save!
+      redirect_to my_registration_path, flash: { success: "Successfully saved details" }
+    else
+      render :mine
+    end
   end
 
   private

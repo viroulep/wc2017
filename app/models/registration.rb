@@ -14,6 +14,10 @@ class Registration < ApplicationRecord
 
   @@obj_info = %w(id user competition_id comments status event_ids)
 
+  def details
+    registration_detail || build_registration_detail
+  end
+
   def events
     event_ids.split(",")
   end
