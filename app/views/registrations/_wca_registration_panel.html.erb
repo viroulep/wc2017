@@ -1,0 +1,49 @@
+<% panel_class, status = if registration.status == "a"
+                           ["success", "Accepted"]
+                         elsif registration.status == "p"
+                           ["warning", "Waiting List"]
+                         else
+                           ["danger", "Deleted"]
+                         end %>
+<div class="panel panel-<%= panel_class %>">
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= title %> (<%= status %>)</h3>
+  </div>
+  <div class="panel-body">
+    <p>Please contact the organization team if you need to change any of these</p>
+    <div class="row">
+      <div class="col-sm-2 div-label">
+        Events
+      </div>
+      <div class="col-sm-10">
+        <% registration.events.each do |e| %>
+          <%= render "shared/event", event: Event.find(e) %>
+        <% end %>
+      </div>
+    </div>
+    <% unless registration.comments.blank? %>
+      <div class="row">
+        <div class="col-sm-2 div-label">
+          Comment
+        </div>
+        <div class="col-sm-10">
+          <div class="well">
+            <%= registration.comments %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    <div class="row">
+      <div class="col-sm-2 div-label">
+        Confirmation
+      </div>
+      <div class="col-sm-10">
+        <% if registration.details.confirmed_at %>
+          <span class="text-success bg-success">Confirmed!</span>
+        <% else %>
+          <span class="text-danger bg-danger">Pending confirmation</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

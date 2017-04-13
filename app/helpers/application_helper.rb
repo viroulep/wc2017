@@ -26,4 +26,13 @@ module ApplicationHelper
   def wca_client_secret
     Rails.application.secrets.wca_client_secret
   end
+
+  def link_to_with_tooltip(text, url, title, args={})
+    args.merge!({
+      'data-toggle': 'tooltip',
+      'data-trigger': 'hover',
+      title: title,
+    })
+    link_to(text, url, args)
+  end
 end

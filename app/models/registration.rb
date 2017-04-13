@@ -5,8 +5,6 @@ class Registration < ApplicationRecord
   has_many :guests, inverse_of: :registration, dependent: :destroy
   has_one :registration_detail, inverse_of: :registration
   accepts_nested_attributes_for :guests, :registration_detail
-  # TODO add has_many :guests
-  # TODO check if rails automatic detection of inverse_of will work for nested form
   validates :user, presence: true
   validates :event_ids, presence: true, allow_blank: false
   validates :comments, presence: true, allow_blank: true

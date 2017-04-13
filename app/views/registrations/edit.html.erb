@@ -1,0 +1,27 @@
+<div class="container">
+  <% if @mine %>
+    <h2>My registration</h2>
+    <p>Welcome <%= current_user.name %>!</p>
+  <% else %>
+    <h2>Editing registration for <%= @user.name %></h2>
+  <% end %>
+  <% unless @registration %>
+    <p>You're not registered for the competition</p>
+  <% else %>
+    <% if @mine %>
+      <div class="row text-center">
+        <div class="col-xs-12 col-sm-12">
+          <% unless @registration.details.confirmed_at %>
+            <%= render "confirmation_panel" %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+    <hr/>
+    <%= render "registration_form", registration: @registration %>
+    <hr/>
+    <div class="row">
+      <%= render "wca_registration_panel", registration: @registration, title: "Your WCA registration" %>
+    </div>
+  <% end %>
+</div>

@@ -1,6 +1,7 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!, except: [:mine, :update, :confirm]
+  before_action :redirect_unless_admin!, except: [:edit, :update]
+  before_action :redirect_unless_can_edit!, except: [:index, :import_all]
 
   def import_all
     begin
@@ -36,12 +37,11 @@ class RegistrationsController < ApplicationController
     @registrations = Registration.all.includes(:user)
   end
 
-  def show
-    @registration = Registration.find(params[:id])
-  end
-
-  def mine
-    @registration = Registration.find_by(user_id: current_user.id)
+  def edit
+    @registration = Registration.find_by_id(params[:id]) || Registration.find_by(user_id: current_user.id)
+    # We're not sure any of the two exists, so use &.
+    @user = @registration&.user
+    @mine = (@user == current_user)
   end
 
   def confirm
@@ -65,11 +65,8 @@ class RegistrationsController < ApplicationController
 
   def update
     @registration = Registration.find(params[:id])
-    unless current_user.can_edit_registration?(managed_competition, @registration)
-      flash[:danger] = "Cannot edit this registration"
-      redirect_to root_url
-      return
-    end
+    @user = @registration.user
+    @mine = (@user == current_user)
     guests = params.require(:registration).permit(:guests_attributes => [:name, :id])
     updated_guests = []
     guests[:guests_attributes]&.each do |gid, g|
@@ -86,14 +83,29 @@ class RegistrationsController < ApplicationController
 
     if @registration.valid?
       @registration.save!
-      redirect_to my_registration_path, flash: { success: "Successfully saved details" }
+      redirect_path = @mine ? my_registration_path : edit_registration_path(@registration)
+      redirect_to redirect_path, flash: { success: "Successfully saved details" }
     else
-      render :mine
+      render :edit
     end
   end
 
   private
   def fail_and_redirect(message)
       redirect_to(registrations_url, alert: "Signed in failed! Error: #{message}")
+  end
+
+  def redirect_unless_can_edit!
+    registration = Registration.find_by_id(params[:id]) || Registration.find_by(user_id: current_user.id)
+
+    # This is most likely that the user hasn't a registration for the competition
+    if params[:id].nil? && registration.nil?
+      return
+    end
+    unless current_user.can_edit_registration?(managed_competition, registration)
+      flash[:danger] = "Cannot edit this registration"
+      redirect_to root_url
+      return
+    end
   end
 end

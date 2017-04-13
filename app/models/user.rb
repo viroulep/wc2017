@@ -17,8 +17,7 @@ class User < ApplicationRecord
   end
 
   def can_edit_registration?(comp, registration)
-    #can_manage_competition?(comp) || id == registration.id
-    id == registration.user_id
+    !registration.nil? && (can_manage_competition?(comp) || id == registration.user_id)
   end
 
   def has_avatar?
