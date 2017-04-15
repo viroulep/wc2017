@@ -1,0 +1,3 @@
+<% event_ids.each do |e| %>
+  <%= render "shared/event", event: Event.find(e) %>
+<% end %>

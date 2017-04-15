@@ -16,9 +16,7 @@
         Events
       </div>
       <div class="col-sm-10">
-        <% registration.events.each do |e| %>
-          <%= render "shared/event", event: Event.find(e) %>
-        <% end %>
+        <%= render "shared/event_id_collection", event_ids: registration.events %>
       </div>
     </div>
     <% unless registration.comments.blank? %>

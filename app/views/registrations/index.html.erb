@@ -9,9 +9,9 @@
         <tbody>
           <% @registrations.each do |registration| %>
             <tr>
-              <td><%= registration.id %></td>
+              <td><%= link_to registration.id, edit_registration_path(registration) %></td>
               <td><%= registration.user.name %></td>
-              <td><%= registration.event_ids %></td>
+              <td><%= render "shared/event_id_collection", event_ids: registration.events %></td>
               <td><%= registration.status %></td>
             </tr>
           <% end %>
