@@ -10,7 +10,13 @@ class Registration < ApplicationRecord
   validates :comments, presence: true, allow_blank: true
   validates :status, presence: true, allow_blank: false
 
+  validate :validate_guests
+
   @@obj_info = %w(id user competition_id comments status event_ids)
+
+  def validate_guests
+    errors.add(:guests, "Maximum number of guests is 5") if visible_guests.size > 5
+  end
 
   def details
     registration_detail || build_registration_detail
