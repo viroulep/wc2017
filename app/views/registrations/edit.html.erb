@@ -1,5 +1,5 @@
 <div class="container">
-  <% if @mine %>
+  <% if @mine || @registration.nil? %>
     <h2>My registration</h2>
     <p>Welcome <%= current_user.name %>!</p>
   <% else %>

@@ -67,16 +67,26 @@ class RegistrationsController < ApplicationController
     @registration = Registration.find(params[:id])
     @user = @registration.user
     @mine = (@user == current_user)
+
+    # Taking care of guests
     guests = params.require(:registration).permit(:guests_attributes => [:name, :id])
+    # We need to manipulate guests without saving anything right now to the db, so we:
+    # - Update existing guests names (no autosaving on that)
+    # - Build a nested association for new guests (same, this avoid autosaving)
+    # - Compare existing guests to the "new" array of guests, and mark for destruction
+    #   existing guests not in the new array.
     updated_guests = []
     guests[:guests_attributes]&.each do |gid, g|
       unless g[:name].blank?
-        new_guest = Guest.find_by(id: g[:id], registration_id: @registration.id) || Guest.new
+        # Get the real object, or create a new one (no save to the db yet!!!)
+        new_guest = @registration.get_guest(g[:id])
         new_guest.name = g[:name]
         updated_guests << new_guest
       end
     end
-    @registration.guests = updated_guests
+    (@registration.guests - updated_guests).map(&:mark_for_destruction)
+
+    # Taking care of tshirt size
     details = params.require(:registration).permit(:registration_detail_attributes => [:tshirt])
     updated_details = @registration.details
     updated_details.tshirt = details[:registration_detail_attributes][:tshirt]
