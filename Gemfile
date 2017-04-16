@@ -11,6 +11,7 @@ gem 'rest-client'
 group :development, :test do
   gem 'dotenv-rails'
   gem 'byebug'
+  gem 'bullet'
   gem 'web-console', '~> 2.0'
   gem 'spring'
 end
