@@ -1,1 +1,2 @@
-<span class="cubing-icon event-<%= event.id %>" data-toggle="tooltip" data-placement="top" title="<%= event.name %>"></span>
+<% placement ||= "top" %>
+<span class="cubing-icon event-<%= event.id %>" data-toggle="tooltip" data-placement="<%= placement %>" title="<%= event.name %>"></span>

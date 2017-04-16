@@ -1,0 +1,31 @@
+.collapse-indicator {
+  @extend .glyphicon;
+  @extend .glyphicon-chevron-down;
+
+  .collapsed & {
+    @extend .glyphicon-chevron-right;
+  }
+}
+
+.panel-heading .collapse-indicator {
+  float: right;
+}
+
+.panel-info > .heading-as-link:hover {
+  @extend a.list-group-item-info:hover;
+  cursor: pointer;
+}
+
+.heading-as-link > .panel-title > a {
+  text-decoration: none;
+}
+
+/*
+ * Make collapse link fill up entire panel-title
+ * Copied from http://stackoverflow.com/a/20188613
+ */
+.panel-title a[data-toggle="collapse"] {
+  display: block;
+  padding: 10px 15px;
+  margin: -10px -15px;
+}

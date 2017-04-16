@@ -1,0 +1,17 @@
+<% active_event ||= "" %>
+<div class="container-fluid">
+  <div class="row">
+    <div id="groups-nav">
+      <ul class="nav nav-tabs">
+        <% Event.all.each do |e| %>
+          <li role="presentation" class="<%= "active" if e.id == active_event %>">
+            <%= link_to(render('shared/event', event: e, placement: "bottom"), groups_for_event_path(e.id)) %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div id="groups-content">
+      <%= yield %>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,14 @@
 Rails.application.routes.draw do
-  resources :users, only: [:index, :show]
+  # FIXME: do we even actually need this?!
+  #resources :users, only: [:index, :show]
 
-  resources :registrations, only: [:index, :edit, :update]
+  resources :registrations, only: [:index, :edit, :update] do
+    get 'groups' => 'groups#show'
+  end
+
+  resources :groups, only: [:index, :edit, :update]
+  get 'groups/e/:event_id' => 'groups#show_for_event', :as => :groups_for_event
+
   patch '/confirm' => 'registrations#confirm'
   get '/my_registration' => 'registrations#edit'
 

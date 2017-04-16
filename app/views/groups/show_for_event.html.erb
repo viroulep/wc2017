@@ -1,0 +1,8 @@
+<%= render 'nav', active_event: @event.id do %>
+  <div class="row">
+    <% @groups.sort.each do |group_id, people| %>
+      <%= render 'group_panel', group_id: group_id, title: "Group #{group_id}", collection: people %>
+    <% end %>
+    <%= render 'group_panel', title: "No groups", collection: @ungrouped %>
+  </div>
+<% end %>

@@ -9,7 +9,11 @@ class Event
   end
 
   def self.find(id)
-    ALL_EVENTS_BY_ID[id] or raise "Unrecognized event id"
+    ALL_EVENTS_BY_ID[id] or raise ActiveRecord::RecordNotFound
+  end
+
+  def self.all
+    ALL_EVENTS
   end
 
   ALL_EVENTS = [
@@ -103,23 +107,7 @@ class Event
       name: "Rubik's Cube: Multiple Blindfolded",
       rank: 520,
     },
-
-    {
-      id: "magic",
-      name: "Rubik's Magic",
-      rank: 997,
-    },
-    {
-      id: "mmagic",
-      name: "Master Magic",
-      rank: 998,
-    },
-    {
-      id: "333mbo",
-      name: "Rubik's Cube: Multi blind old style",
-      rank: 999,
-    },
-  ].map { |e| Event.new(e) }
+  ].map { |e| Event.new(e) }.freeze
 
   ALL_EVENTS_BY_ID = Hash[ALL_EVENTS.map { |e| [e.id, e] }]
 end
