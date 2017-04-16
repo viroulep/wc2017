@@ -9,11 +9,6 @@ This application requires:
 - Ruby 2.4
 - Rails 5.0.2
 
-
-## TODO
-
-- Update this to rails 5 before this grows
-
 Getting Started
 ---------------
 
