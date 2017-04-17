@@ -26,9 +26,38 @@ class GroupsController < ApplicationController
 
   def update_for_event
     begin
-      @event = Event.find(params[:event_id])
-      #TODO
-      redirect_to :groups_for_event, flash: { success: "Successfully did nothing." }
+      flash = {}
+      ignored = 0
+      changed = 0
+      event = Event.find(params[:event_id])
+      # Note: event id is defined by the current event
+      data =  params.require(:event_group_collection)
+                    .permit(event_groups_attributes: [:id, :group, :registration_id])
+      data[:event_groups_attributes]&.reject {|index, eg| eg[:group].blank? }.each do |index, eg|
+        new_group = eg[:group].to_i
+        event_group = EventGroup.find_by_id(eg[:id])
+        unless event_group
+          registration = Registration.find_by_id(eg[:registration_id])
+          event_group = registration&.event_groups.build
+        end
+        if event_group && new_group > 0
+          event_group.group = new_group
+          event_group.event_id = event.id
+          event_group.save!
+          changed += 1 if event_group.previous_changes.any?
+        else
+          ignored += 1
+        end
+      end
+      if ignored > 0
+        flash[:warning] = "Ignored #{ignored} entries that couldn't be found in the db."
+      end
+      flash[:success] = if changed > 0
+                          "Successfully modified #{changed} entries."
+                        else
+                          "No changes made."
+                        end
+      redirect_to :groups_for_event, flash: flash
     rescue ActiveRecord::RecordNotFound => e
       redirect_to groups_url, alert: "Could not find the event!"
     end

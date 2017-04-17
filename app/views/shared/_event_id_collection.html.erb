@@ -1,3 +1,4 @@
 <% event_ids.each do |e| %>
+  <% # FIXME: cache this based on event_ids somehow %>
   <%= render "shared/event", event: Event.find(e) %>
 <% end %>

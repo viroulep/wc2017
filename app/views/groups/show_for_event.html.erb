@@ -1,4 +1,5 @@
 <%= render 'nav', active_event: @event.id do %>
+  <p><a href="#" id="groups-action-expand">Expand all</a> | <a href="#" id="groups-action-collapse">Collapse all</a></p>
   <div class="row">
     <% @groups.sort.each do |group_id, people| %>
       <%= render 'group_panel', group_id: group_id, title: "Group #{group_id}", collection: EventGroupCollection.new(people) %>
@@ -6,3 +7,13 @@
     <%= render 'group_panel', title: "No groups", collection: @ungrouped %>
   </div>
 <% end %>
+<script>
+$('#groups-action-collapse').click(function (e) {
+  e.preventDefault();
+  $('.panel-heading').not('.collapsed').click();
+});
+$('#groups-action-expand').click(function (e) {
+  e.preventDefault();
+  $('.panel-heading.collapsed').click();
+});
+</script>
