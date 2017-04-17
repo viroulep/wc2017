@@ -2,6 +2,8 @@ class EventGroup < ApplicationRecord
   belongs_to :registration, inverse_of: :event_groups
   has_one :user, through: :registration
 
+  delegate :name, to: :registration
+
   validates :group, presence: true, allow_blank: false
 
   validate :registered_for_event

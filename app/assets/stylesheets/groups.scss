@@ -6,3 +6,43 @@
   // Space top and bottom
   margin: 10px 0 10px 0;
 }
+
+.panel-groups {
+  .search-cell {
+    .search, input {
+      height: 100%;
+    }
+  }
+
+  th {
+    .form-control {
+    border: 0px;
+    }
+    .glyphicon-remove-circle {
+      position: absolute;
+      right: 5px;
+      top: 10px;
+      bottom: 0;
+      height: 20px;
+      margin: 0px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #AAA;
+      &:hover {
+        color: #888;
+      }
+    }
+  }
+
+  td {
+    .new-group-number {
+      @extend .text-warning;
+      @extend .pull-right;
+      font-weight: bold;
+    }
+  }
+
+  table {
+    margin-bottom: 0px;
+  }
+}

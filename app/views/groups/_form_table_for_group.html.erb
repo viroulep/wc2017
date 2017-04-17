@@ -1,0 +1,33 @@
+<%= simple_form_for collection,
+                    url: groups_for_event_path(@event.id),
+                    html: { id: "form-for-#{group_id}" },
+                    method: :patch do |eg| %>
+  <%= render "action_input_group" %>
+  <table data-toggle="table"
+         data-click-to-select="true"
+         data-search="true"
+         class="table table-hover panel-body">
+    <thead>
+      <tr>
+        <th data-checkbox="true" data-field="state"></th>
+        <th class="search-cell" data-field="name">
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= eg.simple_fields_for :event_groups, collection.event_groups do |f|%>
+        <tr>
+          <td></td>
+          <% line_id = "#{group_id}_#{f.object.registration_id}" %>
+          <td id="<%= line_id %>">
+            <%= f.object.name %>
+            <%= f.hidden_field :id %>
+            <%= f.hidden_field :registration_id %>
+            <%= f.hidden_field :group, class: "hidden-group-input" %>
+            <span class="new-group-number"></span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -8,6 +8,8 @@ class Registration < ApplicationRecord
 
   accepts_nested_attributes_for :guests, :registration_detail
 
+  delegate :name, to: :user
+
   validates :user, presence: true
   validates :event_ids, presence: true, allow_blank: false
   validates :comments, presence: true, allow_blank: true
