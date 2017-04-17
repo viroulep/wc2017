@@ -17,7 +17,7 @@ class Registration < ApplicationRecord
 
   validate :validate_guests
 
-  scope :without_group_for, -> (event_id) { left_outer_joins(:event_groups).where(event_groups: { event_id: nil}) }
+  scope :without_group_for, -> (event_id) { where.not(id: EventGroup.select(:registration_id).where(event_id: event_id)) }
 
   @@obj_info = %w(id user competition_id comments status event_ids)
 
