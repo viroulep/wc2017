@@ -3,7 +3,7 @@
     <h2>My registration</h2>
     <p>Welcome <%= current_user.name %>!</p>
   <% else %>
-    <h2>Editing registration for <%= @user.name %></h2>
+    <h2>Editing registration for <%= @user.name %> (<%= @user.wca_id %>)</h2>
   <% end %>
   <% unless @registration %>
     <p>You're not registered for the competition</p>

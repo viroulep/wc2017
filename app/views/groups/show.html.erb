@@ -1,0 +1,9 @@
+<div class="container-fluid">
+  <div class="row">
+    Groups for <%= @registration.name %>.<br/>
+    <% @groups.each do |g| %>
+      <%= g.event_id %>, <%= g.group %>
+      <br/>
+    <% end %>
+  </div>
+</div>
