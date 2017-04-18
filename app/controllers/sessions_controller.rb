@@ -2,7 +2,11 @@ class SessionsController < ApplicationController
   def new
     # NOTE: we import user data from registrations with admin rights, we don't
     # actually need these scopes.
-    redirect_to wca_login_url("public email dob")
+    scopes = "public email dob"
+    if params[:admin]
+      scopes += " manage_competitions"
+    end
+    redirect_to wca_login_url(scopes)
   end
 
   # The WCA.org OAuth code redirects to here after user logs in

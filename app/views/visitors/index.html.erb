@@ -9,7 +9,8 @@
             <div class="well text-center">
                 Welcome to the WC2017 Registration Manager. Please login in order to edit or complete your registration datas.
                 <br/>
-                <%= link_to "Login", signin_path %>
+                <%= link_to "Login", signin_path %>/
+                <%= link_to "With scopes", signin_path(admin: true) %>
                 <br/>
             </div>
         </div>

@@ -5,27 +5,30 @@ class RegistrationsController < ApplicationController
 
   def import_all
     begin
-      registrations_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}/registrations"), { Authorization: "Bearer #{session[:access_token]}"})
+      registrations_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}/wcif"), { Authorization: "Bearer #{session[:access_token]}"})
     rescue RestClient::ExceptionWithResponse => err
-      return redirect_to(registrations_url, alert: "Failed to fetch WCA data: #{message}")
+      return redirect_to(registrations_url, alert: "Failed to fetch WCA data: #{err.message}")
     end
-    registrations_data = JSON.parse(registrations_response.body)["registrations"]
+    wcif = JSON.parse(registrations_response.body)
     imported = 0
-    registrations_data.each do |registration|
-      status, user = User.create_or_update(registration["user"])
+    wcif["persons"]&.each do |json_user|
+      status, user = User.create_or_update(json_user)
+      json_registration = json_user["registration"]
       unless status
-        Rails.logger.error "Couldn't create_or_update user #{registration["user"]}"
+        Rails.logger.error "Couldn't create_or_update user #{json_user}"
       else
-        # Using this because params.permit will remove user/event_ids since the're not basic types
-        obj_attr = {
-          event_ids: registration["event_ids"]&.join(","),
-          user: user
-        }
-        status, registration = Registration.wca_create_or_update(registration, obj_attr)
-        unless status
-          Rails.logger.info "Couldn't create_or_update the registration!"
-        else
-          imported += 1
+        if json_registration
+          # Using this because params.permit will remove user/event_ids since the're not basic types
+          obj_attr = {
+            event_ids: json_registration["event_ids"]&.join(","),
+            user: user
+          }
+          status, registration = Registration.wca_create_or_update(json_registration, obj_attr)
+          unless status
+            Rails.logger.info "Couldn't create_or_update the registration!"
+          else
+            imported += 1
+          end
         end
       end
     end

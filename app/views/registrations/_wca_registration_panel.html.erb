@@ -1,6 +1,6 @@
-<% panel_class, status = if registration.status == "a"
+<% panel_class, status = if registration.status == "accepted"
                            ["success", "Accepted"]
-                         elsif registration.status == "p"
+                         elsif registration.status == "pending"
                            ["warning", "Waiting List"]
                          else
                            ["danger", "Deleted"]

@@ -29,6 +29,7 @@ class User < ApplicationRecord
   end
 
   def self.create_or_update(json_user)
+    json_user[:id] = json_user["wca_user_id"]
     if json_user.include?("avatar")
       json_user[:avatar_url] = json_user["avatar"]["url"]
       json_user[:avatar_thumb_url] = json_user["avatar"]["thumb_url"]
