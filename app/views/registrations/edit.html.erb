@@ -11,7 +11,7 @@
     <% if @mine %>
       <div class="row text-center">
         <div class="col-xs-12 col-sm-12">
-          <% unless @registration.details.confirmed_at %>
+          <% if @registration.accepted? && !@registration.details.confirmed_at %>
             <%= render "confirmation_panel" %>
           <% end %>
         </div>

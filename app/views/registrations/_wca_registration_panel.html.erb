@@ -10,6 +10,11 @@
     <h3 class="panel-title"><%= title %> (<%= status %>)</h3>
   </div>
   <div class="panel-body">
+  <% if current_user&.can_manage_competition?(managed_competition) %>
+    <p>
+      <%= link_to icon('pencil', 'Edit on the WCA Website'), wca_registration_url(@registration.id), target: "_blank" %>
+    </p>
+  <% end %>
     <p>Please contact the organization team if you need to change any of these</p>
     <div class="row">
       <div class="col-sm-2 div-label">

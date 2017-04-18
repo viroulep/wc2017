@@ -1,4 +1,8 @@
+<% summary ||= {} %>
 <% event_ids.each do |e| %>
+  <% # FIXME: dirty and ugly %>
+  <% summary[e] ||= 0 %>
+  <% summary[e] += 1 %>
   <% # FIXME: cache this based on event_ids somehow %>
   <%= render "shared/event", event: Event.find(e) %>
 <% end %>

@@ -27,6 +27,10 @@ module ApplicationHelper
     Rails.application.secrets.wca_client_secret
   end
 
+  def wca_registration_url(id)
+    "#{wca_base_url}/registrations/#{id}/edit"
+  end
+
   def link_to_with_tooltip(text, url, title, args={})
     args.merge!({
       'data-toggle': 'tooltip',

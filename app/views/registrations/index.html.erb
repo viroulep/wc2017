@@ -4,14 +4,60 @@
     <p>Welcome <%= render current_user %>!</p>
     <p><%= link_to icon('upload', "Import registrations"), import_registrations_path, method: 'patch' %></p>
     <div class="column">
+      <% # TODO: DRY this, add bootstrap-table for easy filtering %>
       <table class="table">
+        <thead>
+          <tr>
+            <td colspan="3"><h3>Accepted registrations (<%= @registrations.accepted.size %>)</h3></td>
+          </tr>
+        </thead>
         <tbody>
-          <% @registrations.each do |registration| %>
+          <% summary = {} %>
+          <% @registrations.accepted.each do |registration| %>
+            <tr>
+              <td><%= link_to registration.id, edit_registration_path(registration) %></td>
+              <td><%= registration.user.name %></td>
+              <td><%= render "shared/event_id_collection", event_ids: registration.events, summary: summary %></td>
+            </tr>
+          <% end %>
+          <tr>
+            <td colspan="4">
+              <% # FIXME: pff, that's really ugly %>
+              <% summary.each do |e, n| %>
+                <%= render "shared/event", event: Event.find(e) %>: <%= n %> |
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table">
+        <thead>
+          <tr>
+            <td colspan="3"><h3>Pending registrations (<%= @registrations.pending.size %>)</h3></td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @registrations.pending.each do |registration| %>
             <tr>
               <td><%= link_to registration.id, edit_registration_path(registration) %></td>
               <td><%= registration.user.name %></td>
               <td><%= render "shared/event_id_collection", event_ids: registration.events %></td>
-              <td><%= registration.status %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <table class="table">
+        <thead>
+          <tr>
+            <td colspan="3"><h3>Deleted registrations (<%= @registrations.deleted.size %>)</h3></td>
+          </tr>
+        </thead>
+        <tbody>
+          <% @registrations.deleted.each do |registration| %>
+            <tr>
+              <td><%= link_to registration.id, edit_registration_path(registration) %></td>
+              <td><%= registration.user.name %></td>
+              <td><%= render "shared/event_id_collection", event_ids: registration.events %></td>
             </tr>
           <% end %>
         </tbody>

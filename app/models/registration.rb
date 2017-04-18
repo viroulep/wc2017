@@ -17,9 +17,27 @@ class Registration < ApplicationRecord
 
   validate :validate_guests
 
+  scope :accepted, -> { where(status: 'accepted') }
+
+  scope :deleted, -> { where(status: 'deleted') }
+
+  scope :pending, -> { where(status: 'pending') }
+
   scope :without_group_for, -> (event_id) { where.not(id: EventGroup.select(:registration_id).where(event_id: event_id)) }
 
   @@obj_info = %w(id user competition_id comments status event_ids)
+
+  def accepted?
+    status == 'accepted'
+  end
+
+  def pending?
+    status == 'pending'
+  end
+
+  def deleted?
+    status == 'deleted'
+  end
 
   def validate_guests
     errors.add(:guests, "Maximum number of guests is 5") if visible_guests.size > 5
@@ -54,7 +72,7 @@ class Registration < ApplicationRecord
   end
 
   def self.registered_without_group_for(event_id, *relations)
-    filter_collection_for(Registration.without_group_for(event_id), event_id, relations)
+    filter_collection_for(Registration.accepted.without_group_for(event_id), event_id, relations)
   end
 
   #def self.with_event(event_id, *relations)

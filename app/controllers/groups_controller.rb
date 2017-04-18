@@ -72,8 +72,9 @@ class GroupsController < ApplicationController
       redirect_to root_url
       return
     end
-    unless GROUPS_VISIBLE || current_user&.can_manage_competition?(managed_competition)
-      redirect_to root_url, flash: { danger: 'Groups are not yet done.' }
+    unless (GROUPS_VISIBLE && registration.accepted?) || current_user&.can_manage_competition?(managed_competition)
+      flash[:danger] = "Groups are not yet done, or you don't have groups."
+      redirect_to root_url
     end
   end
 end

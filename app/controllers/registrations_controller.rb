@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!, except: [:edit, :update]
+  before_action :redirect_unless_admin!, except: [:edit, :update, :confirm]
   before_action :redirect_unless_can_edit!, except: [:index, :import_all]
 
   def import_all
@@ -50,8 +50,8 @@ class RegistrationsController < ApplicationController
   def confirm
     @registration = Registration.find_by(user_id: current_user.id)
     flash = {}
-    unless @registration
-      flash[:danger] = "Could not find your registration to confirm it!"
+    unless @registration && @registration.accepted?
+      flash[:danger] = "Your registration is not accepted, or we could not find it."
     else
       if @registration.details&.confirmed_at
         flash[:warning] = "Your registration is already confirmed!"

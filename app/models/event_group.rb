@@ -9,7 +9,10 @@ class EventGroup < ApplicationRecord
   validate :registered_for_event
   validate :unique_group
 
-  scope :for_event, -> (id) { where(event_id: id) }
+  scope :for_event, -> (id) {
+    includes(:registration).where(event_id: id,
+                                  registrations: { status: 'accepted' })
+  }
 
   def registered_for_event
     # Note: this also check for event_id validity, as a registration is only using valid event_ids
