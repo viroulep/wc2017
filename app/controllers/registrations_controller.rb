@@ -20,7 +20,7 @@ class RegistrationsController < ApplicationController
         if json_registration
           # Using this because params.permit will remove user/event_ids since the're not basic types
           obj_attr = {
-            event_ids: json_registration["event_ids"]&.join(","),
+            event_ids: json_registration["eventIds"]&.join(","),
             user: user
           }
           status, registration = Registration.wca_create_or_update(json_registration, obj_attr)

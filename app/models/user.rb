@@ -31,13 +31,16 @@ class User < ApplicationRecord
   def self.create_or_update(json_user)
     # if such field exists, we are importing the WCIF,
     # else it's just a regular user login
-    if json_user["wca_user_id"]
-      json_user["id"] = json_user["wca_user_id"]
+    if json_user["wcaUserId"]
+      json_user["id"] = json_user["wcaUserId"]
+    end
+    if json_user["wcaId"]
+      json_user["wca_id"] = json_user["wcaId"]
     end
 
     if json_user.include?("avatar")
       json_user["avatar_url"] = json_user["avatar"]["url"]
-      json_user["avatar_thumb_url"] = json_user["avatar"]["thumb_url"]
+      json_user["avatar_thumb_url"] = json_user["avatar"]["thumbUrl"]
     end
     wca_create_or_update(json_user)
   end
