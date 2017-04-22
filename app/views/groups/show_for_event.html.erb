@@ -1,8 +1,9 @@
 <%= render 'nav', active_event: @event.id do %>
   <p><a href="#" id="groups-action-expand">Expand all</a> | <a href="#" id="groups-action-collapse">Collapse all</a></p>
-  <div class="row">
+  <div class="row row-all-groups">
     <% @groups.sort.each do |group_id, people| %>
       <%= render 'group_panel', group_id: group_id, title: "Group #{group_id}", collection: EventGroupCollection.new(people) %>
+      <div class="may-clearfix"></div>
     <% end %>
     <%= render 'group_panel', title: "No groups", collection: @ungrouped %>
   </div>

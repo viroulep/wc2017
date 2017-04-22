@@ -7,6 +7,29 @@
   margin: 10px 0 10px 0;
 }
 
+.row-all-groups {
+  /* Fix for group cell behavior */
+  /* Each row-all-groups has three elements: */
+  /* the main panel, a script tag, the div with .may-clearfix */
+  /* On medium/large screens, we want 6 groups per row, so we need to activate the */
+  /* clearfix on the 6*3th element */
+  .may-clearfix:nth-child(18n) {
+    @extend .visible-md-block;
+    @extend .visible-lg-block;
+    @extend .clearfix;
+  }
+  /* 4 panels per row => 4*3th element */
+  .may-clearfix:nth-child(12n) {
+    @extend .visible-sm-block;
+    @extend .clearfix;
+  }
+  /* 2 panels per row => 2*3th element */
+  .may-clearfix:nth-child(6n) {
+    @extend .visible-xs-block;
+    @extend .clearfix;
+  }
+}
+
 .panel-groups {
   .search-cell {
     .search, input {
