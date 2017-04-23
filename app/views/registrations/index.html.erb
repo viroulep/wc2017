@@ -15,7 +15,10 @@
           <% summary = {} %>
           <% @registrations.accepted.each do |registration| %>
             <tr>
-              <td><%= link_to registration.id, edit_registration_path(registration) %></td>
+              <td>
+                <%= link_to registration.id, edit_registration_path(registration) %>
+                <%= "*" if registration.details.staff %>
+              </td>
               <td><%= registration.user.name %></td>
               <td><%= render "shared/event_id_collection", event_ids: registration.events, summary: summary %></td>
             </tr>
@@ -39,7 +42,10 @@
         <tbody>
           <% @registrations.pending.each do |registration| %>
             <tr>
-              <td><%= link_to registration.id, edit_registration_path(registration) %></td>
+              <td>
+                <%= link_to registration.id, edit_registration_path(registration) %>
+                <%= "*" if registration.details.staff %>
+              </td>
               <td><%= registration.user.name %></td>
               <td><%= render "shared/event_id_collection", event_ids: registration.events %></td>
             </tr>
@@ -55,7 +61,10 @@
         <tbody>
           <% @registrations.deleted.each do |registration| %>
             <tr>
-              <td><%= link_to registration.id, edit_registration_path(registration) %></td>
+              <td>
+                <%= link_to registration.id, edit_registration_path(registration) %>
+                <%= "*" if registration.details.staff %>
+              </td>
               <td><%= registration.user.name %></td>
               <td><%= render "shared/event_id_collection", event_ids: registration.events %></td>
             </tr>

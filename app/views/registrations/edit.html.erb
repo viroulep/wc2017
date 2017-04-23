@@ -9,6 +9,9 @@
     <p>You're not registered for the competition</p>
   <% else %>
     <% if @mine %>
+      <% if @registration.details.staff %>
+        <p>You are registered as Staff!</p>
+      <% end %>
       <div class="row text-center">
         <div class="col-xs-12 col-sm-12">
           <% if @registration.accepted? && !@registration.details.confirmed_at %>
@@ -16,6 +19,8 @@
           <% end %>
         </div>
       </div>
+    <% elsif @registration.details.staff %>
+      <p>This person is registered as staff</p>
     <% end %>
     <hr/>
     <%= render "registration_form", registration: @registration %>

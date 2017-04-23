@@ -58,6 +58,9 @@
         <div class="panel-body">
           <% detail_object = registration.details %>
           <%= r.simple_fields_for :registration_detail, detail_object do |d| %>
+            <% if current_user.can_manage_competition?(managed_competition) %>
+              <%= d.input :staff %>
+            <% end %>
             <%= d.input :tshirt, as: :radio_buttons, collection: RegistrationDetail::TSHIRT_SIZES, label: "T-shirt", hint: "Your t-shirt size" %>
           <% end %>
         </div>
