@@ -24,6 +24,12 @@ class RegistrationsController < ApplicationController
             user: user
           }
           status, registration = Registration.wca_create_or_update(json_registration, obj_attr)
+          comments = registration.comments || ""
+          if comments.downcase.include?("staff")
+            details = registration.details
+            details.staff = true
+            details.save!(validate: false)
+          end
           unless status
             Rails.logger.info "Couldn't create_or_update the registration!"
           else
