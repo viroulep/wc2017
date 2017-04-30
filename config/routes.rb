@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
 
   resources :groups, except: [:show]
+  resources :staff_teams
   get 'groups/e/:event_id' => 'groups#show_for_event', :as => :groups_for_event
   patch 'groups/e/:event_id' => 'groups#update_for_event'
 

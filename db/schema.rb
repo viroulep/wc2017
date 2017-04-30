@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170427211239) do
+ActiveRecord::Schema.define(version: 20170430181003) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,22 @@ ActiveRecord::Schema.define(version: 20170427211239) do
     t.integer  "confirmed_by"
     t.string   "status"
     t.index ["user_id"], name: "index_registrations_on_user_id", using: :btree
+  end
+
+  create_table "staff_team_members", force: :cascade do |t|
+    t.integer  "staff_team_id",                   null: false
+    t.integer  "registration_id",                 null: false
+    t.boolean  "team_leader",     default: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.index ["registration_id"], name: "index_staff_team_members_on_registration_id", using: :btree
+    t.index ["staff_team_id"], name: "index_staff_team_members_on_staff_team_id", using: :btree
+  end
+
+  create_table "staff_teams", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
