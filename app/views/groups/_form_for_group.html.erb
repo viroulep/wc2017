@@ -1,0 +1,22 @@
+<% group ||= Group.new %>
+<% repeat = @repeat || 1 %>
+<% create ||= false %>
+<% disabled = group.registrations.any? %>
+<% hint = disabled ? "You can't change the event because there are competitors in the group" : nil %>
+<%= simple_form_for group, wrapper: :horizontal_form do |f| %>
+  <%= f.input :name %>
+  <%= f.input :event_id, as: :select, collection: Event.all, disabled: disabled, hint: hint %>
+  <%= f.input :starts_at %>
+  <%= f.input :ends_at %>
+  <% if create %>
+    <div class="input-group col-xs-12 col-md-6">
+      <div class="input-group-btn">
+        <%= f.button :submit, class: "btn-primary", value: "Create multiple" %>
+      </div>
+      <input type="text" name="repeat" class="form-control input-group-number" placeholder="repeat" value="<%= repeat %>">
+    </div>
+  <% else %>
+    <%= f.button :submit, class: "btn-primary", value: "Save group details" %>
+    <%= link_to icon('trash'), group_path(group.id), method: "delete", class: "btn btn-danger" %>
+  <% end %>
+<% end %>

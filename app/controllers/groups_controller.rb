@@ -6,7 +6,55 @@ class GroupsController < ApplicationController
   # TODO: move this to environment
   GROUPS_VISIBLE = false
 
-  def show
+  def create
+    @repeat = params.require(:repeat).to_i
+    all_good = true
+
+    if @repeat <= 1
+      @group = Group.new(group_params)
+      all_good = @group.save
+    else
+      (1..@repeat).each do |i|
+        this_group_params = group_params
+        this_group_params[:name] += " #{i}"
+        @group = Group.new(this_group_params)
+        unless @group.save
+          all_good = false
+          break
+        end
+      end
+    end
+
+    if all_good
+      flash[:success] = "Group successfully created!"
+      redirect_to groups_for_event_path(@group.event_id)
+    else
+      render :index
+    end
+  end
+
+  def destroy
+    @group = Group.find(params[:id])
+    @group.destroy
+    redirect_to groups_for_event_path(@group.event_id)
+  end
+
+  def edit
+    @group = Group.find(params[:id])
+  end
+
+  def update
+    @group = Group.find(params[:id])
+
+    if @group.update_attributes(group_params)
+      flash[:success] = "Group successfully saved!"
+      redirect_to edit_group_path(@group)
+    else
+      render :edit
+    end
+  end
+
+  def show_for_registration
     # Shows groups for a registration id!
     @registration = Registration.find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
     @groups = @registration.event_groups
@@ -15,10 +63,8 @@ class GroupsController < ApplicationController
   def show_for_event
     begin
       @event = Event.find(params[:event_id])
-      @groups = EventGroup.for_event(@event.id).includes(:user).group_by(&:group)
-      @ungrouped = EventGroupCollection.new(Registration.registered_without_group_for(@event.id, :user).map do |r|
-          r.event_groups.build(event_id: @event.id)
-      end)
+      @groups = Group.for_event(@event.id).includes(registration_groups: { registration: [:user] })
+      @ungrouped = Group.new(registration_groups: Registration.registered_without_group_for(@event.id, :user))
     rescue ActiveRecord::RecordNotFound => e
       redirect_to groups_url, alert: "Could not find the event!"
     end
@@ -27,30 +73,21 @@ class GroupsController < ApplicationController
   def update_for_event
     begin
       flash = {}
-      ignored = 0
       changed = 0
       event = Event.find(params[:event_id])
       # Note: event id is defined by the current event
-      data =  params.require(:event_group_collection)
-                    .permit(event_groups_attributes: [:id, :group, :registration_id])
-      data[:event_groups_attributes]&.reject {|index, eg| eg[:group].blank? }.each do |index, eg|
-        new_group = eg[:group].to_i
-        event_group = EventGroup.find_by_id(eg[:id])
+      data =  params.require(:group)
+                    .permit(registration_groups_attributes: [:id, :group_id, :registration_id])
+      data[:registration_groups_attributes]&.reject { |index, eg| eg[:group_id].blank? }.each do |index, eg|
+        new_group = Group.find(eg[:group_id])
+        event_group = RegistrationGroup.find_by_id(eg[:id])
         unless event_group
-          registration = Registration.find_by_id(eg[:registration_id])
-          event_group = registration&.event_groups.build
+          registration = Registration.find(eg[:registration_id])
+          event_group = registration.registration_groups.build
         end
-        if event_group && new_group > 0
-          event_group.group = new_group
-          event_group.event_id = event.id
-          event_group.save!
-          changed += 1 if event_group.previous_changes.any?
-        else
-          ignored += 1
-        end
-      end
-      if ignored > 0
-        flash[:warning] = "Ignored #{ignored} entries that couldn't be found in the db."
+        event_group.group_id = new_group.id
+        event_group.save!
+        changed += 1 if event_group.previous_changes.any?
       end
       flash[:success] = if changed > 0
                           "Successfully modified #{changed} entries."
@@ -59,10 +96,11 @@ class GroupsController < ApplicationController
                         end
       redirect_to :groups_for_event, flash: flash
     rescue ActiveRecord::RecordNotFound => e
-      redirect_to groups_url, alert: "Could not find the event!"
+      redirect_to groups_url, alert: "Could not find the Event or Group!"
     end
   end
 
+  private
   def redirect_unless_can_view!
     # NOTE: this has the side effect that if someone provides a wrong registration id,
     # they end up on their groups
@@ -76,5 +114,15 @@ class GroupsController < ApplicationController
       flash[:danger] = "Groups are not yet done, or you don't have groups."
       redirect_to root_url
     end
+  end
+
+  def group_params
+    # TODO: date and stuff!
+    permitted_params = [:name]
+    # Make the event immutable if there are people in the group!
+    if @group.nil? or @group.registrations.empty?
+      permitted_params << :event_id
+    end
+    params.require(:group).permit(permitted_params)
   end
 end

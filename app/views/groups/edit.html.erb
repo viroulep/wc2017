@@ -1,8 +1,8 @@
 <%= render 'nav' do %>
-  <h3>Create a new group</h3>
+  <h2>Edit group '<%= @group.name %>'</h2>
   <div class="row">
     <div class="col-md-6">
-      <%= render 'form_for_group', create: true, group: @group %>
+      <%= render 'form_for_group', group: @group %>
     </div>
   </div>
 <% end %>

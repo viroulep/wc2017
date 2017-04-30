@@ -1,3 +1,4 @@
+<% available_groups = available_groups&.map { |g| [g.name, g.id] } || [] %>
 <div class="input-group">
   <div class="input-group-btn">
     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
@@ -7,5 +8,5 @@
       <li><a href="#" class="action-submit">Submit changes</a></li>
     </ul>
   </div>
-  <input type="text" class="form-control input-group-number" placeholder="Group number">
+  <%= select_tag(:move_to, options_for_select(available_groups), class:"form-control input-group-number") %>
 </div>

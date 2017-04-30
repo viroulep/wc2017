@@ -57,6 +57,7 @@ function resetSelected(tableElem, groupId) {
 function moveSelectedTo(tableElem, inputElem) {
   var selected = tableElem.bootstrapTable('getAllSelections');
   var newGroup = inputElem.val();
+  var newGroupName = inputElem.find(':selected').text();
   var arrowRight = '<i class="fa fa-arrow-right"></i> ';
   if (!/^\+?[1-9][\d]*$/.test(newGroup)) {
     alert("Group " + newGroup + " is not a positive Integer");
@@ -66,7 +67,7 @@ function moveSelectedTo(tableElem, inputElem) {
   $.each(selected, function (index, cell) {
     var elem = $("#"+cell._name_id);
     elem.parent().addClass("warning text-warning");
-    elem.find('.new-group-number').html(arrowRight + newGroup);
+    elem.find('.new-group-number').html(arrowRight + newGroupName);
     elem.find('.hidden-group-input').val(newGroup);
   });
 }

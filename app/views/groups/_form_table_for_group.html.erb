@@ -1,8 +1,8 @@
-<%= simple_form_for collection,
+<%= simple_form_for group,
                     url: groups_for_event_path(@event.id),
                     html: { id: "form-for-#{group_id}" },
                     method: :patch do |eg| %>
-  <%= render "action_input_group" %>
+  <%= render "action_input_group", available_groups: @groups %>
   <table data-toggle="table"
          data-click-to-select="true"
          data-search="true"
@@ -15,15 +15,15 @@
       </tr>
     </thead>
     <tbody>
-      <%= eg.simple_fields_for :event_groups, collection.event_groups do |f|%>
+      <%= eg.simple_fields_for :registration_groups, group.registration_groups do |f|%>
         <tr>
           <td></td>
-          <% line_id = "#{group_id}_#{f.object.registration_id}" %>
+          <% line_id = "#{f.object.group_id}_#{f.object.registration_id}" %>
           <td id="<%= line_id %>">
             <%= f.object.name %>
             <%= f.hidden_field :id %>
             <%= f.hidden_field :registration_id %>
-            <%= f.hidden_field :group, class: "hidden-group-input" %>
+            <%= f.hidden_field :group_id, class: "hidden-group-input" %>
             <span class="new-group-number"></span>
           </td>
         </tr>

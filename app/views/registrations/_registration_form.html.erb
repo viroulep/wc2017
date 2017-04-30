@@ -19,7 +19,7 @@
               </td>
             </tr>
           <% end %>
-          <%= r.simple_fields_for :guests, @registration.visible_guests do |g| %>
+          <%= r.simple_fields_for :guests, registration.visible_guests do |g| %>
             <% input_id = get_input_id(g.object_name, "name") %>
             <tr id="<%= input_id %>_tr" class="guest-line row">
               <td class="col-xs-10">

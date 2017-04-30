@@ -3,6 +3,9 @@
   <div class="row">
     <div id="groups-nav">
       <ul class="nav nav-tabs">
+        <li role="presentation" class="<%= "active" if active_event.blank? %>">
+          <%= link_to(icon('plus'), groups_path) %>
+        </li>
         <% Event.all.each do |e| %>
           <li role="presentation" class="<%= "active" if e.id == active_event %>">
             <%= link_to(render('shared/event', event: e, placement: "bottom"), groups_for_event_path(e.id)) %>

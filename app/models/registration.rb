@@ -3,13 +3,16 @@ class Registration < ApplicationRecord
   belongs_to :user, inverse_of: :registration
   belongs_to :competition
   has_many :guests, inverse_of: :registration
-  has_many :event_groups, inverse_of: :registration
+  has_many :registration_groups
+  has_many :groups, through: :registration_groups
   has_one :registration_detail, inverse_of: :registration
 
   accepts_nested_attributes_for :guests, :registration_detail
 
   delegate :name, to: :user
 
+  # FIXME: since we blindly trust the WCIF, and won't directly update a registration,
+  # we probably don't need these.
   validates :user, presence: true
   validates :event_ids, presence: true, allow_blank: false
   validates :comments, presence: true, allow_blank: true
@@ -23,7 +26,7 @@ class Registration < ApplicationRecord
 
   scope :pending, -> { where(status: 'pending') }
 
-  scope :without_group_for, -> (event_id) { where.not(id: EventGroup.select(:registration_id).where(event_id: event_id)) }
+  scope :without_group_for, -> (event_id) { where.not(id: Group.for_event(event_id).joins(:registrations).select(:'registrations.id')) }
 
   @@obj_info = %w(id user competition_id comments status event_ids)
 
@@ -72,7 +75,9 @@ class Registration < ApplicationRecord
   end
 
   def self.registered_without_group_for(event_id, *relations)
-    filter_collection_for(Registration.accepted.without_group_for(event_id), event_id, relations)
+    filter_collection_for(Registration.accepted.without_group_for(event_id), event_id, relations).map { |r|
+      r.registration_groups.build
+    }
   end
 
   #def self.with_event(event_id, *relations)

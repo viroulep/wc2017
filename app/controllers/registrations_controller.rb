@@ -3,6 +3,8 @@ class RegistrationsController < ApplicationController
   before_action :redirect_unless_admin!, except: [:edit, :update, :confirm]
   before_action :redirect_unless_can_edit!, except: [:index, :import_all]
 
+  # FIXME: somehow rename this to "import_wcif", and move it to some dedicated controller
+  # Also need to handle person's PBs!
   def import_all
     begin
       registrations_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}/wcif"), { Authorization: "Bearer #{session[:access_token]}"})
@@ -43,7 +45,7 @@ class RegistrationsController < ApplicationController
   end
 
   def index
-    @registrations = Registration.all.includes(:user)
+    @registrations = Registration.all.includes(:user, :registration_detail)
   end
 
   def edit
