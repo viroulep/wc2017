@@ -3,13 +3,12 @@ Rails.application.routes.draw do
   #resources :users, only: [:index, :show]
 
   resources :registrations, only: [:index, :edit, :update] do
-    get 'groups' => 'groups#show'
+    get 'groups' => 'groups#show_for_registration'
   end
 
-  resources :groups
+  resources :groups, except: [:show]
   get 'groups/e/:event_id' => 'groups#show_for_event', :as => :groups_for_event
   patch 'groups/e/:event_id' => 'groups#update_for_event'
-  get 'groups/r/:registration_id' => 'groups#show_for_registration'
 
   patch '/confirm' => 'registrations#confirm'
   get '/my_registration' => 'registrations#edit'

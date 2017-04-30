@@ -2,7 +2,7 @@
   <div class="row">
     Groups for <%= @registration.name %>.<br/>
     <% @groups.each do |g| %>
-      <%= g.event_id %>, <%= g.group %>
+      <%= g.event_id %>, <%= g.group.name %>
       <br/>
     <% end %>
   </div>

@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!, except: [:show]
-  before_action :redirect_unless_can_view!, only: [:show]
+  before_action :redirect_unless_admin!, except: [:show_for_registration]
+  before_action :redirect_unless_can_view!, only: [:show_for_registration]
 
   # TODO: move this to environment
   GROUPS_VISIBLE = false
@@ -57,7 +57,7 @@ class GroupsController < ApplicationController
   def show_for_registration
     # Shows groups for a registration id!
     @registration = Registration.find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
-    @groups = @registration.event_groups
+    @groups = @registration.registration_groups
   end
 
   def show_for_event
