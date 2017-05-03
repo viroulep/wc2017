@@ -39,4 +39,13 @@ module ApplicationHelper
     })
     link_to(text, url, args)
   end
+
+  def alert(type, content = nil, note: false, &block)
+    content = capture(&block) if block_given?
+    if note
+      content = content_tag(:strong, "Note:") + " " + content
+    end
+    content_tag :div, content, class: "alert alert-#{type}"
+  end
+
 end

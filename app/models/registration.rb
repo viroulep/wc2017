@@ -27,6 +27,8 @@ class Registration < ApplicationRecord
 
   scope :pending, -> { where(status: 'pending') }
 
+  scope :staff_available, -> { joins(:registration_detail).where('registration_details.staff': true) }
+
   scope :without_group_for, -> (event_id) { where.not(id: Group.for_event(event_id).joins(:registrations).select(:'registrations.id')) }
 
   @@obj_info = %w(id user competition_id comments status event_ids)

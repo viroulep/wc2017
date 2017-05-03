@@ -1,11 +1,118 @@
-<%= simple_form_for(@staff_team) do |f| %>
-  <%= f.error_notification %>
+<div class="col-xs-12 col-md-6">
+  <%= simple_form_for(@staff_team) do |f| %>
+    <%= f.error_notification %>
 
-  <div class="form-inputs">
-    <%= f.input :name %>
-  </div>
+    <div class="form-inputs">
+      <%= f.input :name %>
+    </div>
+    <%#FIXME: DRY this up%>
+    <table data-toggle="table"
+           data-click-to-select="true"
+           data-select-item-name="selected_registrations[]"
+           class="table table-hover"
+           id="table-staff">
+      <thead>
+        <tr>
+          <th data-checkbox="true" data-field="state"></th>
+          <th data-field="name">
+            Staff name
+          </th>
+          <th class="col-xs-2">Team leader</th>
+        </tr>
+      </thead>
+      <tfoot>
+        <tr>
+          <td colspan="3">
+            <div class="pull-right">
+              <button type="submit" class="btn btn-primary" name="registrations_action" value="update">
+                Update staff team
+              </button>
+            </div>
+            <div class="pull-left" id="delete-button-container" style="display: none;">
+              <button type="submit" class="btn btn-danger" name="registrations_action" value="remove-selected">
+                <%= icon 'trash', "Remove selected" %>
+              </button>
+            </div>
+        </tr>
+      </tfoot>
+      <tbody>
+        <%= f.simple_fields_for :staff_team_members do |stm|%>
+          <tr id="registration-<%= "#{stm.object.registration_id}" %>">
+            <td></td>
+            <td>
+              <%= stm.object.name %>
+              <%= stm.hidden_field :id %>
+              <span class="new-group-number"></span>
+            </td>
+            <td>
+              <%= stm.input_field :team_leader, label: false, class: "checkbox-leader" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <hr/>
+    <% unless @staff_team.id %>
+      <%= alert :info, "You will be able to add people to the team when created.", note: true %>
+    <% else %>
+      <table data-toggle="table"
+             data-click-to-select="true"
+             data-search="true"
+             data-select-item-name="selected_registrations[]"
+             class="table table-hover"
+             id="table-staff-available">
+        <thead>
+          <tr>
+            <th data-checkbox="true" data-field="state"></th>
+            <th data-field="name">
+              Staff available
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @staff_available.each do |sa|%>
+            <tr id="registration-<%= "#{sa.id}" %>">
+              <td></td>
+              <td>
+                <%= sa.name %>
+                <span class="new-group-number"></span>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div id="button-add-to-team" class="pull-left search" style="display: none;">
+        <button type="submit" class="btn btn-success" name="registrations_action" value="add-selected">
+          <%= icon 'check', "Add selected to the team" %>
+        </button>
+      </div>
+    <% end %>
+  <% end %>
+</div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
-<% end %>
+<script>
+
+var showHide = function(e) {
+  var staffTable = $("#table-staff");
+  $("#delete-button-container").toggle(staffTable.bootstrapTable('getAllSelections').length > 0);
+};
+
+$(document).ready(function () {
+  $('.checkbox-leader').on('click', function(e) {
+    e.stopPropagation();
+  });
+  // see: http://bootstrap-table.wenzhixin.net.cn/documentation/
+  $('#table-staff').on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', showHide);
+
+  var initCheckboxesValues = function($table) {
+    $table.find('tr td input[type="checkbox"]').each(function(index) {
+      $(this).val($(this).parents('tr').attr('id'));
+    });
+  };
+  initCheckboxesValues($('#table-staff-available'));
+  initCheckboxesValues($('#table-staff'));
+  var buttonAdd = $('#button-add-to-team');
+  buttonAdd.insertBefore($('#table-staff-available').parent().parent().parent().find('.search'));
+  buttonAdd.show();
+});
+</script>
