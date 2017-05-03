@@ -4,6 +4,8 @@ class User < ApplicationRecord
   include ApplicationHelper
   has_one :registration, inverse_of: :user
 
+  has_many :personal_bests
+
   # List of fields we accept in the db
   @@obj_info = %w(id name email wca_id country_iso2 avatar_url avatar_thumb_url)
   # Possible extension

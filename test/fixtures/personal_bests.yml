@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type: 
+  belongs_to: 
+  event_id: MyString
+  best: 1
+  world_ranking: 1
+  continental_ranking: 1
+  national_ranking: 1
+
+two:
+  type: 
+  belongs_to: 
+  event_id: MyString
+  best: 1
+  world_ranking: 1
+  continental_ranking: 1
+  national_ranking: 1

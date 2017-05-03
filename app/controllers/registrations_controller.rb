@@ -12,13 +12,22 @@ class RegistrationsController < ApplicationController
       return redirect_to(registrations_url, alert: "Failed to fetch WCA data: #{err.message}")
     end
     wcif = JSON.parse(registrations_response.body)
+    # Checking everything all the time is long, let's just clear the table...
+    PersonalBest.delete_all
+    all_pb = []
     imported = 0
+    # FIXME: importing this way generates two inserts per user.
+    # It's fine for 200 people, but will be deadly boring for 1100 people :s
     wcif["persons"]&.each do |json_user|
       status, user = User.create_or_update(json_user)
       json_registration = json_user["registration"]
       unless status
         Rails.logger.error "Couldn't create_or_update user #{json_user}"
       else
+        json_user["personalBests"]&.each do |json_pb|
+          json_pb["user_id"] = user.id
+          all_pb << PersonalBest.as_array(json_pb)
+        end
         if json_registration
           # Using this because params.permit will remove user/event_ids since the're not basic types
           obj_attr = {
@@ -40,6 +49,7 @@ class RegistrationsController < ApplicationController
         end
       end
     end
+    PersonalBest.insert_all(all_pb)
 
     redirect_to(registrations_url, notice: "Imported #{imported} registrations and users successfully!")
   end
