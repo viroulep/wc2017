@@ -5,19 +5,13 @@ class Registration < ApplicationRecord
   has_many :guests, inverse_of: :registration
   has_many :registration_groups
   has_many :groups, through: :registration_groups
-  has_many :teams, through: :staff_team_members
+  has_many :staff_team_members
+  has_many :staff_teams, through: :staff_team_members
   has_one :registration_detail, inverse_of: :registration
 
   accepts_nested_attributes_for :guests, :registration_detail
 
   delegate :name, to: :user
-
-  # FIXME: since we blindly trust the WCIF, and won't directly update a registration,
-  # we probably don't need these.
-  validates :user, presence: true
-  validates :event_ids, presence: true, allow_blank: false
-  validates :comments, presence: true, allow_blank: true
-  validates :status, presence: true, allow_blank: false
 
   validate :validate_guests
 
@@ -31,7 +25,7 @@ class Registration < ApplicationRecord
 
   scope :without_group_for, -> (event_id) { where.not(id: Group.for_event(event_id).joins(:registrations).select(:'registrations.id')) }
 
-  @@obj_info = %w(id user competition_id comments status event_ids)
+  @@obj_info = %w(id user_id competition_id comments status event_ids)
 
   def accepted?
     status == 'accepted'
@@ -46,7 +40,9 @@ class Registration < ApplicationRecord
   end
 
   def validate_guests
-    errors.add(:guests, "Maximum number of guests is 5") if visible_guests.size > 5
+    unless new_record?
+      errors.add(:guests, "Maximum number of guests is 5") if visible_guests.size > 5
+    end
   end
 
   def details

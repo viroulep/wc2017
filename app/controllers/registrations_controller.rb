@@ -4,7 +4,6 @@ class RegistrationsController < ApplicationController
   before_action :redirect_unless_can_edit!, except: [:index, :import_all]
 
   # FIXME: somehow rename this to "import_wcif", and move it to some dedicated controller
-  # Also need to handle person's PBs!
   def import_all
     begin
       registrations_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}/wcif"), { Authorization: "Bearer #{session[:access_token]}"})
@@ -12,44 +11,34 @@ class RegistrationsController < ApplicationController
       return redirect_to(registrations_url, alert: "Failed to fetch WCA data: #{err.message}")
     end
     wcif = JSON.parse(registrations_response.body)
-    # Checking everything all the time is long, let's just clear the table...
-    PersonalBest.delete_all
+    all_users = []
+    all_registrations = []
     all_pb = []
     imported = 0
-    # FIXME: importing this way generates two inserts per user.
-    # It's fine for 200 people, but will be deadly boring for 1100 people :s
     wcif["persons"]&.each do |json_user|
-      status, user = User.create_or_update(json_user)
-      json_registration = json_user["registration"]
-      unless status
-        Rails.logger.error "Couldn't create_or_update user #{json_user}"
-      else
-        json_user["personalBests"]&.each do |json_pb|
-          json_pb["user_id"] = user.id
-          all_pb << PersonalBest.as_array(json_pb)
-        end
-        if json_registration
-          # Using this because params.permit will remove user/event_ids since the're not basic types
-          obj_attr = {
-            event_ids: json_registration["eventIds"]&.join(","),
-            user: user
-          }
-          status, registration = Registration.wca_create_or_update(json_registration, obj_attr)
-          comments = registration.comments || ""
-          if comments.downcase.include?("staff")
-            details = registration.details
-            details.staff = true
-            details.save!(validate: false)
-          end
-          unless status
-            Rails.logger.info "Couldn't create_or_update the registration!"
-          else
-            imported += 1
-          end
-        end
+      json_registration = json_user.delete("registration")
+      personal_bests = json_user.delete("personalBests")
+      json_user = User.process_json(json_user)
+      user = User.wca_new(json_user)
+      if json_registration
+        json_registration["event_ids"] = json_registration.delete("eventIds")&.join(",")
+        json_registration["user_id"] = json_user["id"]
+        json_registration.delete("guests")
+        all_registrations << Registration.wca_new(json_registration)
       end
+      personal_bests&.each do |json_pb|
+        user.personal_bests.build(PersonalBest.attrs_from_json(json_pb))
+      end
+      all_users << user
     end
-    PersonalBest.insert_all(all_pb)
+    if all_users.any?
+      # Checking everything all the time is long, let's just clear the table...
+      User.delete_all
+      Registration.delete_all
+      PersonalBest.delete_all
+      User.import(all_users, recursive: true)
+      Registration.import(all_registrations)
+    end
 
     redirect_to(registrations_url, notice: "Imported #{imported} registrations and users successfully!")
   end

@@ -30,20 +30,26 @@ class User < ApplicationRecord
     wca_base_url + avatar_thumb_url
   end
 
-  def self.create_or_update(json_user)
+  def self.process_json(json_user)
     # if such field exists, we are importing the WCIF,
     # else it's just a regular user login
-    if json_user["wcaUserId"]
-      json_user["id"] = json_user["wcaUserId"]
-    end
-    if json_user["wcaId"]
-      json_user["wca_id"] = json_user["wcaId"]
+    if json_user.include?("wcaUserId")
+      json_user["id"] = json_user.delete("wcaUserId")
     end
 
     if json_user.include?("avatar")
       json_user["avatar_url"] = json_user["avatar"]["url"]
-      json_user["avatar_thumb_url"] = json_user["avatar"]["thumbUrl"]
+      json_user["avatar_thumb_url"] = json_user["avatar"]["thumbUrl"] || json_user["avatar"]["thumb_url"]
+      json_user.delete("avatar")
     end
+    %w(delegatesCompetition organizesCompetition gender birthdate registration personalBests).each do |k|
+      json_user.delete(k)
+    end
+    json_user
+  end
+
+  def self.create_or_update(json_user)
+    json_user = process_json(json_user)
     wca_create_or_update(json_user)
   end
 end

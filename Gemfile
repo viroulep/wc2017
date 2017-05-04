@@ -8,6 +8,7 @@ gem 'coffee-rails', '~> 4.1.0'
 gem 'jquery-rails'
 gem 'jbuilder', '~> 2.0'
 gem 'rest-client'
+gem 'activerecord-import'
 group :development, :test do
   gem 'dotenv-rails'
   gem 'byebug'
