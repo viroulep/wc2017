@@ -7,6 +7,7 @@ class Registration < ApplicationRecord
   has_many :groups, through: :registration_groups
   has_many :staff_team_members
   has_many :staff_teams, through: :staff_team_members
+  has_many :personal_bests, through: :user
   has_one :registration_detail, inverse_of: :registration
 
   accepts_nested_attributes_for :guests, :registration_detail
@@ -58,6 +59,12 @@ class Registration < ApplicationRecord
     @events ||= event_ids.split(",")
   end
 
+  def best_for(event_id, type)
+    @best_for ||= {}
+    @best_for[event_id] ||= {}
+    @best_for[event_id][type] ||= personal_bests.select { |pb| pb.event_id == event_id && pb.result_type == type }.first
+  end
+
   def visible_guests
     guests.reject(&:marked_for_destruction?)
   end
@@ -79,7 +86,7 @@ class Registration < ApplicationRecord
     }
   end
 
-  #def self.with_event(event_id, *relations)
-    #filter_collection_for(Registration.all, event_id, relations)
-  #end
+  def self.with_event(event_id, *relations)
+    filter_collection_for(Registration.all, event_id, relations)
+  end
 end

@@ -8,8 +8,12 @@ class PersonalBest < ApplicationRecord
   # List of fields we accept in the db
   @@obj_info = %w(user_id result_type event_id best world_ranking continental_ranking national_ranking).freeze
 
+  def as_solve_time
+    SolveTime.new(event_id, result_type.to_sym, best)
+  end
+
   def to_s
-    SolveTime.new(event_id, result_type.to_sym, best).clock_format
+    as_solve_time.clock_format
   end
 
   private

@@ -3,8 +3,48 @@ class GroupsController < ApplicationController
   before_action :redirect_unless_admin!, except: [:show_for_registration]
   before_action :redirect_unless_can_view!, only: [:show_for_registration]
 
+  SINGLE = %w(333bf 444bf 555bf 333fm 333mbf).freeze
+
   # TODO: move this to environment
   GROUPS_VISIBLE = false
+
+  def autogenerate_group
+    @event = Event.find(params[:event_id])
+    @groups = Group.for_event(@event.id).includes(registration_groups: { registration: [:user] })
+    sort_column = SINGLE.include?(@event.id) ? "single" : "average"
+    @registrations = Registration.with_event(@event.id, [:user, :personal_bests, :registration_groups]).sort_by do |r|
+      r.best_for(@event.id, sort_column)&.as_solve_time || SolveTime::SKIPPED
+    end
+
+    if @groups.empty? || @registrations.empty?
+      flash[:warning] = "No groups or registrations to distribute the data"
+      return redirect_to groups_for_event_path(@event.id)
+    end
+    @group_ids = @groups.map(&:id)
+    # Clear everything
+    RegistrationGroup.where(group_id: @group_ids).destroy_all
+
+    chunk_size = (@registrations.size / @groups.size).to_i
+    Rails.logger.info "Chunk_size: #{chunk_size}"
+    index = 0
+    group_id = 0
+    @registrations.each do |r|
+      @groups[group_id].registration_groups.build(registration: r)
+      index += 1
+      if index%chunk_size == 0
+        index = 0
+        group_id += 1
+        if group_id == @groups.size
+          group_id -= 1
+        end
+      end
+    end
+
+    @groups.each(&:save)
+
+    flash[:success] = "Done"
+    redirect_to groups_for_event_path(@event.id)
+  end
 
   def create
     @repeat = params.require(:repeat).to_i

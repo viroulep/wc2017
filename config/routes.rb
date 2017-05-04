@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   get 'groups/e/:event_id' => 'groups#show_for_event', :as => :groups_for_event
   patch 'groups/e/:event_id' => 'groups#update_for_event'
 
+  patch 'groups/generate/:event_id' => 'groups#autogenerate_group', :as => :generate_groups
+
   patch '/confirm' => 'registrations#confirm'
   get '/my_registration' => 'registrations#edit'
   get '/my_registration/groups' => 'groups#show_for_registration'
