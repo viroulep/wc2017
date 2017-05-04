@@ -1,7 +1,7 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!
   before_action :redirect_unless_admin!, except: [:edit, :update, :confirm]
-  before_action :redirect_unless_can_edit!, except: [:index, :import_all]
+  before_action :redirect_unless_can_edit!
 
   # FIXME: somehow rename this to "import_wcif", and move it to some dedicated controller
   def import_all

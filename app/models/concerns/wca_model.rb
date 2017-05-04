@@ -5,7 +5,7 @@ module WCAModel
 
   class_methods do
     def wca_create_or_update(wca_object, additional_attrs={})
-      attributes, obj_id = get_attr(wca_object, additional_attrs)
+      attributes, obj_id = get_attr(wca_object, true, additional_attrs)
       obj = find_or_initialize_by(id: obj_id)
       [obj.update(attributes), obj]
     end
@@ -15,7 +15,7 @@ module WCAModel
       new(attributes)
     end
 
-    def get_attr(wca_object, require_id=true, additional_attrs={})
+    def get_attr(wca_object, require_id, additional_attrs={})
       wca_object = handle_camel_case(wca_object)
       obj_params = ActionController::Parameters.new(wca_object)
       accepted_params = class_variable_get(:@@obj_info) || {}
