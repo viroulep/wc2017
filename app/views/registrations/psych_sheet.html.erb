@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="row">
+    <h3>Psych sheet for <%= @event.name%></h3>
+    <% @registrations.each do |r| %>
+      <div class="row">
+        <%= r.name %>, <%= r.best_for(@event.id, "average") %>
+      </div>
+    <% end %>
+  </div>
+</div>

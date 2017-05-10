@@ -3,6 +3,9 @@
   <% # FIXME: dirty and ugly %>
   <% summary[e] ||= 0 %>
   <% summary[e] += 1 %>
+  <% event = Event.find(e) %>
   <% # FIXME: cache this based on event_ids somehow %>
-  <%= render "shared/event", event: Event.find(e) %>
+  <% # rendering each event is soooo long that inlining it is better %>
+  <span class="cubing-icon event-<%= event.id %>" data-toggle="tooltip" data-placement="top" title="<%= event.name %>"></span>
+  <%# render "shared/event", event: Event.find(e) %>
 <% end %>

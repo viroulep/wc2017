@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     get 'groups' => 'groups#show_for_registration'
   end
 
+  get 'registrations/psy/:event_id' => 'registrations#psych_sheet'
+
   resources :groups, except: [:show]
   resources :staff_teams
 

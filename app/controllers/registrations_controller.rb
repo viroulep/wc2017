@@ -43,6 +43,15 @@ class RegistrationsController < ApplicationController
     redirect_to(registrations_url, notice: "Imported #{imported} registrations and users successfully!")
   end
 
+  def psych_sheet
+    @event = Event.find(params[:event_id])
+    sort_column = GroupsController::SINGLE.include?(@event.id) ? "single" : "average"
+    #@registrations = Registration.with_event("333", [:user, :personal_bests])
+    @registrations = Registration.with_event(@event.id, [:user, :personal_bests]).sort_by do |r|
+      r.best_for(@event.id, sort_column)&.as_solve_time || SolveTime::SKIPPED
+    end
+  end
+
   def index
     @registrations = Registration.all.includes(:user, :registration_detail)
   end
