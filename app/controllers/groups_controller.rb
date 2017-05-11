@@ -163,7 +163,7 @@ class GroupsController < ApplicationController
 
   def group_params
     # TODO: date and stuff!
-    permitted_params = [:name]
+    permitted_params = [:name, :starts_at, :ends_at]
     # Make the event immutable if there are people in the group!
     if @group.nil? or @group.registrations.empty?
       permitted_params << :event_id
