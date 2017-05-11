@@ -86,7 +86,13 @@ class Registration < ApplicationRecord
     }
   end
 
+  def self.registered_with_or_without_group_for(event_id, *relations)
+    Registration.with_event(event_id, relations).map { |r|
+      r.registration_groups.build
+    }
+  end
+
   def self.with_event(event_id, *relations)
-    filter_collection_for(Registration.all, event_id, relations)
+    filter_collection_for(Registration.accepted, event_id, relations)
   end
 end

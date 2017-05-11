@@ -1,5 +1,6 @@
 <% group ||= Group.new %>
-<% repeat = @repeat || 1 %>
+<% repeat_start = @repeat_start || 1 %>
+<% repeat_end = @repeat_end || 1 %>
 <% create ||= false %>
 <% disabled = group.registrations.any? %>
 <% hint = disabled ? "You can't change the event because there are competitors in the group" : nil %>
@@ -9,11 +10,27 @@
   <%= f.input :starts_at %>
   <%= f.input :ends_at %>
   <% if create %>
-    <div class="input-group col-xs-12 col-md-6">
-      <div class="input-group-btn">
+    <hr/>
+    <div class="row">
+      <div class="col-xs-2">
         <%= f.button :submit, class: "btn-primary", value: "Create multiple" %>
       </div>
-      <input type="text" name="repeat" class="form-control input-group-number" placeholder="repeat" value="<%= repeat %>">
+      <div class="col-xs-2">
+        <div class="input-group">
+          <span class="input-group-addon">
+            From
+          </span>
+          <input type="text" name="repeat_start" class="form-control" value="<%= repeat_start %>">
+        </div>
+      </div>
+      <div class="col-xs-2">
+        <div class="input-group">
+          <span class="input-group-addon">
+            To
+          </span>
+          <input type="text" name="repeat_end" class="form-control" value="<%= repeat_end %>">
+        </div>
+      </div>
     </div>
   <% else %>
     <%= f.button :submit, class: "btn-primary", value: "Save group details" %>

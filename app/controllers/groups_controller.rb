@@ -47,14 +47,15 @@ class GroupsController < ApplicationController
   end
 
   def create
-    @repeat = params.require(:repeat).to_i
+    @repeat_start = params.require(:repeat_start).to_i
+    @repeat_end = params.require(:repeat_end).to_i
     all_good = true
 
-    if @repeat <= 1
+    if @repeat_end - @repeat_start <= 0
       @group = Group.new(group_params)
       all_good = @group.save
     else
-      (1..@repeat).each do |i|
+      (@repeat_start..@repeat_end).each do |i|
         this_group_params = group_params
         this_group_params[:name] += " #{i}"
         @group = Group.new(this_group_params)
@@ -104,7 +105,11 @@ class GroupsController < ApplicationController
     begin
       @event = Event.find(params[:event_id])
       @groups = Group.for_event(@event.id).includes(registration_groups: { registration: [:user] })
-      @ungrouped = Group.new(registration_groups: Registration.registered_without_group_for(@event.id, :user))
+      @ungrouped = if @event.id == "333fm" || @event.id == "333mbf"
+                     Group.new(registration_groups: Registration.registered_with_or_without_group_for(@event.id))
+                   else
+                     Group.new(registration_groups: Registration.registered_without_group_for(@event.id, :user))
+                   end
     rescue ActiveRecord::RecordNotFound => e
       redirect_to groups_url, alert: "Could not find the event!"
     end
