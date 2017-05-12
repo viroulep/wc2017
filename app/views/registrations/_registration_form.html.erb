@@ -27,7 +27,7 @@
               </td>
               <td class="col-xs-2 action-cell">
                 <%= link_to_with_tooltip(icon('pencil', class: "text-info"), '#', 'Edit guest', class: 'edit-link', onclick: raw("startEdit('#{input_id}')"), id: "#{input_id}_s") %>
-                <%= link_to_with_tooltip(icon('remove', class: "text-warning"), '#', 'Cancel edition', class: 'cancel-link', onclick: "cancelEdit('#{input_id}')", id: "#{input_id}_c") %>
+                <%= link_to_with_tooltip(icon('remove', class: "text-warning"), '#', 'Cancel editing', class: 'cancel-link', onclick: "cancelEdit('#{input_id}')", id: "#{input_id}_c") %>
                 <%= link_to_with_tooltip(icon('minus-circle', class: "text-danger"), '#', 'Delete Guest', class: 'delete-link', onclick: "removeGuest($(this))") %>
               </td>
             </tr>
