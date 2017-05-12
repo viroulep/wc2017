@@ -23,7 +23,8 @@ hr {
   @extend .text-danger;
 }
 
-.action-cell {
+.table > tbody > tr > td.action-cell {
+  vertical-align: middle;
   a {
     float: left;
   }
