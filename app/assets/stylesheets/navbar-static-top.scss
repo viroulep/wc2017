@@ -24,7 +24,7 @@ $navbar-img-height: 32px;
     .btn-Worldcubeassociation {
       &::before {
         content: '';
-        background-image: url(wca_logo.svg);
+        background-image: image-url("wca_logo.svg");
         background-position: center;
         background-size: cover;
         position: absolute;
