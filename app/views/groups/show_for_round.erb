@@ -3,6 +3,9 @@
     <p><a href="#" id="groups-action-expand">Expand all</a> | <a href="#" id="groups-action-collapse">Collapse all</a></p>
     <p><%= link_to "Autogenerate groups (will erase current registration groups!)", generate_groups_path(@round.id), method: "patch" %></p>
     <p><%= link_to "Edit #{@round.name} schedule", edit_round_path(@round) %></p>
+    <div class="row">
+      <div id="calendar" class="col-xs-12"></div>
+    </div>
     <div class="row row-all-groups">
       <% @groups.sort.each do |g| %>
         <%= render 'group_panel', group_id: g.id, title: g.name, group: g %>
@@ -12,6 +15,7 @@
     </div>
   <% end %>
   <script>
+    $('#calendar').fullCalendar({});
     $('#groups-action-collapse').click(function (e) {
       e.preventDefault();
       $('.panel-heading').not('.collapsed').click();
