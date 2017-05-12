@@ -23,6 +23,10 @@ hr {
   @extend .text-danger;
 }
 
+#add-row:hover {
+  cursor: pointer;
+}
+
 .table > tbody > tr > td.action-cell {
   vertical-align: middle;
   a {

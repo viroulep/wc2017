@@ -43,8 +43,8 @@
             </tr>
           <% end %>
           <tr id="add-row" class="row">
-            <td colspan="2">
-              <%= link_to icon('plus', class: "text-success"), '#', class: 'add-link', onclick: "addRow();", 'data-toggle': 'tooltip', 'data-trigger': 'hover', title: 'Add guest' %>
+            <td colspan="2" data-toggle="tooltip" data-trigger="hover" title="Add guest">
+              <%= link_to icon('plus', class: "text-success"), '#', class: 'add-link' %>
             </td>
           </tr>
         </table>
@@ -63,6 +63,7 @@
             <% end %>
             <%= d.input :tshirt, as: :radio_buttons, collection: RegistrationDetail::TSHIRT_SIZES, label: "Your t-shirt size: ", item_wrapper_class: 'tshirt-radio' %>
           <% end %>
+          More to come later ;)
         </div>
       </div>
     </div>
@@ -81,6 +82,8 @@ var preventDefaultFunc = function(e) {
 };
 
 $('td i').on('click', preventDefaultFunc);
+
+$('#add-row').on('click', addRow);
 
 function startEdit(elemId) {
   elemId = "#" + elemId;
