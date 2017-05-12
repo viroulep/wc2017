@@ -14,6 +14,11 @@ hr {
   }
 }
 
+.tshirt-radio {
+  @extend .radio-inline;
+  vertical-align: inherit;
+}
+
 .help-block.form-error {
   @extend .text-danger;
 }

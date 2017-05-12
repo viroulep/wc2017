@@ -14,7 +14,6 @@ class RegistrationsController < ApplicationController
     all_users = []
     all_registrations = []
     all_pb = []
-    imported = 0
     wcif["persons"]&.each do |json_user|
       json_registration = json_user.delete("registration")
       personal_bests = json_user.delete("personalBests")
@@ -38,9 +37,14 @@ class RegistrationsController < ApplicationController
       PersonalBest.delete_all
       User.import(all_users, recursive: true)
       Registration.import(all_registrations)
+
+      Registration.where("comments ILIKE :search", search: "%staff%").each do |r|
+        r.details.staff = true
+        r.details.save!(validate: false)
+      end
     end
 
-    redirect_to(registrations_url, notice: "Imported #{imported} registrations and users successfully!")
+    redirect_to(registrations_url, notice: "Imported #{all_registrations.size} registrations and users successfully!")
   end
 
   def psych_sheet
