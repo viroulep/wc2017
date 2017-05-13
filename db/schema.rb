@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170503155707) do
+ActiveRecord::Schema.define(version: 20170513192241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,12 +24,12 @@ ActiveRecord::Schema.define(version: 20170503155707) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
-    t.string   "event_id"
     t.datetime "starts_at"
     t.datetime "ends_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["event_id"], name: "index_groups_on_event_id", using: :btree
+    t.integer  "round_id"
+    t.index ["round_id"], name: "index_groups_on_round_id", using: :btree
   end
 
   create_table "guests", force: :cascade do |t|
@@ -80,6 +80,16 @@ ActiveRecord::Schema.define(version: 20170503155707) do
     t.integer  "confirmed_by"
     t.string   "status"
     t.index ["user_id"], name: "index_registrations_on_user_id", using: :btree
+  end
+
+  create_table "rounds", force: :cascade do |t|
+    t.integer  "r_id"
+    t.string   "event_id"
+    t.datetime "starts_at"
+    t.datetime "ends_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["event_id"], name: "index_rounds_on_event_id", using: :btree
   end
 
   create_table "staff_team_members", force: :cascade do |t|

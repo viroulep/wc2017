@@ -1,5 +1,5 @@
 <%= simple_form_for group,
-                    url: groups_for_event_path(@event.id),
+                    url: groups_for_round_path(@round.id),
                     html: { id: "form-for-#{group_id}" },
                     method: :patch do |eg| %>
   <%= render "action_input_group", available_groups: @groups %>

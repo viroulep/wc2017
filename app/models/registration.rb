@@ -24,7 +24,7 @@ class Registration < ApplicationRecord
 
   scope :staff_available, -> { joins(:registration_detail).where('registration_details.staff': true) }
 
-  scope :without_group_for, -> (event_id) { where.not(id: Group.for_event(event_id).joins(:registrations).select(:'registrations.id')) }
+  scope :without_group_for, -> (round_id) { where.not(id: Group.for_round(round_id).joins(:registrations).select(:'registrations.id')) }
 
   @@obj_info = %w(id user_id competition_id comments status event_ids)
 
@@ -80,16 +80,8 @@ class Registration < ApplicationRecord
     all_registrations.select { |r| r.events.include?(event_id) }
   end
 
-  def self.registered_without_group_for(event_id, *relations)
-    filter_collection_for(Registration.accepted.without_group_for(event_id), event_id, relations).map { |r|
-      r.registration_groups.build
-    }
-  end
-
-  def self.registered_with_or_without_group_for(event_id, *relations)
-    Registration.with_event(event_id, relations).map { |r|
-      r.registration_groups.build
-    }
+  def self.with_event_without_group_for(round, *relations)
+    filter_collection_for(Registration.accepted.without_group_for(round.id), round.event_id, relations)
   end
 
   def self.with_event(event_id, *relations)

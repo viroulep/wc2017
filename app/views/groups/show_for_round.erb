@@ -1,0 +1,23 @@
+<%= render 'nav', active_event: @event.id do %>
+  <% if @round %>
+    <p><a href="#" id="groups-action-expand">Expand all</a> | <a href="#" id="groups-action-collapse">Collapse all</a></p>
+    <p><%= link_to "Autogenerate groups (will erase current registration groups!)", generate_groups_path(@round.id), method: "patch" %></p>
+    <div class="row row-all-groups">
+      <% @groups.sort.each do |g| %>
+        <%= render 'group_panel', group_id: g.id, title: g.name, group: g %>
+        <div class="may-clearfix"></div>
+      <% end %>
+      <%= render 'group_panel', title: "No groups", group: @ungrouped %>
+    </div>
+  <% end %>
+  <script>
+    $('#groups-action-collapse').click(function (e) {
+      e.preventDefault();
+      $('.panel-heading').not('.collapsed').click();
+    });
+    $('#groups-action-expand').click(function (e) {
+      e.preventDefault();
+      $('.panel-heading.collapsed').click();
+    });
+  </script>
+<% end %>

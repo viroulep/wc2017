@@ -9,23 +9,30 @@ class GroupsController < ApplicationController
   GROUPS_VISIBLE = false
 
   def autogenerate_group
-    @event = Event.find(params[:event_id])
-    @groups = Group.for_event(@event.id).includes(registration_groups: { registration: [:user] })
+    @round = Round.find(params[:round_id])
+    unless @round.r_id == 1
+      flash[:warning] = "Can't generate groups for non first round!"
+      return redirect_to groups_for_round_path(@round.id)
+    end
+    Group.clear_for_round(@round.id)
+    @event = Event.find(@round.event_id)
+    @groups = Group.for_round(@round.id).includes(registration_groups: { registration: [:user] })
     sort_column = SINGLE.include?(@event.id) ? "single" : "average"
+
     @registrations = Registration.with_event(@event.id, [:user, :personal_bests, :registration_groups]).sort_by do |r|
       r.best_for(@event.id, sort_column)&.as_solve_time || SolveTime::SKIPPED
     end
 
     if @groups.empty? || @registrations.empty?
       flash[:warning] = "No groups or registrations to distribute the data"
-      return redirect_to groups_for_event_path(@event.id)
+      return redirect_to groups_for_round_path(@round.id)
     end
     @group_ids = @groups.map(&:id)
-    # Clear everything
-    RegistrationGroup.where(group_id: @group_ids).destroy_all
 
+    # TODO: this is a bit messy, clean it
+    # TODO: the actual distribution we want is: last first, then spread the
+    # top solvers on groups with id = 1 % 5 (front and featured row)
     chunk_size = (@registrations.size / @groups.size).to_i
-    Rails.logger.info "Chunk_size: #{chunk_size}"
     index = 0
     group_id = 0
     @registrations.each do |r|
@@ -67,8 +74,8 @@ class GroupsController < ApplicationController
     end
 
     if all_good
-      flash[:success] = "Group successfully created!"
-      redirect_to groups_for_event_path(@group.event_id)
+      flash[:success] = "Group(s) successfully created!"
+      redirect_to groups_for_round_path(@group.round_id)
     else
       render :index
     end
@@ -77,7 +84,7 @@ class GroupsController < ApplicationController
   def destroy
     @group = Group.find(params[:id])
     @group.destroy
-    redirect_to groups_for_event_path(@group.event_id)
+    redirect_to groups_for_round_path(@group.round_id)
   end
 
   def edit
@@ -95,6 +102,20 @@ class GroupsController < ApplicationController
     end
   end
 
+  def add_round
+    @event = Event.find(params[:event_id])
+    prev_round_id = Round.where(event_id: @event.id).last&.r_id || 0
+    round = Round.create!(event_id: @event.id, r_id: prev_round_id + 1)
+    redirect_to groups_for_round_path(round.id)
+  end
+
+  def remove_round
+    @event = Event.find(params[:event_id])
+    last_round = Round.where(event_id: @event.id).last
+    last_round&.destroy
+    redirect_to groups_for_event_path(@event.id)
+  end
+
   def show_for_registration
     # Shows groups for a registration id!
     @registration = Registration.find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
@@ -102,25 +123,27 @@ class GroupsController < ApplicationController
   end
 
   def show_for_event
+    @event = Event.find(params[:event_id])
+    @round = Round.where(event_id: @event.id).order(r_id: :asc).first
+    set_groups_ungrouped! if @round
+    render :show_for_round
+  end
+
+  def show_for_round
     begin
-      @event = Event.find(params[:event_id])
-      @groups = Group.for_event(@event.id).includes(registration_groups: { registration: [:user] })
-      @ungrouped = if @event.id == "333fm" || @event.id == "333mbf"
-                     Group.new(registration_groups: Registration.registered_with_or_without_group_for(@event.id))
-                   else
-                     Group.new(registration_groups: Registration.registered_without_group_for(@event.id, :user))
-                   end
+      @round = Round.find(params[:round_id])
+      @event = Event.find(@round.event_id)
+      set_groups_ungrouped!
     rescue ActiveRecord::RecordNotFound => e
       redirect_to groups_url, alert: "Could not find the event!"
     end
   end
 
-  def update_for_event
+  def update_for_round
     begin
+      round = Round.find(params[:round_id])
       flash = {}
       changed = 0
-      event = Event.find(params[:event_id])
-      # Note: event id is defined by the current event
       data =  params.require(:group)
                     .permit(registration_groups_attributes: [:id, :group_id, :registration_id])
       data[:registration_groups_attributes]&.reject { |index, eg| eg[:group_id].blank? }.each do |index, eg|
@@ -139,9 +162,9 @@ class GroupsController < ApplicationController
                         else
                           "No changes made."
                         end
-      redirect_to :groups_for_event, flash: flash
+      redirect_to :groups_for_round, flash: flash
     rescue ActiveRecord::RecordNotFound => e
-      redirect_to groups_url, alert: "Could not find the Event or Group!"
+      redirect_to groups_url, alert: "Could not find the Group!"
     end
   end
 
@@ -164,10 +187,22 @@ class GroupsController < ApplicationController
   def group_params
     # TODO: date and stuff!
     permitted_params = [:name, :starts_at, :ends_at]
-    # Make the event immutable if there are people in the group!
+    # Make the round immutable if there are people in the group!
     if @group.nil? or @group.registrations.empty?
-      permitted_params << :event_id
+      permitted_params << :round_id
     end
     params.require(:group).permit(permitted_params)
+  end
+
+  def set_groups_ungrouped!
+    @groups = Group.for_round(@round.id).includes(registration_groups: { registration: [:user] })
+    @ungrouped = if @round.r_id > 1
+                   # Can't now who is qualified... Groups for non-first rounds are here for schedule!
+                   Group.new(registration_groups: [])
+                 elsif @event.id == "333fm" || @event.id == "333mbf"
+                   Group.new(registration_groups: Registration.with_event(@event.id).map { |r| r.registration_groups.build })
+                 else
+                   Group.new(registration_groups: Registration.with_event_without_group_for(@round, :user).map { |r| r.registration_groups.build })
+                 end
   end
 end
