@@ -62,6 +62,11 @@ WCA_BASE_URL="http://localhost:1234"
 This is a summary of what I ran on an almost empty ubuntu image:
 ```sh
 sudo apt-get update -y
+sudo useradd -m -s /bin/bash wc2017
+sudo chown wc2017:wc2017 /home/wc2017/
+#+add the user to sudoers, then logout/login back with the correct user
+
+#as wc2017
 sudo apt-get install nginx nodejs
 sudo apt-get install postgresql postgresql-contrib libpq-dev
 sudo -u postgres createuser -s wc2017
