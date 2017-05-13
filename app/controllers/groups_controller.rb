@@ -102,20 +102,6 @@ class GroupsController < ApplicationController
     end
   end
 
-  def add_round
-    @event = Event.find(params[:event_id])
-    prev_round_id = Round.where(event_id: @event.id).last&.r_id || 0
-    round = Round.create!(event_id: @event.id, r_id: prev_round_id + 1)
-    redirect_to groups_for_round_path(round.id)
-  end
-
-  def remove_round
-    @event = Event.find(params[:event_id])
-    last_round = Round.where(event_id: @event.id).last
-    last_round&.destroy
-    redirect_to groups_for_event_path(@event.id)
-  end
-
   def show_for_registration
     # Shows groups for a registration id!
     @registration = Registration.find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)

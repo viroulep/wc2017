@@ -1,0 +1,19 @@
+<h1>Rounds</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rounds.each do |round| %>
+      <tr>
+        <td><%= round.name %></td>
+        <td><%= link_to 'Edit timeframe', edit_round_path(round) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
