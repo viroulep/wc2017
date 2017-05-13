@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 pull_latest() {
   git pull
 }
@@ -20,6 +22,8 @@ rebuild_rails() {
   restart_app
 }
 
+cd "$(dirname "$0")"
+. ~/.bash_profile
 source .env.production
 allowed_commands="pull_latest restart_app rebuild_rails"
 
