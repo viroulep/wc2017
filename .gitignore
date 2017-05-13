@@ -25,6 +25,8 @@ db/*.sqlite3
 # /config/database.yml
 
 # various artifacts
+public/assets
+pids
 **.war
 *.rbc
 *.sassc
@@ -78,6 +80,7 @@ pickle-email-*.html
 
 # Environment files that may contain sensitive data
 .env
+.env.production
 .powenv
 
 # tilde files are usually backup files from a text editor
