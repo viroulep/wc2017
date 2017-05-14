@@ -17,7 +17,7 @@ namespace :db do
     fail ArgumentError unless table_name
     cmd = nil
     with_config do |app, host, db, user|
-      cmd = "pg_dump --table #{table_name} --host #{host} --username #{user} --verbose --clean --no-owner --no-acl --format=c #{db} > #{Rails.root}/db/#{app}.#{table_name}.dump"
+      cmd = "pg_dump --table #{table_name} --host #{host} --username #{user} --verbose --data-only --no-owner --no-acl --format=c #{db} > #{Rails.root}/db/#{app}.#{table_name}.dump"
     end
     puts cmd
     exec cmd
@@ -29,7 +29,6 @@ namespace :db do
     with_config do |app, host, db, user|
       cmd = "pg_restore --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{Rails.root}/db/#{app}.dump"
     end
-    #Rake::Task["db:drop"].invoke
     Rake::Task["db:reset"].invoke
     puts cmd
     exec cmd
@@ -39,9 +38,10 @@ namespace :db do
   task restore_table: :environment do
     table_name = ENV['table']
     fail ArgumentError unless table_name
+    ActiveRecord::Base.connection.execute("TRUNCATE #{table_name}")
     cmd = nil
     with_config do |app, host, db, user|
-      cmd = "pg_restore --table #{table_name} --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{Rails.root}/db/#{app}.#{table_name}.dump"
+      cmd = "pg_restore --table #{table_name} --verbose --host #{host} --username #{user} --data-only --no-owner --no-acl --dbname #{db} #{Rails.root}/db/#{app}.#{table_name}.dump"
     end
     puts cmd
     exec cmd
