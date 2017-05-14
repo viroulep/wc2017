@@ -50,13 +50,8 @@ test:
   password: wca
   template: template0
 
-# FIXME: these values are dumb, and should be taken from secrets!
 production:
   adapter:  postgresql
-  host:     localhost
   encoding: unicode
-  database: wc2017_production
   pool:     5
-  username: wc2017
-  password: wca
   template: template0
