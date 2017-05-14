@@ -13,16 +13,26 @@
       <% end %>
       <%= render 'group_panel', title: "No groups", group: @ungrouped %>
     </div>
+    <script>
+$('#calendar').fullCalendar({
+  defaultDate: '<%= @round.start.strftime("%Y-%m-%d") %>',
+  minTime:'<%= (@round.start - 1.hours).strftime("%H:%M:%S") %>',
+  //minTime:'08:00:00',
+  //maxTime:'20:00:00',
+  maxTime:'<%= (@round.end + 1.hours).strftime("%H:%M:%S") %>',
+  defaultView: 'listDay',
+  //aspectRatio: '3',
+  slotDuration: '00:05:00',
+  events: '<%= groups_for_round_path(@round, format: :json) %>',
+});
+$('#groups-action-collapse').click(function (e) {
+  e.preventDefault();
+  $('.panel-heading').not('.collapsed').click();
+});
+$('#groups-action-expand').click(function (e) {
+  e.preventDefault();
+  $('.panel-heading.collapsed').click();
+});
+    </script>
   <% end %>
-  <script>
-    $('#calendar').fullCalendar({});
-    $('#groups-action-collapse').click(function (e) {
-      e.preventDefault();
-      $('.panel-heading').not('.collapsed').click();
-    });
-    $('#groups-action-expand').click(function (e) {
-      e.preventDefault();
-      $('.panel-heading.collapsed').click();
-    });
-  </script>
 <% end %>
