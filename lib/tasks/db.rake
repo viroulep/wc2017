@@ -41,7 +41,7 @@ namespace :db do
     fail ArgumentError unless table_name
     cmd = nil
     with_config do |app, host, db, user|
-      cmd = "pg_restore --table #{table_name} --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{Rails.root}/db/#{app}.dump"
+      cmd = "pg_restore --table #{table_name} --verbose --host #{host} --username #{user} --clean --no-owner --no-acl --dbname #{db} #{Rails.root}/db/#{app}.#{table_name}.dump"
     end
     puts cmd
     exec cmd
