@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170513192241) do
+ActiveRecord::Schema.define(version: 20170514084348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,8 +24,8 @@ ActiveRecord::Schema.define(version: 20170513192241) do
 
   create_table "groups", force: :cascade do |t|
     t.string   "name"
-    t.datetime "starts_at"
-    t.datetime "ends_at"
+    t.datetime "start"
+    t.datetime "end"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer  "round_id"
@@ -85,8 +85,8 @@ ActiveRecord::Schema.define(version: 20170513192241) do
   create_table "rounds", force: :cascade do |t|
     t.integer  "r_id"
     t.string   "event_id"
-    t.datetime "starts_at"
-    t.datetime "ends_at"
+    t.datetime "start"
+    t.datetime "end"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["event_id"], name: "index_rounds_on_event_id", using: :btree

@@ -51,7 +51,7 @@ class RoundsController < ApplicationController
     def round_params
       # event_id and r_id are immutable: they are set on round's creationg and
       # determined automatically
-      permitted_params = [:starts_at, :ends_at]
+      permitted_params = [:start, :end]
       params.require(:round).permit(permitted_params)
     end
 end

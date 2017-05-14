@@ -2,6 +2,7 @@ class GroupsController < ApplicationController
   before_action :authenticate_user!
   before_action :redirect_unless_admin!, except: [:show_for_registration]
   before_action :redirect_unless_can_view!, only: [:show_for_registration]
+  before_action :set_group, only: [:destroy, :edit, :update]
 
   SINGLE = %w(333bf 444bf 555bf 333fm 333mbf).freeze
 
@@ -82,18 +83,14 @@ class GroupsController < ApplicationController
   end
 
   def destroy
-    @group = Group.find(params[:id])
     @group.destroy
     redirect_to groups_for_round_path(@group.round_id)
   end
 
   def edit
-    @group = Group.find(params[:id])
   end
 
   def update
-    @group = Group.find(params[:id])
-
     if @group.update_attributes(group_params)
       flash[:success] = "Group successfully saved!"
       redirect_to edit_group_path(@group)
@@ -111,17 +108,20 @@ class GroupsController < ApplicationController
   def show_for_event
     @event = Event.find(params[:event_id])
     @round = Round.where(event_id: @event.id).order(r_id: :asc).first
-    set_groups_ungrouped! if @round
+    respond_to do |format|
+      format.html { set_groups_ungrouped! if @round }
+      format.json { set_groups! if @round }
+    end
+    @groups ||= []
     render :show_for_round
   end
 
   def show_for_round
-    begin
-      @round = Round.find(params[:round_id])
-      @event = Event.find(@round.event_id)
-      set_groups_ungrouped!
-    rescue ActiveRecord::RecordNotFound => e
-      redirect_to groups_url, alert: "Could not find the event!"
+    @round = Round.find(params[:round_id])
+    @event = Event.find(@round.event_id)
+    respond_to do |format|
+      format.html { set_groups_ungrouped! }
+      format.json { set_groups! }
     end
   end
 
@@ -155,6 +155,10 @@ class GroupsController < ApplicationController
   end
 
   private
+  def set_group
+    @group = Group.find(params[:id])
+  end
+
   def redirect_unless_can_view!
     # NOTE: this has the side effect that if someone provides a wrong registration id,
     # they end up on their groups
@@ -172,7 +176,7 @@ class GroupsController < ApplicationController
 
   def group_params
     # TODO: date and stuff!
-    permitted_params = [:name, :starts_at, :ends_at]
+    permitted_params = [:name, :start, :end]
     # Make the round immutable if there are people in the group!
     if @group.nil? or @group.registrations.empty?
       permitted_params << :round_id
@@ -180,8 +184,12 @@ class GroupsController < ApplicationController
     params.require(:group).permit(permitted_params)
   end
 
-  def set_groups_ungrouped!
+  def set_groups!
     @groups = Group.for_round(@round.id).includes(registration_groups: { registration: [:user] })
+  end
+
+  def set_groups_ungrouped!
+    set_groups!
     @ungrouped = if @round.r_id > 1
                    # Can't now who is qualified... Groups for non-first rounds are here for schedule!
                    Group.new(registration_groups: [])
