@@ -1,4 +1,6 @@
 class StaffTeamsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :redirect_unless_admin!
   before_action :set_staff_team, only: [:show, :edit, :update, :destroy]
   before_action :set_staff_available, only: [:edit, :update]
 

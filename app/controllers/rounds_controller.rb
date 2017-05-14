@@ -1,4 +1,6 @@
 class RoundsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :redirect_unless_admin!
   before_action :set_round, only: [:edit, :update]
   before_action :set_event, only: [:add, :remove]
 
