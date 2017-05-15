@@ -16,18 +16,24 @@
     </div>
     <div class="collapse navbar-collapse text-center">
       <div class="title-app navbar-text">WC2017 Registration Manager</div>
-      <%= render 'layouts/navigation_admin' %>
+      <% if current_user %>
+        <ul class="nav navbar-nav">
+          <% if current_user&.can_manage_competition?(managed_competition) %>
+            <%= render 'layouts/navigation_admin' %>
+          <% end %>
+          <li><%= link_to icon('calendar', 'Schedule'), schedule_path %></li>
+        </ul>
+      <% end %>
       <ul class="nav navbar-nav navbar-right">
         <% if current_user %>
-
           <li>
             <%= link_to icon('sign-out', 'Sign out'), signout_path %>
           </li>
         <% else %>
           <li>
             <div class="signin-elem">
-            <%= link_to 'Sign in with WCA', signin_path, class: "btn btn-block btn-Worldcubeassociation" %>
-          </div>
+              <%= link_to 'Sign in with WCA', signin_path, class: "btn btn-block btn-Worldcubeassociation" %>
+            </div>
           </li>
         <% end %>
       </ul>

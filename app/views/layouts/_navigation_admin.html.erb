@@ -1,14 +1,10 @@
-<% if current_user&.can_manage_competition?(managed_competition) %>
-  <ul class="nav navbar-nav">
-    <li class="dropdown">
-      <a href="" class="dropdown-toggle top-nav" data-toggle="dropdown" data-hover="dropdown">
-        <%= icon('cogs') %> Admin <span class="caret"></span>
-      </a>
-      <ul class="dropdown-menu" role="menu">
-        <li><%= link_to icon('bars', 'Registrations'), registrations_path %></li>
-        <li><%= link_to icon('group', 'Groups'), groups_path %></li>
-        <li><%= link_to icon('sitemap', 'Staff teams'), staff_teams_path %></li>
-      </ul>
-    </li>
+<li class="dropdown">
+  <a href="" class="dropdown-toggle top-nav" data-toggle="dropdown" data-hover="dropdown">
+    <%= icon('cogs') %> Admin <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li><%= link_to icon('bars', 'Registrations'), registrations_path %></li>
+    <li><%= link_to icon('group', 'Groups'), groups_path %></li>
+    <li><%= link_to icon('sitemap', 'Staff teams'), staff_teams_path %></li>
   </ul>
-<% end %>
+</li>
