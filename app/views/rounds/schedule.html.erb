@@ -43,7 +43,7 @@ $('#calendar').fullCalendar({
   slotDuration: '00:10:00',
   events: '<%= schedule_path(format: :json) %>',
   // FIXME: editable iff people are admin
-  editable: true,
+  editable: <%= current_user&.can_manage_competition?(managed_competition) %>,
   eventDrop: function(event, delta, revertFunc) {
     if (!confirm("Are you sure you want to drop the round there?")) {
       revertFunc();
