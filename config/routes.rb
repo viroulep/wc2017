@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :rounds, only: [:index, :edit, :update]
 
+  get '/schedule' => 'rounds#schedule'
+
   patch 'rounds/add/:event_id' => 'rounds#add', :as => :add_round
   patch 'rounds/remove/:event_id' => 'rounds#remove', :as => :remove_round
 

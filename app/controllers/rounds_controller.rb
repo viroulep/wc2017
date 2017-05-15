@@ -1,6 +1,6 @@
 class RoundsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!
+  before_action :redirect_unless_admin!, except: [:schedule]
   before_action :set_round, only: [:edit, :update]
   before_action :set_event, only: [:add, :remove]
 
@@ -15,10 +15,14 @@ class RoundsController < ApplicationController
 
   # PATCH/PUT /rounds/1
   def update
-    if @round.update(round_params)
-      redirect_to edit_round_path(@round), flash: { success: 'Round was successfully updated.' }
-    else
-      render :edit
+    respond_to do |format|
+      if @round.update(round_params)
+        format.html { redirect_to edit_round_path(@round), flash: { success: 'Round was successfully updated.' }}
+        format.json { render json: @round, status: :ok }
+      else
+        format.html { render :edit }
+        format.json { render json: @round.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -36,6 +40,9 @@ class RoundsController < ApplicationController
     redirect_to groups_for_event_path(@event.id)
   end
 
+  def schedule
+    @rounds = Round.all
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

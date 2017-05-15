@@ -90,12 +90,18 @@ class GroupsController < ApplicationController
   def edit
   end
 
+  def show
+  end
+
   def update
-    if @group.update_attributes(group_params)
-      flash[:success] = "Group successfully saved!"
-      redirect_to edit_group_path(@group)
-    else
-      render :edit
+    respond_to do |format|
+      if @group.update(group_params)
+        format.html { redirect_to edit_group_path(@group), flash: { success: 'Group was successfully updated.' }}
+        format.json { render json: @group, status: :ok }
+      else
+        format.html { render :edit }
+        format.json { render json: @group.errors, status: :unprocessable_entity }
+      end
     end
   end
 

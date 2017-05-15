@@ -1,0 +1,62 @@
+<h1>Schedule</h1>
+
+<div class="row">
+  <div id="calendar" class="col-xs-12"></div>
+</div>
+<script>
+var post_event = function(event, revertFunc) {
+  // FIXME: DRY this up by inserting a "event.class" and setting event_data[class] = {...}
+  round_data = { 
+    round: {
+      id: event.id,
+      start: event.start.format(),
+      end: event.end.format(),
+    }
+  };
+  $.ajax({
+    url: event.update_url,
+    data: round_data,
+    type: 'PATCH',
+  })
+  .fail(function() {
+    alert("Failed to update the event, reverting");
+    revertFunc();
+  });
+};
+$('#calendartoto').fullCalendar({
+});
+$('#calendar').fullCalendar({
+  // see: https://fullcalendar.io/docs/views/Custom_Views/
+  views: {
+    agendaFourDay: {
+      type: 'agenda',
+      duration: { days: 4 },
+      buttonText: '4 day'
+    }
+  },
+  defaultView: 'agendaFourDay',
+  // yep, hardcoded
+  defaultDate: '2017-07-13',
+  minTime:'08:00:00',
+  maxTime:'20:00:00',
+  //aspectRatio: '3',
+  slotDuration: '00:10:00',
+  events: '<%= schedule_path(format: :json) %>',
+  // FIXME: editable iff people are admin
+  editable: true,
+  eventDrop: function(event, delta, revertFunc) {
+    if (!confirm("Are you sure you want to drop the round there?")) {
+      revertFunc();
+    } else {
+      post_event(event, revertFunc);
+    }
+  },
+  eventResize: function(event, delta, revertFunc) {
+    if (!confirm("Are you sure you want to resize this round?")) {
+      revertFunc();
+    } else {
+      post_event(event, revertFunc);
+    }
+  },
+});
+</script>
