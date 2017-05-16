@@ -35,7 +35,7 @@
           <%= r.simple_fields_for :guests, r.object.guests.build do |g| %>
             <tr class="new-guest-line row first-delete" data-rowid="<%= registration.guests.size %>">
               <td class="col-xs-10">
-                <%= g.input_field :name, as: :guest, new_record: true %>
+                <%= g.input_field :name, as: :guest, new_record: true, placeholder: "Guest's full name" %>
               </td>
               <td class="col-xs-2 action-cell">
                 <%= link_to_with_tooltip(icon('minus-circle', class: "text-danger"), '#', 'Delete Guest', class: 'delete-link first-delete', onclick: "removeGuest($(this))") %>
