@@ -58,5 +58,17 @@ $('#calendar').fullCalendar({
       post_event(event, revertFunc);
     }
   },
+  eventClick: function(event, jsEvent, view) {
+    $.getScript(event.edit_url, function() {});
+  },
+  eventRender: function(event, element) {
+    if (event.hasOwnProperty('groups_url')) {
+      var newElem = $('<a href="'+event.groups_url+'">Show groups for this round</a>');
+      // We want to live the page, no need to show the modal!
+      newElem.click(function(clickEvent) { clickEvent.stopPropagation(); });
+      element.find('.fc-content').append("<br/>");
+      element.find('.fc-content').append(newElem);
+    }
+  },
 });
 </script>

@@ -19,9 +19,11 @@ class RoundsController < ApplicationController
       if @round.update(round_params)
         format.html { redirect_to edit_round_path(@round), flash: { success: 'Round was successfully updated.' }}
         format.json { render json: @round, status: :ok }
+        format.js
       else
         format.html { render :edit }
         format.json { render json: @round.errors, status: :unprocessable_entity }
+        format.js { render json: @round.errors, status: :unprocessable_entity }
       end
     end
   end

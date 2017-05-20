@@ -59,6 +59,15 @@ $('#calendar').fullCalendar({
       post_event(event, revertFunc);
     }
   },
+  eventRender: function(event, element) {
+    if (event.hasOwnProperty('edit_url')) {
+      // FIXME: maybe for this it actually makes sense to edit everything in the modal!
+      // Should be easier to quickly reassign staff teams/users...
+      var newElem = $('<a href="'+event.edit_url+'">Edit group</a>');
+      element.find('.fc-content').append("<br/>");
+      element.find('.fc-content').append(newElem);
+    }
+  },
 });
 $('#groups-action-collapse').click(function (e) {
   e.preventDefault();

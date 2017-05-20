@@ -1,0 +1,7 @@
+$('#calendar').fullCalendar('removeEvents', [<%= @round.id %>]);
+$('#calendar').fullCalendar(
+  'renderEvent',
+  $.parseJSON("<%= j render('round.json.jbuilder', round: @round).html_safe %>"),
+  true
+);
+$('.modal').modal('hide');

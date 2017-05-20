@@ -1,9 +1,11 @@
-<%= simple_form_for(round) do |f| %>
+<% remote ||= false %>
+<% format = remote ? "js" : "html" %>
+<%= simple_form_for @round, remote: remote, format: format do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
     <div class='row datetimerange'>
-      <% default_input_value = round.start ? {} : { value: "13/07/2017 10:00" } %>
+      <% default_input_value = @round.start ? {} : { value: "13/07/2017 10:00" } %>
       <%= f.input :start, as: :datetime_picker, wrapper: :ranged_datetime, input_html: default_input_value %>
       <%= f.input :end, as: :datetime_picker, wrapper: :ranged_datetime, input_html: default_input_value %>
     </div>

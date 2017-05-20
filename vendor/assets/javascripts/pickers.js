@@ -1,4 +1,4 @@
-$(document).on('ready page:change', function() {
+initPickers = function() {
   $('.datetimepicker').datetimepicker({
     // put here your custom picker options, that should be applied for all pickers
     icons: {
@@ -40,4 +40,5 @@ $(document).on('ready page:change', function() {
         range1.data("DateTimePicker").maxDate(false);
     });
   })
-});
+}
+$(document).on('ready page:change', initPickers);
