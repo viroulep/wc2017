@@ -1,0 +1,19 @@
+<%= simple_form_for(@schedule_event, remote: true) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :name %>
+    <%= f.input :start, as: :datetime_picker, wrapper: :ranged_datetime %>
+    <%= f.input :end, as: :datetime_picker, wrapper: :ranged_datetime %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+    <%= link_to 'Delete', 
+                @schedule_event, 
+                method: :delete, 
+                class: 'btn btn-danger', 
+                data: { confirm: 'Are you sure?' }, 
+                remote: true unless @schedule_event.new_record? %>
+  </div>
+<% end %>

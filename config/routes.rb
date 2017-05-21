@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :schedule_events, except: [:show]
   resources :rounds, only: [:index, :edit, :update]
 
   get '/schedule' => 'rounds#schedule'

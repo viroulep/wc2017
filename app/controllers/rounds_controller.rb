@@ -44,6 +44,7 @@ class RoundsController < ApplicationController
 
   def schedule
     @rounds = Round.all
+    @schedule_events = ScheduleEvent.all
   end
 
   private

@@ -1,4 +1,5 @@
 json.extract! round, :id, :start, :end
+json.class "round"
 json.title round.name
 bg, fg = round_colors(round)
 json.color bg

@@ -45,6 +45,7 @@ $('#calendar').fullCalendar({
   slotDuration: '00:05:00',
   events: '<%= groups_for_round_path(@round, format: :json) %>',
   editable: true,
+  timeFormat: 'H(:mm)',
   eventDrop: function(event, delta, revertFunc) {
     if (!confirm("Are you sure you want to drop the group there?")) {
       revertFunc();
