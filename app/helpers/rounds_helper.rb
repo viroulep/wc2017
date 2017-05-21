@@ -1,21 +1,21 @@
 module RoundsHelper
-  def round_color(round)
+  def round_colors(round)
     # Random notes: staff color #960505
     total_rounds = Round.where(event_id: round.event_id).count
     if (total_rounds - round.r_id) == 0
-      return "#348c1c"
+      return ["#009e60", "#000"]
     end
 
     case round.r_id
     when 1
-      "#5b1c8c"
+      ["#ffd500", "#000"]
     when 2
-      "#1c1c8c"
+      ["#ff5800", "#000"]
     when 3
-      "#1c8c63"
+      ["#c41e3a", "#000"]
     else
-      # Fullcalendar's default / Lunch break and stuff
-      "#3a87ad"
+      # Lunch break and stuff
+      ["#fff", "#000"]
     end
   end
 end
