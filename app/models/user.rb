@@ -27,7 +27,7 @@ class User < ApplicationRecord
   end
 
   def avatar
-    wca_base_url + avatar_thumb_url
+    avatar_thumb_url
   end
 
   def self.process_json(json_user)
