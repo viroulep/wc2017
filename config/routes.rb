@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get '/my_registration' => 'registrations#edit'
   get '/my_registration/groups' => 'groups#show_for_registration'
 
+  get '/import_registrations' => 'registrations#import'
   patch '/import_registrations' => 'registrations#import_all'
 
   root to: 'visitors#index'

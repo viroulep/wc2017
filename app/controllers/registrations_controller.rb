@@ -3,14 +3,26 @@ class RegistrationsController < ApplicationController
   before_action :redirect_unless_admin!, except: [:edit, :update, :confirm]
   before_action :redirect_unless_can_edit!
 
+  WCIF_FILE_URL = "#{Rails.root}/wcif.json"
+
   # FIXME: somehow rename this to "import_wcif", and move it to some dedicated controller
   def import_all
-    begin
-      registrations_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}/wcif"), { Authorization: "Bearer #{session[:access_token]}"})
-    rescue RestClient::ExceptionWithResponse => err
-      return redirect_to(registrations_url, alert: "Failed to fetch WCA data: #{err.message}")
+    source = params.require(:source)
+    wcif_string_content = ""
+    case source
+    when "wca"
+      begin
+        registrations_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}/wcif"), { Authorization: "Bearer #{session[:access_token]}"})
+        wcif_string_content = registrations_response.body
+      rescue RestClient::ExceptionWithResponse => err
+        return redirect_to(registrations_url, alert: "Failed to fetch WCA data: #{err.message}")
+      end
+    when "file"
+      wcif_string_content = File.read(WCIF_FILE_URL)
+    else
+      raise ArgumentError.new("Only 'wca' and 'file' are supported.")
     end
-    wcif = JSON.parse(registrations_response.body)
+    wcif = JSON.parse(wcif_string_content)
     all_users = []
     all_registrations = []
     all_pb = []
@@ -35,8 +47,10 @@ class RegistrationsController < ApplicationController
       User.delete_all
       Registration.delete_all
       PersonalBest.delete_all
-      User.import(all_users, recursive: true)
-      Registration.import(all_registrations)
+      ActiveRecord::Base.logger.silence do
+        User.import(all_users, recursive: true)
+        Registration.import(all_registrations)
+      end
 
       Registration.where("comments ILIKE :search", search: "%staff%").each do |r|
         r.details.staff = true
@@ -44,7 +58,10 @@ class RegistrationsController < ApplicationController
       end
     end
 
-    redirect_to(registrations_url, notice: "Imported #{all_registrations.size} registrations and users successfully!")
+    redirect_to(registrations_url, flash: { success: "Imported #{all_registrations.size} registrations and users successfully!" })
+  end
+
+  def import
   end
 
   def psych_sheet

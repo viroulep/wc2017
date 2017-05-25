@@ -2,7 +2,7 @@
   <div class="row">
     <h3>Registrations</h3>
     <p>Welcome <%= render current_user %>!</p>
-    <p><%= link_to icon('upload', "Import registrations"), import_registrations_path, method: 'patch' %></p>
+    <p>Want to re-import registrations? Go <%= link_to "here" , import_registrations_path %>! You'll have to choose where to import the registrations from.</p>
     <h3>Accepted registrations (<%= @registrations.accepted.size %>)</h3>
     <% # TODO: DRY this, add bootstrap-table for easy filtering %>
     <table class="table table-hover"
