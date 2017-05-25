@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
   before_action :authenticate_user!
   before_action :redirect_unless_admin!, except: [:show_for_registration]
   before_action :redirect_unless_can_view!, only: [:show_for_registration]
-  before_action :set_group, only: [:destroy, :edit, :update]
+  before_action :set_group, only: [:destroy, :edit, :update, :update_staff]
 
   SINGLE = %w(333bf 444bf 555bf 333fm 333mbf).freeze
 
@@ -87,7 +87,27 @@ class GroupsController < ApplicationController
     redirect_to groups_for_round_path(@group.round_id)
   end
 
+  def update_staff
+    case params[:staff_action]
+    when "teams-add-selected"
+      return add_selected_staff_teams_to_group
+    when "teams-remove-selected"
+      return remove_selected_staff_teams_from_group
+    when "registrations-remove-selected"
+      return remove_selected_staff_people_from_group
+    when "registrations-add-selected"
+      return add_selected_staff_people_to_group
+    else
+      raise "Unrecognized action #{params[:registrations_action]}"
+    end
+  end
+
   def edit
+    existing_team_ids = @group.staff_teams_groups.map(&:staff_team_id)
+    @team_available = StaffTeam.all.reject { |s| existing_team_ids.include?(s.id) }
+    existing_ids = @group.staff_registrations_groups.map(&:registration_id)
+    # FIXME: we may need to have everyone in there!
+    @staff_available = Registration.staff_available.includes(:user).reject { |r| existing_ids.include?(r.id) }
   end
 
   def show
@@ -156,13 +176,13 @@ class GroupsController < ApplicationController
                         end
       redirect_to :groups_for_round, flash: flash
     rescue ActiveRecord::RecordNotFound => e
-      redirect_to groups_url, alert: "Could not find the Group!"
+      redirect_to groups_url, alert: "Could not find the Round!"
     end
   end
 
   private
   def set_group
-    @group = Group.find(params[:id])
+    @group = Group.includes({staff_teams_groups: [:staff_team], staff_registrations_groups: [:registration]}).find(params[:group_id])
   end
 
   def redirect_unless_can_view!
@@ -204,5 +224,47 @@ class GroupsController < ApplicationController
                  else
                    Group.new(registration_groups: Registration.with_event_without_group_for(@round, :user).map { |r| r.registration_groups.build })
                  end
+  end
+
+  def selected_teams_id
+    params.require(:selected_teams).map { |r| r.split('-')[1].to_i }
+  end
+
+  def selected_registrations_ids
+    params.require(:selected_registrations).map { |r| r.split('-')[1].to_i }
+  end
+
+  def add_selected_staff_teams_to_group
+    team_ids = selected_teams_id
+    existing_ids = @group.staff_teams_groups.map(&:staff_team_id)
+    team_ids.reject { |id| existing_ids.include?(id) }.each do |id|
+      @group.staff_teams_groups.build(staff_team: StaffTeam.find(id))
+    end
+    if @group.save
+      flash[:success] = "Successfully added teams to group"
+    else
+      flash[:danger] = "Couldn't save group, maybe you try to add the same person twice?"
+    end
+    redirect_to edit_group_path(@group)
+  end
+
+  def add_selected_staff_people_to_group
+    registration_ids = selected_registrations_ids
+    existing_ids = @group.staff_registrations_groups.map(&:registration_id)
+    registration_ids.reject { |id| existing_ids.include?(id) }.each do |id|
+      @group.staff_registrations_groups.build(registration: Registration.find(id))
+    end
+    if @group.save
+      flash[:success] = "Successfully added people to group"
+    else
+      flash[:danger] = "Couldn't save group, maybe you try to add the same person twice?"
+    end
+    redirect_to edit_group_path(@group)
+  end
+
+  def remove_selected_staff_people_from_group
+    registration_ids = selected_registrations_ids
+    @group.staff_registrations_groups.where(registration_id: registration_ids).map(&:destroy)
+    redirect_to edit_group_path(@group)
   end
 end

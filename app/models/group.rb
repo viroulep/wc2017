@@ -3,6 +3,12 @@ class Group < ApplicationRecord
   has_many :registrations, through: :registration_groups
   has_many :users, through: :registrations
 
+  has_many :staff_teams_groups, inverse_of: :group, dependent: :delete_all
+  has_many :staff_registrations_groups, inverse_of: :group, dependent: :delete_all
+
+  has_many :staff_teams, through: :staff_teams_groups
+  has_many :staff_registrations, through: :staff_registrations_groups
+
   belongs_to :round
 
   delegate :event_id, to: :round
@@ -11,6 +17,8 @@ class Group < ApplicationRecord
   validates_presence_of :round_id, allow_blank: false
 
   accepts_nested_attributes_for :registration_groups
+  accepts_nested_attributes_for :staff_teams_groups
+  accepts_nested_attributes_for :staff_registrations_groups
 
   scope :for_round, -> (id) { where(round_id: id) }
 

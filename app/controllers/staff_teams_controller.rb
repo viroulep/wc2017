@@ -99,5 +99,4 @@ class StaffTeamsController < ApplicationController
     @staff_team.staff_team_members.where(registration_id: registration_ids).map(&:destroy)
     redirect_to edit_staff_team_path(@staff_team)
   end
-
 end

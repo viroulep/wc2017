@@ -10,6 +10,8 @@ class Registration < ApplicationRecord
   has_many :personal_bests, through: :user
   has_one :registration_detail, inverse_of: :registration
 
+  has_many :staff_registrations_groups, inverse_of: :registration
+
   accepts_nested_attributes_for :guests, :registration_detail
 
   delegate :name, to: :user

@@ -36,7 +36,192 @@
       </div>
     </div>
   <% else %>
+
     <%= f.button :submit, class: "btn-primary", value: "Save group details" %>
     <%= link_to icon('trash'), group_path(group.id), method: "delete", class: "btn btn-danger" %>
+
+  <% end %>
+<% end %>
+
+<% unless create %>
+  <%= simple_form_for group, wrapper: :horizontal_form, url: group_staff_path(group) do |f| %>
+    <hr/>
+    <div class="col-xs-6">
+      <h3>Staff teams for the group</h3>
+      <table data-toggle="table"
+             data-click-to-select="true"
+             data-select-item-name="selected_teams[]"
+             class="table table-hover"
+             id="table-staff">
+        <thead>
+          <tr>
+            <th data-checkbox="true" data-field="state"></th>
+            <th data-field="name">
+              Team name
+            </th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <td colspan="2">
+              <div class="pull-left" id="delete-button-container" style="display: none;">
+                <button type="submit" class="btn btn-danger" name="staff_action" value="teams-remove-selected">
+                  <%= icon 'trash', "Remove selected" %>
+                </button>
+              </div>
+          </tr>
+        </tfoot>
+        <tbody>
+          <%= f.simple_fields_for :staff_teams_groups do |stm|%>
+            <tr id="team-<%= "#{stm.object.staff_team_id}" %>">
+              <td></td>
+              <td>
+                <%= stm.object.name %>
+                <%= stm.hidden_field :id %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <hr/>
+      <h3>Staff teams available</h3>
+      <table data-toggle="table"
+             data-click-to-select="true"
+             data-search="true"
+             data-select-item-name="selected_teams[]"
+             class="table table-hover"
+             id="table-staff-available">
+        <thead>
+          <tr>
+            <th data-checkbox="true" data-field="state"></th>
+            <th data-field="name">
+              Team available
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @team_available.each do |sa|%>
+            <tr id="team-<%= "#{sa.id}" %>">
+              <td></td>
+              <td>
+                <%= sa.name %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div id="button-add-to-team" class="pull-left search" style="display: none;">
+        <button type="submit" class="btn btn-success" name="staff_action" value="teams-add-selected">
+          <%= icon 'check', "Add selected teams" %>
+        </button>
+      </div>
+    </div>
+    <div class="col-xs-6">
+      <h3>Individual staff for the group</h3>
+      <table data-toggle="table"
+             data-click-to-select="true"
+             data-select-item-name="selected_registrations[]"
+             class="table table-hover"
+             id="table-staff-registrations">
+        <thead>
+          <tr>
+            <th data-checkbox="true" data-field="state"></th>
+            <th data-field="name">
+              Name
+            </th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <td colspan="2">
+              <div class="pull-left" id="delete-button-container2" style="display: none;">
+                <button type="submit" class="btn btn-danger" name="staff_action" value="registrations-remove-selected">
+                  <%= icon 'trash', "Remove selected" %>
+                </button>
+              </div>
+          </tr>
+        </tfoot>
+        <tbody>
+          <%= f.simple_fields_for :staff_registrations_groups do |stm|%>
+            <tr id="registration-<%= "#{stm.object.registration_id}" %>">
+              <td></td>
+              <td>
+                <%= stm.object.name %>
+                <%= stm.hidden_field :id %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <hr/>
+      <h3>People available</h3>
+      <table data-toggle="table"
+             data-click-to-select="true"
+             data-search="true"
+             data-select-item-name="selected_registrations[]"
+             class="table table-hover"
+             id="table-staff-registrations-available">
+        <thead>
+          <tr>
+            <th data-checkbox="true" data-field="state"></th>
+            <th data-field="name">
+              Name
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @staff_available.each do |sa|%>
+            <tr id="registration-<%= "#{sa.id}" %>">
+              <td></td>
+              <td>
+                <%= sa.name %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div id="button-add-to-team2" class="pull-left search" style="display: none;">
+        <button type="submit" class="btn btn-success" name="staff_action" value="registrations-add-selected">
+          <%= icon 'check', "Add selected people" %>
+        </button>
+      </div>
+    </div>
+<script>
+
+// FIXME: this whole thing is dirty and has copy paste. On the long term it should be cleaned up
+var showHideTeams = function(e) {
+  var staffTable = $("#table-staff");
+  $("#delete-button-container").toggle(staffTable.bootstrapTable('getAllSelections').length > 0);
+};
+
+var showHidePeople = function(e) {
+  var staffTable = $("#table-staff-registrations");
+  $("#delete-button-container2").toggle(staffTable.bootstrapTable('getAllSelections').length > 0);
+};
+
+$(document).ready(function () {
+  // see: http://bootstrap-table.wenzhixin.net.cn/documentation/
+  $('#table-staff').on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', showHideTeams);
+  $('#table-staff-registrations').on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', showHidePeople);
+
+  var initCheckboxesValues = function($table) {
+    $table.find('tr td input[type="checkbox"]').each(function(index) {
+      $(this).val($(this).parents('tr').attr('id'));
+    });
+  };
+  initCheckboxesValues($('#table-staff-available'));
+  initCheckboxesValues($('#table-staff'));
+  initCheckboxesValues($('#table-staff-registrations-available'));
+  initCheckboxesValues($('#table-staff-registrations'));
+  var buttonAdd = $('#button-add-to-team');
+  buttonAdd.insertBefore($('#table-staff-available').parent().parent().parent().find('.search'));
+  buttonAdd.show();
+  buttonAdd = $('#button-add-to-team2');
+  buttonAdd.insertBefore($('#table-staff-registrations-available').parent().parent().parent().find('.search'));
+  buttonAdd.show();
+});
+</script>
   <% end %>
 <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170521181000) do
+ActiveRecord::Schema.define(version: 20170525113618) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,6 +100,13 @@ ActiveRecord::Schema.define(version: 20170521181000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "staff_registrations_groups", force: :cascade do |t|
+    t.integer "registration_id", null: false
+    t.integer "group_id",        null: false
+    t.index ["group_id"], name: "index_staff_registrations_groups_on_group_id", using: :btree
+    t.index ["registration_id"], name: "index_staff_registrations_groups_on_registration_id", using: :btree
+  end
+
   create_table "staff_team_members", force: :cascade do |t|
     t.integer  "staff_team_id",                   null: false
     t.integer  "registration_id",                 null: false
@@ -114,6 +121,13 @@ ActiveRecord::Schema.define(version: 20170521181000) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "staff_teams_groups", force: :cascade do |t|
+    t.integer "staff_team_id", null: false
+    t.integer "group_id",      null: false
+    t.index ["group_id"], name: "index_staff_teams_groups_on_group_id", using: :btree
+    t.index ["staff_team_id"], name: "index_staff_teams_groups_on_staff_team_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
