@@ -4,6 +4,8 @@
     <p>Welcome <%= render current_user %>!</p>
     <p>Want to re-import registrations? Go <%= link_to "here" , import_registrations_path %>! You'll have to choose where to import the registrations from.</p>
     <h3>Accepted registrations (<%= @registrations.accepted.size %>)</h3>
+    <p><%= @registrations.accepted.confirmed.count %> people confirmed their registration, <%= @registrations.accepted.cancelled.count %> people cancelled their registration.<p>
+    <p>Please remember to delete cancelled people on the WCA website, accept the next one on the waiting list, and re-import data.</p>
     <% # TODO: DRY this, add bootstrap-table for easy filtering %>
     <table class="table table-hover"
            data-toggle="table"
@@ -12,6 +14,7 @@
       <thead>
         <tr>
           <th>ID</th>
+          <th>Confirmation status</th>
           <th>Name</th>
           <th>Events</th>
         </tr>
@@ -24,6 +27,15 @@
               <%= link_to registration.id, edit_registration_path(registration) %>
               <%= "*" if registration.details.staff %>
             </td>
+            <td>
+              <% if registration.details.confirmed_at %>
+                <span class="text-success">confirmed</span>
+              <% elsif registration.details.cancelled_at %>
+                <span class="text-danger">cancelled</span>
+              <% else %>
+                <span class="text-warning">pending</span>
+              <% end %>
+            </td>
             <td><%= registration.user.name %></td>
             <td><%= render "shared/event_id_collection", event_ids: registration.events, summary: summary %></td>
           </tr>
@@ -31,7 +43,7 @@
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="3">
+          <td colspan="4">
             <% # FIXME: pff, that's really ugly %>
             <% summary.each do |e, n| %>
               <%= render "shared/event", event: Event.find(e) %>: <%= n %> |

@@ -24,6 +24,9 @@ class Registration < ApplicationRecord
 
   scope :pending, -> { where(status: 'pending') }
 
+  scope :confirmed, -> { includes(:registration_detail).where.not(registration_details: { confirmed_at: nil }) }
+  scope :cancelled, -> { includes(:registration_detail).where.not(registration_details: { cancelled_at: nil }) }
+
   scope :staff_available, -> { joins(:registration_detail).where('registration_details.staff': true) }
 
   scope :without_group_for, -> (round_id) { where.not(id: Group.for_round(round_id).joins(:registrations).select(:'registrations.id')) }

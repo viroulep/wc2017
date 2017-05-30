@@ -1,4 +1,6 @@
-<% panel_class, status = if registration.status == "accepted"
+<% panel_class, status = if registration.details.cancelled_at
+                           ["danger", "Cancelled"]
+                         elsif registration.status == "accepted"
                            ["success", "Accepted"]
                          elsif registration.status == "pending"
                            ["warning", "Waiting List"]
@@ -43,8 +45,10 @@
       <div class="col-sm-10">
         <% if registration.details.confirmed_at %>
           <span class="text-success bg-success">Confirmed!</span>
+        <% elsif registration.details.cancelled_at %>
+          <span class="text-danger bg-danger">Registration cancelled!</span>
         <% else %>
-          <span class="text-danger bg-danger">Pending confirmation</span>
+          <span class="text-danger bg-warning">Pending confirmation</span>
         <% end %>
       </div>
     </div>

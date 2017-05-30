@@ -3,7 +3,16 @@
     <h3 class="panel-title">Registration confirmation</h3>
   </div>
   <div class="panel-body">
-    <p>Please confirm you will be attending by clicking the button below:</p>
-    <%= button_to "Confirm your registration!", confirm_path, method: :patch, class: "btn btn-success"%>
+    <p>Please confirm or cancel your registration below:</p>
+    <div class="btn-group inline">
+      <%= simple_form_for :confirm, url: confirm_path do |f| %>
+        <%= button_tag(type: 'submit', name: "registration-action", value: "confirm", class: "btn btn-success confirm-btn", data: { confirm: "Are you sure you want to confirm your registration?" }) do %>
+          I'm definitely coming
+        <% end %>
+        <%= button_tag(type: 'submit', name: "registration-action", value: "cancel", class: "btn btn-danger", data: { confirm: "You are about to cancel your registration, are you sure?" }) do %>
+          I'm not coming anymore
+        <% end %>
+      <% end %>
+    </div>
   </div>
 </div>

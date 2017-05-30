@@ -92,12 +92,26 @@ class RegistrationsController < ApplicationController
     else
       if @registration.details&.confirmed_at
         flash[:warning] = "Your registration is already confirmed!"
+      elsif @registration.details&.cancelled_at
+        flash[:warning] = "Your registration is already cancelled!"
       else
-        details = @registration.details
-        details.confirmed_at = Time.now
-        # Skip validation because we're fine with a nil tshirt size for now
-        @registration.save!(validate: false)
-        flash[:success] = "Successfully saved details"
+        action = params.require(:'registration-action')
+        case action
+        when "confirm"
+          details = @registration.details
+          details.confirmed_at = Time.now
+          # Skip validation because we're fine with a nil tshirt size for now
+          @registration.save!(validate: false)
+          flash[:success] = "Successfully confirmed registration"
+        when "cancel"
+          details = @registration.details
+          details.cancelled_at = Time.now
+          # Skip validation because we're fine with a nil tshirt size for now
+          @registration.save!(validate: false)
+          flash[:success] = "Successfully cancelled registration"
+        else
+          flash[:danger] = "Unrecognized action"
+        end
       end
     end
     redirect_to my_registration_path, flash: flash

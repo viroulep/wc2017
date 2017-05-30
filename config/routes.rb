@@ -26,7 +26,7 @@ Rails.application.routes.draw do
 
   patch 'groups/generate/:round_id' => 'groups#autogenerate_group', :as => :generate_groups
 
-  patch '/confirm' => 'registrations#confirm'
+  post '/confirm' => 'registrations#confirm'
   get '/my_registration' => 'registrations#edit'
   get '/my_registration/groups' => 'groups#show_for_registration'
 
