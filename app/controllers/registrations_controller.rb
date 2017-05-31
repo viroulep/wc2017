@@ -141,9 +141,9 @@ class RegistrationsController < ApplicationController
     (@registration.guests - updated_guests).map(&:mark_for_destruction)
 
     # Taking care of tshirt size
-    details = params.require(:registration).permit(:registration_detail_attributes => [:tshirt, :staff])
+    details = params.require(:registration).permit(:registration_detail_attributes => [:staff])
     updated_details = @registration.details
-    updated_details.tshirt = details[:registration_detail_attributes][:tshirt]
+    # updated_details.tshirt = details[:registration_detail_attributes][:tshirt]
 
     # Take care of the staff boolean
     if current_user.can_manage_competition?(managed_competition)

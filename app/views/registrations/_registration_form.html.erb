@@ -61,7 +61,8 @@
             <% if current_user.can_manage_competition?(managed_competition) %>
               <%= d.input :staff %>
             <% end %>
-            <%= d.input :tshirt, as: :radio_buttons, collection: RegistrationDetail::TSHIRT_SIZES, label: "Your t-shirt size: ", item_wrapper_class: 'tshirt-radio' %>
+            <%# TODO: for some later version... %>
+            <%# d.input :tshirt, as: :radio_buttons, collection: RegistrationDetail::TSHIRT_SIZES, label: "Your t-shirt size: ", item_wrapper_class: 'tshirt-radio' %>
           <% end %>
           More to come later ;)
         </div>
