@@ -61,6 +61,12 @@ class RegistrationsController < ApplicationController
     redirect_to(registrations_url, flash: { success: "Imported #{all_registrations.size} registrations and users successfully!" })
   end
 
+  def mails
+    @registrations = {}
+    @registrations[:fr] = Registration.accepted.includes(:user).where(users: { country_iso2: "FR" })
+    @registrations[:en] = Registration.accepted.includes(:user).where.not(users: { country_iso2: "FR" })
+  end
+
   def import
   end
 

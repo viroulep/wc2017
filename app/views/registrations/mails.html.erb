@@ -1,0 +1,10 @@
+<% @registrations.each do |language, registrations| %>
+  <h3><%= language %></h3>
+  <% registrations.in_groups_of(150) do |group| %>
+    <p>
+    <% group.compact.each do |r| %>
+      <%= r.user.email %>,
+    <% end %>
+    </p>
+  <% end %>
+<% end %>

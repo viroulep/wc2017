@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   get 'registrations/psy/:event_id' => 'registrations#psych_sheet'
 
+  get 'mails' => 'registrations#mails'
+
   resources :groups, except: [:show], param: :group_id
   resources :groups, only: [] do
     patch 'staff' => 'groups#update_staff'
