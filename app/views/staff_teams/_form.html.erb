@@ -1,5 +1,6 @@
 <div class="col-xs-12 col-md-6">
   <%= simple_form_for(@staff_team) do |f| %>
+    <input id="hidden_selection" name="selected_registrations" type="hidden" value=""/>
     <%= f.error_notification %>
 
     <div class="form-inputs">
@@ -8,7 +9,6 @@
     <%#FIXME: DRY this up%>
     <table data-toggle="table"
            data-click-to-select="true"
-           data-select-item-name="selected_registrations[]"
            class="table table-hover"
            id="table-staff">
       <thead>
@@ -62,7 +62,6 @@
       <table data-toggle="table"
              data-click-to-select="true"
              data-search="true"
-             data-select-item-name="selected_registrations[]"
              class="table table-hover"
              id="table-staff-available">
         <thead>
@@ -119,4 +118,8 @@ $(document).ready(function () {
   buttonAdd.insertBefore($('#table-staff-available').parent().parent().parent().find('.search'));
   buttonAdd.show();
 });
+
+setupSelectTable("#table-staff-available", "#button-add-to-team", "#hidden_selection");
+setupSelectTable("#table-staff", "#delete-button-container", "#hidden_selection");
+
 </script>

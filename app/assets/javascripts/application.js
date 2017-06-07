@@ -22,3 +22,25 @@
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
+
+// Helper function for select + filter tables
+// Submitting with no filter works well, but filtering messes up the 'selected_registrations[]' array.
+// Here we fill a hidden input with actual selected rows before sending the form
+function setupSelectTable(tableId, buttonContainerId, fieldId) {
+  var table = $(tableId);
+  var button = $(buttonContainerId).find("button");
+  var input = $(fieldId);
+  console.log(table);
+  console.log(button);
+  console.log(input);
+  button.click(function(e) {
+    var selected = table.bootstrapTable('getAllSelections');
+    var selected_id = [];
+    $.each(selected, function(arrayId, elem) {
+      selected_id.push(elem._id);
+    });
+    console.log(selected_id);
+    input.val(selected_id.join(","));
+  });
+}
+

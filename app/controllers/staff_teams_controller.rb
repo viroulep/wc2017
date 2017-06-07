@@ -77,7 +77,7 @@ class StaffTeamsController < ApplicationController
   end
 
   def selected_registrations_ids
-    params.require(:selected_registrations).map { |r| r.split('-')[1].to_i }
+    params.require(:selected_registrations).split(',').map { |r| r.split('-')[1].to_i }
   end
 
   def add_selected_to_team

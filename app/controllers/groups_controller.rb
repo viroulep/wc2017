@@ -227,11 +227,11 @@ class GroupsController < ApplicationController
   end
 
   def selected_teams_id
-    params.require(:selected_teams).map { |r| r.split('-')[1].to_i }
+    params.require(:selected_teams).split(',').map { |r| r.split('-')[1].to_i }
   end
 
   def selected_registrations_ids
-    params.require(:selected_registrations).map { |r| r.split('-')[1].to_i }
+    params.require(:selected_registrations).split(',').map { |r| r.split('-')[1].to_i }
   end
 
   def add_selected_staff_teams_to_group
@@ -265,6 +265,12 @@ class GroupsController < ApplicationController
   def remove_selected_staff_people_from_group
     registration_ids = selected_registrations_ids
     @group.staff_registrations_groups.where(registration_id: registration_ids).map(&:destroy)
+    redirect_to edit_group_path(@group)
+  end
+
+  def remove_selected_staff_teams_from_group
+    team_ids = selected_teams_id
+    @group.staff_teams_groups.where(staff_team_id: team_ids).map(&:destroy)
     redirect_to edit_group_path(@group)
   end
 end

@@ -46,11 +46,12 @@
 <% unless create %>
   <%= simple_form_for group, wrapper: :horizontal_form, url: group_staff_path(group) do |f| %>
     <hr/>
+    <input id="hidden_teams_selection" name="selected_teams" type="hidden" value=""/>
+    <input id="hidden_registrations_selection" name="selected_registrations" type="hidden" value=""/>
     <div class="col-xs-6">
       <h3>Staff teams for the group</h3>
       <table data-toggle="table"
              data-click-to-select="true"
-             data-select-item-name="selected_teams[]"
              class="table table-hover"
              id="table-staff">
         <thead>
@@ -89,7 +90,6 @@
       <table data-toggle="table"
              data-click-to-select="true"
              data-search="true"
-             data-select-item-name="selected_teams[]"
              class="table table-hover"
              id="table-staff-available">
         <thead>
@@ -121,7 +121,6 @@
       <h3>Individual staff for the group</h3>
       <table data-toggle="table"
              data-click-to-select="true"
-             data-select-item-name="selected_registrations[]"
              class="table table-hover"
              id="table-staff-registrations">
         <thead>
@@ -160,7 +159,6 @@
       <table data-toggle="table"
              data-click-to-select="true"
              data-search="true"
-             data-select-item-name="selected_registrations[]"
              class="table table-hover"
              id="table-staff-registrations-available">
         <thead>
@@ -222,6 +220,11 @@ $(document).ready(function () {
   buttonAdd.insertBefore($('#table-staff-registrations-available').parent().parent().parent().find('.search'));
   buttonAdd.show();
 });
+
+setupSelectTable("#table-staff-available", "#button-add-to-team", "#hidden_teams_selection");
+setupSelectTable("#table-staff", "#delete-button-container", "#hidden_teams_selection");
+setupSelectTable("#table-staff-registrations-available", "#button-add-to-team2", "#hidden_registrations_selection");
+setupSelectTable("#table-staff-registrations", "#delete-button-container2", "#hidden_registrations_selection");
 </script>
   <% end %>
 <% end %>
