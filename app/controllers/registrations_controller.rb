@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!, except: [:edit, :update, :confirm]
+  before_action :redirect_unless_admin!, except: [:edit, :update, :confirm, :schedule]
   before_action :redirect_unless_can_edit!
   before_action :redirect_unless_can_view!, only: [:schedule]
 
@@ -197,11 +197,6 @@ class RegistrationsController < ApplicationController
     # NOTE: this has the side effect that if someone provides a wrong registration id,
     # they end up on their groups
     registration = Registration.find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
-    unless current_user.can_edit_registration?(managed_competition, registration)
-      flash[:danger] = "Cannot view groups for this registration"
-      redirect_to root_url
-      return
-    end
     unless (ENV['GROUPS_VISIBLE'] && registration.accepted?) || current_user&.can_manage_competition?(managed_competition)
       flash[:danger] = "Groups are not yet done, or you don't have groups."
       redirect_to root_url
