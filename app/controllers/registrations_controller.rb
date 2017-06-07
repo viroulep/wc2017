@@ -2,6 +2,7 @@ class RegistrationsController < ApplicationController
   before_action :authenticate_user!
   before_action :redirect_unless_admin!, except: [:edit, :update, :confirm]
   before_action :redirect_unless_can_edit!
+  before_action :redirect_unless_can_view!, only: [:schedule]
 
   WCIF_FILE_URL = "#{Rails.root}/wcif.json"
 
@@ -81,6 +82,13 @@ class RegistrationsController < ApplicationController
 
   def index
     @registrations = Registration.all.includes(:user, :registration_detail)
+  end
+
+  def schedule
+    @registration = Registration.includes([staff_registrations_groups: [:group], staff_teams_groups: [:group]]).find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
+    @groups = @registration.groups
+    @staff_registrations_groups = @registration.staff_registrations_groups.map(&:group)
+    @staff_groups = @registration.staff_teams_groups.map(&:group)
   end
 
   def edit
@@ -184,4 +192,20 @@ class RegistrationsController < ApplicationController
       return
     end
   end
+
+  def redirect_unless_can_view!
+    # NOTE: this has the side effect that if someone provides a wrong registration id,
+    # they end up on their groups
+    registration = Registration.find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
+    unless current_user.can_edit_registration?(managed_competition, registration)
+      flash[:danger] = "Cannot view groups for this registration"
+      redirect_to root_url
+      return
+    end
+    unless (ENV['GROUPS_VISIBLE'] && registration.accepted?) || current_user&.can_manage_competition?(managed_competition)
+      flash[:danger] = "Groups are not yet done, or you don't have groups."
+      redirect_to root_url
+    end
+  end
+
 end

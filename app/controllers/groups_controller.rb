@@ -1,13 +1,9 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!, except: [:show_for_registration]
-  before_action :redirect_unless_can_view!, only: [:show_for_registration]
+  before_action :redirect_unless_admin!
   before_action :set_group, only: [:destroy, :edit, :update, :update_staff]
 
   SINGLE = %w(333bf 444bf 555bf 333fm 333mbf).freeze
-
-  # TODO: move this to environment
-  GROUPS_VISIBLE = false
 
   def autogenerate_group
     @round = Round.find(params[:round_id])
@@ -125,12 +121,6 @@ class GroupsController < ApplicationController
     end
   end
 
-  def show_for_registration
-    # Shows groups for a registration id!
-    @registration = Registration.find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
-    @groups = @registration.registration_groups
-  end
-
   def show_for_event
     @event = Event.find(params[:event_id])
     @round = Round.where(event_id: @event.id).order(r_id: :asc).first
@@ -183,21 +173,6 @@ class GroupsController < ApplicationController
   private
   def set_group
     @group = Group.includes({staff_teams_groups: [:staff_team], staff_registrations_groups: [:registration]}).find(params[:group_id])
-  end
-
-  def redirect_unless_can_view!
-    # NOTE: this has the side effect that if someone provides a wrong registration id,
-    # they end up on their groups
-    registration = Registration.find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
-    unless current_user.can_edit_registration?(managed_competition, registration)
-      flash[:danger] = "Cannot view groups for this registration"
-      redirect_to root_url
-      return
-    end
-    unless (GROUPS_VISIBLE && registration.accepted?) || current_user&.can_manage_competition?(managed_competition)
-      flash[:danger] = "Groups are not yet done, or you don't have groups."
-      redirect_to root_url
-    end
   end
 
   def group_params

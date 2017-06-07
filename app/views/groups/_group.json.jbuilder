@@ -1,6 +1,8 @@
 json.extract! group, :id, :start, :end
 json.class "group"
-json.title group.name
+staff ||= nil
+group_name = staff ? "[Staff] #{group.name}" : group.name
+json.title group_name
 bg ||= nil
 fg ||= nil
 json.color bg if bg

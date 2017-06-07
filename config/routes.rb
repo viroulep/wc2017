@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
   resources :registrations, only: [:index, :edit, :update] do
     get 'groups' => 'groups#show_for_registration'
+    get 'schedule' => 'registrations#schedule'
   end
 
   get 'registrations/psy/:event_id' => 'registrations#psych_sheet'
@@ -30,7 +31,7 @@ Rails.application.routes.draw do
 
   post '/confirm' => 'registrations#confirm'
   get '/my_registration' => 'registrations#edit'
-  get '/my_registration/groups' => 'groups#show_for_registration'
+  get '/my_schedule' => 'registrations#schedule'
 
   get '/import_registrations' => 'registrations#import'
   patch '/import_registrations' => 'registrations#import_all'

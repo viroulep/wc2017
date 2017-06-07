@@ -11,6 +11,8 @@ class Registration < ApplicationRecord
   has_one :registration_detail, inverse_of: :registration
 
   has_many :staff_registrations_groups, inverse_of: :registration
+  has_many :staff_teams_groups, through: :staff_teams
+  has_many :staff_groups, through: :staff_teams
 
   accepts_nested_attributes_for :guests, :registration_detail
 
