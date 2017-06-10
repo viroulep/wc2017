@@ -1,5 +1,6 @@
 <%= render 'nav' do %>
   <h2>Edit group '<%= @group.name %>'</h2>
+  <p><%= link_to "Go back to round's page", groups_for_round_path(@group.round) %></p>
   <div class="row">
     <div class="col-md-12">
       <%= render 'form_for_group', group: @group %>
