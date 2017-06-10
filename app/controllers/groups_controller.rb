@@ -173,7 +173,7 @@ class GroupsController < ApplicationController
   end
 
   def schedule
-    @groups = Group.all
+    @groups = Group.all.order(:id)
     @schedule_events = ScheduleEvent.all
   end
 
