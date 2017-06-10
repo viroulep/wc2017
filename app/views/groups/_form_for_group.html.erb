@@ -6,12 +6,12 @@
 <% hint = disabled ? "You can't change the round because there are competitors in the group" : nil %>
 <%= simple_form_for group, wrapper: :horizontal_form do |f| %>
   <%= f.input :name %>
-  <%= f.input :round_id, as: :select, collection: Round.all_ordered, value_method: lambda { |r| r.id }, label_method: lambda { |r| r.name }, disabled: disabled, hint: hint %>
+  <%= f.input :round_id, as: :select, collection: Round.all_ordered, value_method: lambda { |r| r.id }, label_method: lambda { |r| r.name }, disabled: disabled, hint: hint, input_html: { id: 'round-selector' } %>
   <%= f.input :color, as: :select, collection: Group::COLORS.keys %>
   <div class='row datetimerange'>
     <% default_input_value = group.start ? {} : { value: "13/07/2017 10:00" } %>
-    <%= f.input :start, as: :datetime_picker, wrapper: :ranged_datetime, input_html: default_input_value %>
-    <%= f.input :end, as: :datetime_picker, wrapper: :ranged_datetime, input_html: default_input_value %>
+    <%= f.input :start, as: :datetime_picker, wrapper: :ranged_datetime, input_html: { id: 'group-start-datetime' }.merge(default_input_value) %>
+    <%= f.input :end, as: :datetime_picker, wrapper: :ranged_datetime, input_html: { id: 'group-end-datetime' }.merge(default_input_value) %>
   </div>
   <% if create %>
     <hr/>
@@ -43,6 +43,28 @@
 
   <% end %>
 <% end %>
+
+<script>
+var roundTimes = {
+  <% Round.all_ordered.each do |r| %>
+      "<%= r.id %>": { start: "<%= r.start.strftime('%d/%m/%Y %H:%M') %>", end : "<%= r.end.strftime('%d/%m/%Y %H:%M') %>" },
+  <% end %>
+};
+
+$(document).ready(function () {
+  $("#round-selector").change(function (e) {
+    var val = $("#round-selector").val();
+    var start_datepicker_elem_data = $("#group-start-datetime").parent().data("DateTimePicker");
+    var end_datepicker_elem_data = $("#group-end-datetime").parent().data("DateTimePicker");
+    start_datepicker_elem_data.clear();
+    end_datepicker_elem_data.clear();
+    start_datepicker_elem_data.date(roundTimes[val].start);
+    end_datepicker_elem_data.date(roundTimes[val].end);
+  });
+});
+
+</script>
+
 
 <% unless create %>
   <%= simple_form_for group, wrapper: :horizontal_form, url: group_staff_path(group) do |f| %>
@@ -237,12 +259,15 @@ $(document).ready(function () {
     e.preventDefault();
     e.stopPropagation();
   });
-});
 
-setupSelectTable("#table-staff-available", "#button-add-to-team", "#hidden_teams_selection");
-setupSelectTable("#table-staff", "#delete-button-container", "#hidden_teams_selection");
-setupSelectTable("#table-staff-registrations-available", "#button-add-to-team2", "#hidden_registrations_selection");
-setupSelectTable("#table-staff-registrations", "#delete-button-container2", "#hidden_registrations_selection");
+  setupSelectTable("#table-staff-available", "#button-add-to-team", "#hidden_teams_selection");
+  setupSelectTable("#table-staff", "#delete-button-container", "#hidden_teams_selection");
+  setupSelectTable("#table-staff-registrations-available", "#button-add-to-team2", "#hidden_registrations_selection");
+  setupSelectTable("#table-staff-registrations", "#delete-button-container2", "#hidden_registrations_selection");
+
+
+
+});
 
 </script>
   <% end %>
