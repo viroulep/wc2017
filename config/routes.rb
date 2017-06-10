@@ -23,6 +23,7 @@ Rails.application.routes.draw do
 
   resources :staff_teams
 
+  get 'groups/schedule' => 'groups#schedule'
   get 'groups/e/:event_id' => 'groups#show_for_event', :as => :groups_for_event
   get 'groups/r/:round_id' => 'groups#show_for_round', :as => :groups_for_round
   patch 'groups/r/:round_id' => 'groups#update_for_round'

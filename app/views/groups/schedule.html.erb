@@ -1,0 +1,37 @@
+<h1>WC2017 groups schedule</h1>
+
+<div class="row">
+  <div id="calendar" class="col-xs-12"></div>
+</div>
+<script>
+$('#calendar').fullCalendar({
+  // see: https://fullcalendar.io/docs/views/Custom_Views/
+  views: {
+    agendaFourDay: {
+      type: 'agenda',
+      duration: { days: 4 },
+      buttonText: 'Calendar',
+    },
+    listFourDay: {
+      type: 'list',
+      duration: { days: 4 },
+      buttonText: 'Printable',
+    },
+  },
+  defaultView: 'agendaFourDay',
+  header: {
+    left: '',
+    center: 'listFourDay,agendaFourDay',
+    right: '',
+  },
+  // yep, hardcoded
+  defaultDate: '2017-07-13',
+  minTime:'08:00:00',
+  maxTime:'20:00:00',
+  //aspectRatio: '3',
+  slotDuration: '00:15:00',
+  timeFormat: 'H:mm',
+  slotLabelFormat: 'H:mm',
+  events: '<%= groups_schedule_path(format: :json) %>',
+});
+</script>

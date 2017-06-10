@@ -172,6 +172,11 @@ class GroupsController < ApplicationController
     end
   end
 
+  def schedule
+    @groups = Group.all
+    @schedule_events = ScheduleEvent.all
+  end
+
   private
   def set_group
     @group = Group.includes({staff_teams_groups: [:staff_team], staff_registrations_groups: [:registration]}).find(params[:group_id])
