@@ -99,11 +99,7 @@ class GroupsController < ApplicationController
   end
 
   def edit
-    existing_team_ids = @group.staff_teams_groups.map(&:staff_team_id)
-    @team_available = StaffTeam.all.reject { |s| existing_team_ids.include?(s.id) }
-    existing_ids = @group.staff_registrations_groups.map(&:registration_id)
-    # FIXME: we may need to have everyone in there!
-    @staff_available = Registration.staff_available.includes(:user).reject { |r| existing_ids.include?(r.id) }
+    set_staff_teams!
   end
 
   def show
@@ -115,7 +111,11 @@ class GroupsController < ApplicationController
         format.html { redirect_to edit_group_path(@group), flash: { success: 'Group was successfully updated.' }}
         format.json { render json: @group, status: :ok }
       else
-        format.html { render :edit }
+        format.html do
+          set_staff_teams!
+          flash[:danger] = 'Error when updating group'
+          render :edit
+        end
         format.json { render json: @group.errors, status: :unprocessable_entity }
       end
     end
@@ -175,9 +175,17 @@ class GroupsController < ApplicationController
     @group = Group.includes({staff_teams_groups: [:staff_team], staff_registrations_groups: [:registration]}).find(params[:group_id])
   end
 
+  def set_staff_teams!
+    existing_team_ids = @group.staff_teams_groups.map(&:staff_team_id)
+    @team_available = StaffTeam.all.reject { |s| existing_team_ids.include?(s.id) }
+    existing_ids = @group.staff_registrations_groups.map(&:registration_id)
+    # FIXME: we may need to have everyone in there!
+    @staff_available = Registration.staff_available.includes(:user).reject { |r| existing_ids.include?(r.id) }
+  end
+
   def group_params
     # TODO: date and stuff!
-    permitted_params = [:name, :start, :end]
+    permitted_params = [:name, :start, :end, :color]
     # Make the round immutable if there are people in the group!
     if @group.nil? or @group.registrations.empty?
       permitted_params << :round_id

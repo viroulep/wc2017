@@ -1,4 +1,15 @@
 class Group < ApplicationRecord
+
+  COLORS = Hash[
+    #Five stage colors, blue is the front row, red the back row, +white the side venue
+    "blue" => "#2e81f8",
+    "orange" => "#ff9307",
+    "green" => "#46c81c",
+    "yellow" => "#ffff1b",
+    "red" => "#ff4439",
+    "white" => "#ffffff",
+  ].freeze
+
   has_many :registration_groups, inverse_of: :group, dependent: :delete_all
   has_many :registrations, through: :registration_groups
   has_many :users, through: :registrations
@@ -15,6 +26,7 @@ class Group < ApplicationRecord
 
   validates_presence_of :name, allow_blank: false
   validates_presence_of :round_id, allow_blank: false
+  validates_inclusion_of :color, in: COLORS.keys
 
   accepts_nested_attributes_for :registration_groups
   accepts_nested_attributes_for :staff_teams_groups
