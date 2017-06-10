@@ -130,14 +130,22 @@
             <th data-field="name">
               Name
             </th>
+            <th data-field="role">
+              Role/Comment
+            </th>
           </tr>
         </thead>
         <tfoot>
           <tr>
-            <td colspan="2">
+            <td colspan="3">
               <div class="pull-left" id="delete-button-container2" style="display: none;">
                 <button type="submit" class="btn btn-danger" name="staff_action" value="registrations-remove-selected">
                   <%= icon 'trash', "Remove selected" %>
+                </button>
+              </div>
+              <div class="pull-right">
+                <button type="submit" class="btn btn-primary" name="staff_action" value="registrations-update-roles">
+                  <%= "Update roles" %>
                 </button>
               </div>
           </tr>
@@ -149,6 +157,9 @@
               <td>
                 <%= stm.object.name %>
                 <%= stm.hidden_field :id %>
+              </td>
+              <td>
+                <%= stm.input_field :role, class: 'form-control input-role', label: false %>
               </td>
             </tr>
           <% end %>
@@ -220,12 +231,19 @@ $(document).ready(function () {
   buttonAdd = $('#button-add-to-team2');
   buttonAdd.insertBefore($('#table-staff-registrations-available').parent().parent().parent().find('.search'));
   buttonAdd.show();
+
+  // Filling role doesn't select
+  $('.input-role').click(function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  });
 });
 
 setupSelectTable("#table-staff-available", "#button-add-to-team", "#hidden_teams_selection");
 setupSelectTable("#table-staff", "#delete-button-container", "#hidden_teams_selection");
 setupSelectTable("#table-staff-registrations-available", "#button-add-to-team2", "#hidden_registrations_selection");
 setupSelectTable("#table-staff-registrations", "#delete-button-container2", "#hidden_registrations_selection");
+
 </script>
   <% end %>
 <% end %>

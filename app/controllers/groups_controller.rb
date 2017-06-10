@@ -93,6 +93,8 @@ class GroupsController < ApplicationController
       return remove_selected_staff_people_from_group
     when "registrations-add-selected"
       return add_selected_staff_people_to_group
+    when "registrations-update-roles"
+      return update_roles_for_individual_staff
     else
       raise "Unrecognized action #{params[:registrations_action]}"
     end
@@ -254,6 +256,15 @@ class GroupsController < ApplicationController
   def remove_selected_staff_teams_from_group
     team_ids = selected_teams_id
     @group.staff_teams_groups.where(staff_team_id: team_ids).map(&:destroy)
+    redirect_to edit_group_path(@group)
+  end
+
+  def update_roles_for_individual_staff
+    staff_registrations = params.require(:group).permit(staff_registrations_groups_attributes: [:id, :role])
+    staff_registrations[:staff_registrations_groups_attributes]&.each do |_, data|
+      details = StaffRegistrationsGroup.find(data[:id])
+      details.update!(role: data[:role])
+    end
     redirect_to edit_group_path(@group)
   end
 end

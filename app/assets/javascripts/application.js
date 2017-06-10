@@ -30,9 +30,6 @@ function setupSelectTable(tableId, buttonContainerId, fieldId) {
   var table = $(tableId);
   var button = $(buttonContainerId).find("button");
   var input = $(fieldId);
-  console.log(table);
-  console.log(button);
-  console.log(input);
   button.click(function(e) {
     var selected = table.bootstrapTable('getAllSelections');
     var selected_id = [];

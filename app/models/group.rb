@@ -7,7 +7,7 @@ class Group < ApplicationRecord
     "green" => "#46c81c",
     "yellow" => "#ffff1b",
     "red" => "#ff4439",
-    "white" => "#ffffff",
+    "white" => "#dddddd",
   ].freeze
 
   has_many :registration_groups, inverse_of: :group, dependent: :delete_all
@@ -33,6 +33,14 @@ class Group < ApplicationRecord
   accepts_nested_attributes_for :staff_registrations_groups
 
   scope :for_round, -> (id) { where(round_id: id) }
+
+  def hex_color
+    COLORS[self[:color]]
+  end
+
+  def text_color
+    "#000000"
+  end
 
   def self.clear_for_round(round_id)
     Group.for_round(round_id).map do |g|
