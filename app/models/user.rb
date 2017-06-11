@@ -43,7 +43,9 @@ class User < ApplicationRecord
     %w(delegatesCompetition organizesCompetition registration personalBests).each do |k|
       json_user.delete(k)
     end
-    json_user["birthdate"] = json_user["birthdate"].to_date
+    if json_user.include?("birthdate")
+      json_user["birthdate"] = json_user["birthdate"].to_date
+    end
     json_user
   end
 
