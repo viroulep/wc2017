@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170610094730) do
+ActiveRecord::Schema.define(version: 20170611085420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -140,6 +140,8 @@ ActiveRecord::Schema.define(version: 20170610094730) do
     t.string   "email"
     t.string   "avatar_url"
     t.string   "avatar_thumb_url"
+    t.string   "gender"
+    t.date     "birthdate"
   end
 
 end

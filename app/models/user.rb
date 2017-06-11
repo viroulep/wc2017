@@ -7,10 +7,8 @@ class User < ApplicationRecord
   has_many :personal_bests
 
   # List of fields we accept in the db
-  @@obj_info = %w(id name email wca_id country_iso2 avatar_url avatar_thumb_url)
+  @@obj_info = %w(id name email wca_id country_iso2 avatar_url avatar_thumb_url gender birthdate)
   # Possible extension
-    #'gender',
-    #'dob',
     #'delegate_status',
     #'teams',
 
@@ -42,9 +40,10 @@ class User < ApplicationRecord
       json_user["avatar_thumb_url"] = json_user["avatar"]["thumbUrl"] || json_user["avatar"]["thumb_url"]
       json_user.delete("avatar")
     end
-    %w(delegatesCompetition organizesCompetition gender birthdate registration personalBests).each do |k|
+    %w(delegatesCompetition organizesCompetition registration personalBests).each do |k|
       json_user.delete(k)
     end
+    json_user["birthdate"] = json_user["birthdate"].to_date
     json_user
   end
 
