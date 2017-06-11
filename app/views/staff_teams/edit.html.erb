@@ -1,4 +1,5 @@
 <h1>Editing team: "<%= @staff_team.name %>"</h1>
+<p><%= @staff_team.registration.size %> people in there.</p>
 
 <div class="row">
   <%= render 'form', staff_team: @staff_team %>
