@@ -17,12 +17,15 @@ $('#calendar').fullCalendar({
       duration: { days: 4 },
       buttonText: 'Printable',
     },
+    agenda: {
+      buttonText: '1-day calendar',
+    },
   },
   defaultView: 'agendaFourDay',
   header: {
     left: '',
-    center: 'listFourDay,agendaFourDay',
-    right: '',
+    center: 'listFourDay,agendaFourDay,agenda',
+    right: 'prev,next',
   },
   eventOrder: "id",
   // yep, hardcoded
