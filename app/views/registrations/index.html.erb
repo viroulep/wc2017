@@ -6,6 +6,7 @@
     <h3>Accepted registrations (<%= @registrations.accepted.size %>)</h3>
     <p><%= @registrations.accepted.confirmed.count %> people confirmed their registration, <%= @registrations.accepted.cancelled.count %> people cancelled their registration.<p>
     <p>Please remember to delete cancelled people on the WCA website, accept the next one on the waiting list, and re-import data.</p>
+    <p>There are currently <%= Guest.all.count %> declared guests.</p>
     <% # TODO: DRY this, add bootstrap-table for easy filtering %>
     <table class="table table-hover"
            data-toggle="table"
