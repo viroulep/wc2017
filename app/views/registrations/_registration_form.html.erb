@@ -60,9 +60,15 @@
           <%= r.simple_fields_for :registration_detail, detail_object do |d| %>
             <% if current_user.can_manage_competition?(managed_competition) %>
               <%= d.input :staff %>
+              <%# FIXME: this should be hidden if not staff! %>
+              <%= d.input :runner_only %>
             <% end %>
             <%# TODO: for some later version... %>
             <%# d.input :tshirt, as: :radio_buttons, collection: RegistrationDetail::TSHIRT_SIZES, label: "Your t-shirt size: ", item_wrapper_class: 'tshirt-radio' %>
+          <% end %>
+
+          <% if current_user.can_manage_competition?(managed_competition) %>
+            <%= render 'shared/associated_events_picker', form_builder: r %>
           <% end %>
           More to come later ;)
         </div>

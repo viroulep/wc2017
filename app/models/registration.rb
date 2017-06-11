@@ -3,6 +3,7 @@ class Registration < ApplicationRecord
   belongs_to :user, inverse_of: :registration
   belongs_to :competition
   has_many :guests, inverse_of: :registration
+  has_many :scramble_events
   has_many :registration_groups
   has_many :groups, through: :registration_groups
   has_many :staff_team_members
@@ -15,6 +16,8 @@ class Registration < ApplicationRecord
   has_many :staff_groups, through: :staff_teams
 
   accepts_nested_attributes_for :guests, :registration_detail
+  # Guests could probably be rewrittent this way too...
+  accepts_nested_attributes_for :scramble_events, allow_destroy: true
 
   delegate :name, to: :user
 

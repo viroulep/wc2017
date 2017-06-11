@@ -1,0 +1,40 @@
+<%#
+Simplified, dirtified version of https://github.com/thewca/worldcubeassociation.org/blob/master/WcaOnRails/app/views/shared/_associated_events_picker.html.erb
+
+Variables:
+ - form_builder
+ - selected_events -> a relation or an Array of Event objects that whould be marked as selected
+
+Note: form_builder.object is the object having associated events.
+%>
+
+<%
+  allowed_events = Event::ALL_EVENTS_BY_ID.keys
+  selected_events_hash = {}
+  form_builder.object.scramble_events.each { |se| selected_events_hash[se[:event_id]] = se }
+  all_events = allowed_events.map { |e| selected_events_hash[e] || form_builder.object.scramble_events.build(event_id: e) }
+  selected_events = selected_events_hash.keys
+%>
+
+<div class="form-group">
+  <%= label_tag :scramble_events, class: "associated-events-label" do %>
+    Scrambles for
+  <% end %>
+  <div id="scramble_events" class="associated-events">
+    <%= form_builder.simple_fields_for :scramble_events, all_events do |f| %>
+      <span class="event-checkbox">
+        <% event = Event.find(f.object.event_id) %>
+        <%= f.hidden_field :event_id %>
+        <%= label_tag "scramble_events_#{event.id}" do %>
+          <%= f.check_box "_destroy", { checked: selected_events.include?(event.id), id: "scramble_events_#{event.id}" }, "0", "1" %>
+          <%= content_tag(:span, "",
+                          class: "cubing-icon event-#{event.id}",
+                          data: { toggle: "tooltip", placement: "top" },
+                          title: event.name
+          ) %>
+        <% end %>
+        <%= f.hidden_field :id %>
+      </span>
+    <% end %>
+  </div>
+</div>

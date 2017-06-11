@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get 'schedule' => 'registrations#schedule'
   end
 
+  get 'registrations/staff' => 'registrations#staff'
   get 'registrations/psy/:event_id' => 'registrations#psych_sheet'
 
   get 'mails' => 'registrations#mails'

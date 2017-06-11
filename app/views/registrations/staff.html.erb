@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <h3>Staff Registrations</h3>
+    <table class="table table-hover"
+           id="table-accepted">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Confirmation status</th>
+          <th>Name</th>
+          <th>Scrambles for</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @registrations.each do |registration| %>
+          <tr>
+            <td>
+              <%= link_to registration.id, edit_registration_path(registration) %>
+            </td>
+            <td>
+              <% if registration.details.confirmed_at %>
+                <span class="text-success">confirmed</span>
+              <% elsif registration.details.cancelled_at %>
+                <span class="text-danger">cancelled</span>
+              <% else %>
+                <span class="text-warning">pending</span>
+              <% end %>
+            </td>
+            <td><%= registration.user.name %></td>
+            <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

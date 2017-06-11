@@ -84,6 +84,10 @@ class RegistrationsController < ApplicationController
     @registrations = Registration.all.includes(:user, :registration_detail)
   end
 
+  def staff
+    @registrations = Registration.includes(:user, :registration_detail, :scramble_events).where(registration_details: { staff: true }).order(:id)
+  end
+
   def schedule
     @registration = Registration.includes([staff_registrations_groups: [:group], staff_teams_groups: [:group]]).find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
     @groups = @registration.groups
@@ -155,15 +159,21 @@ class RegistrationsController < ApplicationController
     (@registration.guests - updated_guests).map(&:mark_for_destruction)
 
     # Taking care of tshirt size
-    details = params.require(:registration).permit(:registration_detail_attributes => [:staff])
+    details = params.require(:registration).permit(:registration_detail_attributes => [:staff, :runner_only])
     updated_details = @registration.details
     # updated_details.tshirt = details[:registration_detail_attributes][:tshirt]
 
     # Take care of the staff boolean
     if current_user.can_manage_competition?(managed_competition)
       updated_details.staff = details[:registration_detail_attributes][:staff]
+      updated_details.runner_only = details[:registration_detail_attributes][:runner_only]
     end
 
+    scramble_events_params = params.require(:registration).permit(:scramble_events_attributes => [:id, :event_id, :_destroy])
+    scramble_events = scramble_events_params[:scramble_events_attributes] || []
+    if current_user.can_manage_competition?(managed_competition)
+      @registration.assign_attributes(scramble_events_params)
+    end
 
     if @registration.valid?
       @registration.save!

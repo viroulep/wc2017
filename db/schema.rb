@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170611085420) do
+ActiveRecord::Schema.define(version: 20170611155551) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(version: 20170611085420) do
     t.datetime "confirmed_at"
     t.boolean  "staff",           default: false
     t.datetime "cancelled_at"
+    t.boolean  "runner_only",     default: false
     t.index ["registration_id"], name: "index_registration_details_on_registration_id", using: :btree
   end
 
@@ -98,6 +99,14 @@ ActiveRecord::Schema.define(version: 20170611085420) do
     t.datetime "end"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "scramble_events", force: :cascade do |t|
+    t.integer  "registration_id"
+    t.string   "event_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.index ["registration_id"], name: "index_scramble_events_on_registration_id", using: :btree
   end
 
   create_table "staff_registrations_groups", force: :cascade do |t|

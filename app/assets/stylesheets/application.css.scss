@@ -35,3 +35,30 @@
 .fc-content a {
   color: black;
 }
+
+.event-checkbox,
+.event-radio {
+  .cubing-icon {
+    font-size: 2em;
+  }
+
+  label {
+    margin-bottom: 0;
+  }
+  input[type=checkbox],
+  input[type=radio] {
+    display: none;
+    + span.cubing-icon {
+      color: #ccc;
+    }
+    &:checked + span.cubing-icon {
+      color: black;
+    }
+  }
+
+  &:not(.disabled) {
+    label {
+      cursor: pointer;
+    }
+  }
+}
