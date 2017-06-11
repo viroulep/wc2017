@@ -13,7 +13,7 @@
   <tbody>
     <% @staff_teams.each do |staff_team| %>
       <tr>
-        <td><%= staff_team.name %> (<%= staff_team.registration.size %>)</td>
+        <td><%= staff_team.name %> (<%= staff_team.registrations.size %>)</td>
         <td><%= link_to 'Show', staff_team %></td>
         <td><%= link_to 'Edit', edit_staff_team_path(staff_team) %></td>
         <td><%= link_to 'Destroy', staff_team, method: :delete, data: { confirm: 'Are you sure?' } %></td>

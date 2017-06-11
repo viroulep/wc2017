@@ -11,6 +11,7 @@ class StaffTeamsController < ApplicationController
 
   # GET /staff_teams/1
   def show
+    @scramblers_per_event = @staff_team.scramble_events.group(:event_id).count
   end
 
   # GET /staff_teams/new
@@ -20,6 +21,7 @@ class StaffTeamsController < ApplicationController
 
   # GET /staff_teams/1/edit
   def edit
+    @scramblers_per_event = @staff_team.scramble_events.group(:event_id).count
   end
 
   # POST /staff_teams
@@ -63,7 +65,7 @@ class StaffTeamsController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_staff_team
-    @staff_team = StaffTeam.includes({ staff_team_members: [:registration] }).find(params[:id])
+    @staff_team = StaffTeam.includes({ staff_team_members: { registration: [:user, :scramble_events, :registration_detail] }}).find(params[:id])
   end
 
   def set_staff_available

@@ -1,6 +1,12 @@
 <h1>Editing team: "<%= @staff_team.name %>"</h1>
-<p><%= @staff_team.registration.size %> people in there.</p>
+<p><%= @staff_team.registrations.size %> people in there.</p>
 
+<p>Number of scramblers per event:</p>
+<p>
+<% Event.all.each do |e| %>
+  <%= render "shared/event", event: e %>: <%= @scramblers_per_event[e.id] || 0 %>,
+<% end %>
+</p>
 <div class="row">
   <%= render 'form', staff_team: @staff_team %>
 </div>

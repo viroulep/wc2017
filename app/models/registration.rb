@@ -3,7 +3,7 @@ class Registration < ApplicationRecord
   belongs_to :user, inverse_of: :registration
   belongs_to :competition
   has_many :guests, inverse_of: :registration
-  has_many :scramble_events
+  has_many :scramble_events, inverse_of: :registration
   has_many :registration_groups
   has_many :groups, through: :registration_groups
   has_many :staff_team_members

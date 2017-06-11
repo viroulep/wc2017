@@ -1,8 +1,39 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
-  <%= @staff_team.name %>
+<strong>Name:</strong>
+<%= @staff_team.name %>
+</p>
+
+<table class="table table-hover"
+       id="table-accepted">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Scrambles for</th>
+      <th>Runner only</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @staff_team.registrations.each do |registration| %>
+      <tr>
+        <td>
+          <%= link_to registration.id, edit_registration_path(registration) %>
+        </td>
+        <td><%= registration.name %></td>
+        <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id) %></td>
+        <td><%= registration.details.runner_only ? "yes" : "" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<p>Number of scramblers per event:</p>
+<p>
+<% Event.all.each do |e| %>
+  <%= render "shared/event", event: e %>: <%= @scramblers_per_event[e.id] || 0 %>
+  <br/>
+<% end %>
 </p>
 
 <%= link_to 'Edit', edit_staff_team_path(@staff_team) %> |
