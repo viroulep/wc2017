@@ -9,6 +9,7 @@
           <th>Confirmation status</th>
           <th>Name</th>
           <th>Scrambles for</th>
+          <th>Runner only</th>
         </tr>
       </thead>
       <tbody>
@@ -28,6 +29,7 @@
             </td>
             <td><%= registration.user.name %></td>
             <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id) %></td>
+            <td><%= registration.details.runner_only ? "yes" : "" %></td>
           </tr>
         <% end %>
       </tbody>
