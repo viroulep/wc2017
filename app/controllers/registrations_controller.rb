@@ -159,15 +159,16 @@ class RegistrationsController < ApplicationController
     (@registration.guests - updated_guests).map(&:mark_for_destruction)
 
     # Taking care of tshirt size
-    details = params.require(:registration).permit(:registration_detail_attributes => [:staff, :runner_only])
-    updated_details = @registration.details
-    # updated_details.tshirt = details[:registration_detail_attributes][:tshirt]
-
-    # Take care of the staff boolean
+    permitted_details = [:mbf1, :mbf2, :mbf3]
     if current_user.can_manage_competition?(managed_competition)
-      updated_details.staff = details[:registration_detail_attributes][:staff]
-      updated_details.runner_only = details[:registration_detail_attributes][:runner_only]
+      permitted_details << [:staff, :runner_only, :mbf_judge]
     end
+    details = params.require(:registration).permit(:registration_detail_attributes => permitted_details)
+    updated_details = @registration.details
+    if details["registration_detail_attributes"]
+      updated_details.assign_attributes(details["registration_detail_attributes"])
+    end
+    # updated_details.tshirt = details[:registration_detail_attributes][:tshirt]
 
     scramble_events_params = params.require(:registration).permit(:scramble_events_attributes => [:id, :event_id, :_destroy])
     scramble_events = scramble_events_params[:scramble_events_attributes] || []

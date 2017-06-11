@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170611155551) do
+ActiveRecord::Schema.define(version: 20170611180619) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,10 @@ ActiveRecord::Schema.define(version: 20170611155551) do
     t.boolean  "staff",           default: false
     t.datetime "cancelled_at"
     t.boolean  "runner_only",     default: false
+    t.integer  "mbf1",            default: 0
+    t.integer  "mbf2",            default: 0
+    t.integer  "mbf3",            default: 0
+    t.boolean  "mbf_judge",       default: false
     t.index ["registration_id"], name: "index_registration_details_on_registration_id", using: :btree
   end
 

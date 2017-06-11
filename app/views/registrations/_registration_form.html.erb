@@ -58,8 +58,46 @@
         <div class="panel-body">
           <% detail_object = registration.details %>
           <%= r.simple_fields_for :registration_detail, detail_object do |d| %>
+            <% r.object.errors[:'registration_detail.mbf'].each do |e| %>
+              <span class="alert-danger">
+                <%= e %>
+              </span>
+            <% end %>
+            <% if registration.events.include?("333mbf") %>
+              <div class="row">
+                <div class="col-xs-12">
+                  <h4>Number of cubes for 3x3x3 Multi-Blind</h4>
+                  <p class="help-block">Will be kept private and used for organizational purpose. You can still submit a different number during WC.</p>
+                </div>
+                <div class="col-xs-4">
+                  <%= d.label :mbf1, "Attempt 1" %>
+                  <%= d.error :mbf1 %>
+                </div>
+                <div class="col-xs-4">
+                  <%= d.label :mbf2, "Attempt 2" %>
+                  <%= d.error :mbf2 %>
+                </div>
+                <div class="col-xs-4">
+                  <%= d.label :mbf3, "Attempt 3" %>
+                  <%= d.error :mbf3 %>
+                </div>
+                <div class="clearfix">
+                </div>
+                <div class="col-xs-4">
+                  <%= d.input_field :mbf1, class: "form-control", min: 0 %>
+                </div>
+                <div class="col-xs-4">
+                  <%= d.input_field :mbf2, class: "form-control", min: 0 %>
+                </div>
+                <div class="col-xs-4">
+                  <%= d.input_field :mbf3, class: "form-control", min: 0 %>
+                </div>
+              </div>
+            <% end %>
             <% if current_user.can_manage_competition?(managed_competition) %>
+              <hr/>
               <%= d.input :staff %>
+              <%= d.input :mbf_judge, label: "Judges MBF" %>
               <%# FIXME: this should be hidden if not staff! %>
               <%= d.input :runner_only %>
             <% end %>

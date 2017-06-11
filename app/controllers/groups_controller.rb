@@ -186,8 +186,8 @@ class GroupsController < ApplicationController
     existing_team_ids = @group.staff_teams_groups.map(&:staff_team_id)
     @team_available = StaffTeam.all.reject { |s| existing_team_ids.include?(s.id) }
     existing_ids = @group.staff_registrations_groups.map(&:registration_id)
-    # FIXME: we may need to have everyone in there!
-    @staff_available = Registration.staff_available.includes(:user).reject { |r| existing_ids.include?(r.id) }
+    base_scope = @group.event_id == "333mbf" ? Registration.staff_available_mbf : Registration.staff_available
+    @staff_available = base_scope.includes(:user).reject { |r| existing_ids.include?(r.id) }
   end
 
   def group_params

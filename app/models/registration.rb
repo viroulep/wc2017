@@ -33,6 +33,8 @@ class Registration < ApplicationRecord
   scope :cancelled, -> { includes(:registration_detail).where.not(registration_details: { cancelled_at: nil }) }
 
   scope :staff_available, -> { joins(:registration_detail).where('registration_details.staff': true) }
+  # FIXME: dirty, must be something better
+  scope :staff_available_mbf, -> { joins(:registration_detail).where('registration_details.staff=? or registration_details.mbf_judge=?', true, true) }
 
   scope :without_group_for, -> (round_id) { where.not(id: Group.for_round(round_id).joins(:registrations).select(:'registrations.id')) }
 
