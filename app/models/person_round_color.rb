@@ -1,0 +1,2 @@
+class PersonRoundColor < ApplicationRecord
+end
