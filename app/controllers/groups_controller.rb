@@ -101,6 +101,30 @@ class GroupsController < ApplicationController
     redirect_to groups_for_event_path(@event.id)
   end
 
+  def index
+    if params[:generate_colors] == "true"
+      color_indexes = {}
+      Group::COLORS.each do |k,v|
+        color_indexes[k] = Group::COLORS.keys.index(k)
+      end
+      PersonRoundColor.delete_all
+      all_entries = []
+      Round.includes(groups: { registrations: [:user] }).where(r_id: 1).where.not(event_id: "333fm").each do |r|
+        done_one = false
+        r.groups.each do |g|
+          if r.event_id == "333mbf" && done_one
+            break
+          end
+          done_one = true
+          g.registrations.each do |reg|
+            all_entries << PersonRoundColor.new(color: color_indexes[g.color], wca_id: reg.user.wca_id, event_id: r.event_id)
+          end
+        end
+      end
+      PersonRoundColor.import(all_entries)
+    end
+  end
+
   def create
     @repeat_start = params.require(:repeat_start).to_i
     @repeat_end = params.require(:repeat_end).to_i
