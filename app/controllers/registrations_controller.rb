@@ -62,6 +62,22 @@ class RegistrationsController < ApplicationController
     redirect_to(registrations_url, flash: { success: "Imported #{all_registrations.size} registrations and users successfully!" })
   end
 
+  def cleanup
+    @registrations = Registration.accepted.includes(:user, :personal_bests, :registration_detail).order(:id)
+    @to_clean = {}
+    @registrations.each do |r|
+      r.events.each do |eid|
+        e = Event.find(eid)
+        type = (eid == "333mbf" || eid == "444bf" || eid == "555bf" || eid == "pyram" || eid == "333fm" || eid == "333bf" || eid == "222" || eid == "333") ? "single" : "average"
+        pb = r.best_for(eid, type)
+        unless pb && pb.as_solve_time < e.limit
+          @to_clean[r.id] ||= []
+          @to_clean[r.id] << eid
+        end
+      end
+    end
+  end
+
   def mails
     @registrations = {}
     @registrations[:fr] = Registration.accepted.includes(:user).where(users: { country_iso2: "FR" })

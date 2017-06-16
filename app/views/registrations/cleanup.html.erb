@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <h3>Cleanup Registrations</h3>
+    <p><%= @to_clean.size %> registrations to cleanup...</p>
+    <table class="table table-hover"
+           id="table-accepted">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Confirmation status</th>
+          <th>Name</th>
+          <th>Remove events</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @registrations.each do |registration| %>
+          <% next unless @to_clean[registration.id] %>
+          <tr>
+            <td>
+              <%= link_to registration.id, wca_registration_url(registration.id), target: "_blank" %>
+            </td>
+            <td>
+              <% if registration.details.confirmed_at %>
+                <span class="text-success">confirmed</span>
+              <% elsif registration.details.cancelled_at %>
+                <span class="text-danger">cancelled</span>
+              <% else %>
+                <span class="text-warning">pending</span>
+              <% end %>
+            </td>
+            <td><%= link_to registration.user.name, wca_person_url(registration.user.wca_id), target: "_blank" %></td>
+            <td><%= render "shared/event_id_collection", event_ids: @to_clean[registration.id] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

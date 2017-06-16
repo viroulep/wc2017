@@ -31,6 +31,10 @@ module ApplicationHelper
     "#{wca_base_url}/registrations/#{id}/edit"
   end
 
+  def wca_person_url(wca_id)
+    "#{wca_base_url}/persons/#{wca_id}"
+  end
+
   def link_to_with_tooltip(text, url, title, args={})
     args.merge!({
       'data-toggle': 'tooltip',
