@@ -44,7 +44,7 @@
           <tr id="registration-<%= "#{stm.object.registration_id}" %>">
             <td></td>
             <td>
-              <%= stm.object.name %>
+              <%= link_to stm.object.name, edit_registration_path(stm.object.registration_id), target: "_blank" %>
               <%= stm.hidden_field :id %>
               <span class="new-group-number"></span>
             </td>
