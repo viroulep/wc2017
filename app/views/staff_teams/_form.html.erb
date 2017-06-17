@@ -17,12 +17,13 @@
           <th data-field="name">
             Staff name
           </th>
+          <th class="col-xs-2">Scrambles for</th>
           <th class="col-xs-2">Team leader</th>
         </tr>
       </thead>
       <tfoot>
         <tr>
-          <td colspan="3">
+          <td colspan="4">
             <div class="pull-right">
               <button type="submit" class="btn btn-primary" name="registrations_action" value="update">
                 <% if f.object.new_record? %>
@@ -48,6 +49,7 @@
               <%= stm.hidden_field :id %>
               <span class="new-group-number"></span>
             </td>
+            <td><%= render "shared/event_id_collection", event_ids: stm.object.registration.scramble_events.map(&:event_id) %></td>
             <td>
               <%= stm.input_field :team_leader, label: false, class: "checkbox-leader" %>
             </td>
