@@ -8,7 +8,7 @@
     </div>
     <div class="row row-all-groups">
       <% @groups.sort.each do |g| %>
-        <%= render 'group_panel', group_id: g.id, title: g.name, group: g %>
+        <%= render 'group_panel', group_id: g.id, title: g.name, color: g.color, group: g %>
         <div class="may-clearfix"></div>
       <% end %>
       <%= render 'group_panel', title: "No groups", group: @ungrouped %>

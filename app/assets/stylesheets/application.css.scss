@@ -62,3 +62,52 @@
     }
   }
 }
+
+$blue: #2e81f8;
+$orange: #ff9307;
+$green: #46c81c;
+$yellow: #ffff1b;
+$red: #ff4439;
+$white: #d9edf7;
+.panel-blue {
+  border-color: $blue;
+  .panel-heading {
+    background-color: $blue;
+    border-color: $blue;
+  }
+}
+.panel-orange {
+  border-color: $orange;
+  .panel-heading {
+    background-color: $orange;
+    border-color: $orange;
+  }
+}
+.panel-green {
+  border-color: $green;
+  .panel-heading {
+    background-color: $green;
+    border-color: $green;
+  }
+}
+.panel-yellow {
+  border-color: $yellow;
+  .panel-heading {
+    background-color: $yellow;
+    border-color: $yellow;
+  }
+}
+.panel-red {
+  border-color: $red;
+  .panel-heading {
+    background-color: $red;
+    border-color: $red;
+  }
+}
+.panel-white {
+  border-color: $white;
+  .panel-heading {
+    background-color: $white;
+    border-color: $white;
+  }
+}

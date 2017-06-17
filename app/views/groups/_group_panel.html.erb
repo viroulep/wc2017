@@ -1,7 +1,8 @@
 <% group_id ||= "nogroup" %>
 <% title ||= "untitled" %>
+<% color ||= "white" %>
 <div class="col-xs-6 col-sm-3 col-md-2">
-  <div class="panel panel-info">
+  <div class="panel <%= "panel-#{color}" unless color.blank? %>">
     <div class="panel-heading heading-as-link collapsed" data-toggle="collapse" data-target="#collapse-<%= group_id %>">
       <h3 class="panel-title">
         <%= link_to icon('pencil'), edit_group_path(group.id) if group.id %>
