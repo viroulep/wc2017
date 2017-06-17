@@ -6,7 +6,7 @@ class StaffTeamsController < ApplicationController
 
   # GET /staff_teams
   def index
-    @staff_teams = StaffTeam.all
+    @staff_teams = StaffTeam.all.includes(staff_team_members: { registration: [:user] })
   end
 
   # GET /staff_teams/1

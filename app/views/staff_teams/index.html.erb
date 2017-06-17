@@ -2,21 +2,27 @@
 
 <h1>Staff Teams</h1>
 
-<table>
+<table data-toggle="table" class="table">
   <thead>
     <tr>
       <th>Name</th>
-      <th colspan="3"></th>
+      <th class="col-xs-1">People</th>
+      <th class="col-xs-3">Leader</th>
     </tr>
   </thead>
 
   <tbody>
     <% @staff_teams.each do |staff_team| %>
       <tr>
-        <td><%= staff_team.name %> (<%= staff_team.registrations.size %>)</td>
-        <td><%= link_to 'Show', staff_team %></td>
-        <td><%= link_to 'Edit', edit_staff_team_path(staff_team) %></td>
-        <td><%= link_to 'Destroy', staff_team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <%= link_to staff_team.name, staff_team %>
+          <% if false && current_user.can_manage_competition?(managed_competition) %>
+            <%= link_to icon('pencil'), edit_staff_team_path(staff_team), class: "btn btn-primary btn-sm" %>
+            <%= link_to icon('trash'), staff_team, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
+          <% end %>
+        </td>
+        <td><%= staff_team.registrations.size %></td>
+        <td><%= leaders_to_s(staff_team.leaders) %></td>
       </tr>
     <% end %>
   </tbody>

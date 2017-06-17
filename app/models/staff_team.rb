@@ -8,4 +8,8 @@ class StaffTeam < ApplicationRecord
   accepts_nested_attributes_for :staff_team_members
 
   validates_presence_of :name
+
+  def leaders
+    staff_team_members.select(&:team_leader).map(&:name)
+  end
 end

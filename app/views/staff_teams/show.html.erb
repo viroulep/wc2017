@@ -5,6 +5,11 @@
 <%= @staff_team.name %>
 </p>
 
+<p>
+<strong>Leader:</strong>
+<%= leaders_to_s(@staff_team.leaders) %>
+</p>
+
 <table class="table table-hover"
        id="table-accepted">
   <thead>
