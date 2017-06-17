@@ -5,18 +5,17 @@
            id="table-accepted">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Confirmation status</th>
           <th>Name</th>
+          <th>Confirmation status</th>
           <th>Scrambles for</th>
-          <th>Runner only</th>
+          <th>Teams</th>
         </tr>
       </thead>
       <tbody>
         <% @registrations.each do |registration| %>
           <tr>
             <td>
-              <%= link_to registration.id, edit_registration_path(registration) %>
+              <%= link_to registration.user.name, edit_registration_path(registration) %>
             </td>
             <td>
               <% if registration.details.confirmed_at %>
@@ -27,9 +26,8 @@
                 <span class="text-warning">pending</span>
               <% end %>
             </td>
-            <td><%= registration.user.name %></td>
             <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id) %></td>
-            <td><%= registration.details.runner_only ? "yes" : "" %></td>
+            <td><%= raw(staff_teams_to_links(registration.staff_teams)) %></td>
           </tr>
         <% end %>
       </tbody>

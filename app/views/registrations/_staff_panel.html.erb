@@ -5,7 +5,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-xs-12">
-        You are in the following staff teams : <%= raw(array_to_s(@registration.staff_teams.map { |team| link_to(team.name, team, target: "_blank") })) %>
+        You are in the following staff teams : <%= raw(staff_teams_to_links(@registration.staff_teams)) %>
       </div>
     </div>
   </div>

@@ -61,4 +61,8 @@ module ApplicationHelper
     end
     str
   end
+
+  def staff_teams_to_links(teams)
+    array_to_s(teams.map { |team| link_to(team.name, team, target: "_blank") })
+  end
 end
