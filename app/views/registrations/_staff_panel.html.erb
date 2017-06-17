@@ -1,0 +1,12 @@
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Staff panel</h3>
+  </div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-12">
+        You are in the following staff teams : <%= raw(array_to_s(@registration.staff_teams.map { |team| link_to(team.name, team, target: "_blank") })) %>
+      </div>
+    </div>
+  </div>
+</div>

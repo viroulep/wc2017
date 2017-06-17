@@ -22,7 +22,7 @@
           <% end %>
         </td>
         <td><%= staff_team.registrations.size %></td>
-        <td><%= leaders_to_s(staff_team.leaders) %></td>
+        <td><%= array_to_s(staff_team.leaders) %></td>
       </tr>
     <% end %>
   </tbody>

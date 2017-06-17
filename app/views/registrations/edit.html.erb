@@ -24,6 +24,12 @@
     <% end %>
     <hr/>
     <%= render "registration_form", registration: @registration %>
+    <% if current_user.can_manage_competition?(managed_competition) %>
+      <hr/>
+      <div class="row">
+        <%= render "staff_panel" %>
+      </div>
+    <% end %>
     <hr/>
     <div class="row">
       <%= render "wca_registration_panel", registration: @registration, title: "Your WCA registration" %>

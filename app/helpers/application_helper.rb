@@ -52,4 +52,13 @@ module ApplicationHelper
     content_tag :div, content, class: "alert alert-#{type}"
   end
 
+  def array_to_s(items)
+    comma = ""
+    str = ""
+    items.each do |l|
+      str += comma + l
+      comma = ", "
+    end
+    str
+  end
 end
