@@ -18,6 +18,9 @@
           <tr>
             <td>
               <%= link_to registration.id, wca_registration_url(registration.id), target: "_blank" %>
+              <% if Registration::HAVE_PENDING_RESULTS.include?(registration.name) %>
+                **
+              <% end %>
             </td>
             <td>
               <% if registration.details.confirmed_at %>
