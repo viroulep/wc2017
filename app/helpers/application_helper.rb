@@ -56,7 +56,7 @@ module ApplicationHelper
     comma = ""
     str = ""
     items.each do |l|
-      str += comma + l
+      str += comma + l.to_s
       comma = ", "
     end
     str

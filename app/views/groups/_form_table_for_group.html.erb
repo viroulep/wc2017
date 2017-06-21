@@ -16,11 +16,13 @@
     </thead>
     <tbody>
       <%= eg.simple_fields_for :registration_groups, group.registration_groups do |f|%>
-        <tr>
+        <% registration_teams = f.object.staff_teams.map(&:id) %>
+        <tr class="<%= "danger" unless (group_teams & registration_teams).empty? %>">
           <td></td>
           <% line_id = "#{f.object.group_id}_#{f.object.registration_id}" %>
           <td id="<%= line_id %>">
             <%= f.object.name %>
+            <%= array_to_s(registration_teams) %>
             <%= f.hidden_field :id %>
             <%= f.hidden_field :registration_id %>
             <%= f.hidden_field :group_id, class: "hidden-group-input" %>

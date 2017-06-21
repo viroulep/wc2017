@@ -201,19 +201,23 @@ class GroupsController < ApplicationController
   end
 
   def set_groups!
-    @groups = Group.for_round(@round.id).includes(registration_groups: { registration: [:user] })
+    @groups = Group.for_round(@round.id).includes(registration_groups: { registration: [:user, :staff_teams] }, staff_teams: [])
   end
 
   def set_groups_ungrouped!
     set_groups!
-    @ungrouped = if @round.r_id > 1
-                   # Can't now who is qualified... Groups for non-first rounds are here for schedule!
-                   Group.new(registration_groups: [])
-                 elsif @event.id == "333fm" || @event.id == "333mbf"
-                   Group.new(registration_groups: Registration.with_event(@event.id).map { |r| r.registration_groups.build })
-                 else
-                   Group.new(registration_groups: Registration.with_event_without_group_for(@round, :user).map { |r| r.registration_groups.build })
-                 end
+    registrations = if @round.r_id > 1
+                      # Can't now who is qualified... Groups for non-first rounds are here for schedule!
+                      []
+                    elsif @event.id == "333fm" || @event.id == "333mbf"
+                      Registration.includes(:registration_detail, :staff_teams).with_event(@event.id)
+                    else
+                      Registration.includes(:registration_detail, :staff_teams).with_event_without_group_for(@round, :user)
+                    end
+    registrations, registrations_staff = registrations.partition { |r| !r.details.staff }
+
+    @ungrouped = Group.new(registration_groups: registrations.map { |r| r.registration_groups.build })
+    @ungrouped_staff = Group.new(registration_groups: registrations_staff.map { |r| r.registration_groups.build })
   end
 
   def selected_teams_id

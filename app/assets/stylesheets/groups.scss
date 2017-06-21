@@ -11,15 +11,12 @@
   /* Fix for group cell behavior */
   /* Each row-all-groups has three elements: */
   /* the main panel, a script tag, the div with .may-clearfix */
-  /* On medium/large screens, we want 6 groups per row, so we need to activate the */
-  /* clearfix on the 6*3th element */
-  .may-clearfix:nth-child(18n) {
-    @extend .visible-md-block;
-    @extend .visible-lg-block;
-    @extend .clearfix;
-  }
+  /* On medium/large screens, we want 4 groups per row, so we need to activate the */
+  /* clearfix on the 4*3th element */
   /* 4 panels per row => 4*3th element */
   .may-clearfix:nth-child(12n) {
+    @extend .visible-md-block;
+    @extend .visible-lg-block;
     @extend .visible-sm-block;
     @extend .clearfix;
   }

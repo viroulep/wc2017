@@ -6,6 +6,7 @@ class RegistrationGroup < ApplicationRecord
   validates_presence_of :registration
 
   delegate :name, to: :registration
+  delegate :staff_teams, to: :registration
   delegate :event_id, to: :group
 
   validate :registered_for_event

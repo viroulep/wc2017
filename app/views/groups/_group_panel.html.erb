@@ -1,20 +1,23 @@
 <% group_id ||= "nogroup" %>
 <% title ||= "untitled" %>
 <% color ||= "white" %>
-<div class="col-xs-6 col-sm-3 col-md-2">
+<% staff_teams_ids = group.id.nil? ? [] : group.staff_teams.map(&:id) %>
+<div class="col-xs-6 col-sm-3">
   <div class="panel <%= "panel-#{color}" unless color.blank? %>">
     <div class="panel-heading heading-as-link collapsed" data-toggle="collapse" data-target="#collapse-<%= group_id %>">
       <h3 class="panel-title">
-        <%= link_to icon('pencil'), edit_group_path(group.id) if group.id %>
-        <%= link_to icon('trash'), group_path(group.id), id: "delete-group-#{group.id}", method: "delete" if group.id %>
-
+        <% if staff_teams_ids.any? %>
+          [<%= array_to_s(staff_teams_ids) %>]
+        <% end %>
         <%= title %>
         <span class="badge"><%= group.registration_groups.size %></span>
+        <%= link_to icon('pencil'), edit_group_path(group.id) if group.id %>
+        <%= link_to icon('trash'), group_path(group.id), id: "delete-group-#{group.id}", method: "delete" if group.id %>
         <span class="collapse-indicator"></span>
       </h3>
     </div>
     <div id="collapse-<%= group_id %>" class="panel-collapse collapse panel-groups">
-    <%= render "form_table_for_group", group: group, group_id: group_id %>
+    <%= render "form_table_for_group", group: group, group_id: group_id, group_teams: staff_teams_ids %>
     </div>
   </div>
 </div>
