@@ -1,7 +1,7 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!
   before_action :redirect_unless_admin!, except: [:edit, :update, :confirm, :schedule]
-  before_action :redirect_unless_can_edit!
+  before_action :redirect_unless_can_edit!, only: [:edit, :update, :confirm]
   before_action :redirect_unless_can_view!, only: [:schedule]
 
   WCIF_FILE_URL = "#{Rails.root}/wcif.json"
@@ -82,6 +82,10 @@ class RegistrationsController < ApplicationController
     @registrations = {}
     @registrations[:fr] = Registration.accepted.includes(:user).where(users: { country_iso2: "FR" })
     @registrations[:en] = Registration.accepted.includes(:user).where.not(users: { country_iso2: "FR" })
+  end
+
+  def names
+    @registrations = Registration.accepted.includes(:user)
   end
 
   def import

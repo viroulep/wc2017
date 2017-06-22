@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get 'registrations/psy/:event_id' => 'registrations#psych_sheet'
 
   get 'mails' => 'registrations#mails'
+  get 'names' => 'registrations#names'
   get 'registrations/cleanup' => 'registrations#cleanup'
 
   resources :groups, except: [:show], param: :group_id

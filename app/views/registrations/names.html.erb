@@ -1,0 +1,4 @@
+<h3>Competitors' names (<%= @registrations.size %>)</h3>
+<% @registrations.each do |registration| %>
+  <%= registration.user.name %><br/>
+<% end %>
