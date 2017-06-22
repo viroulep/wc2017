@@ -111,8 +111,15 @@ class RegistrationsController < ApplicationController
   def schedule
     @registration = Registration.includes([staff_registrations_groups: [:group], staff_teams_groups: [:group]]).find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
     @groups = @registration.groups
+    # individual schedule affectation
     @staff_registrations_groups = @registration.staff_registrations_groups.map(&:group)
+    # staff schedule affectation
     @staff_groups = @registration.staff_teams_groups.map(&:group)
+    @staff_groups.reject! do |g|
+      # Staff teams for MBF include staff people registered for MBF, only non
+      # registered staff people actually staff
+      g.event_id == "333mbf" && @registration.events.include?("333mbf")
+    end
   end
 
   def edit
