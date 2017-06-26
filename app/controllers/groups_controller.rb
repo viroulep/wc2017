@@ -203,7 +203,7 @@ class GroupsController < ApplicationController
   end
 
   def set_groups!
-    @groups = Group.for_round(@round.id).includes(registration_groups: { registration: [:user, :staff_teams] }, staff_teams: [])
+    @groups = Group.for_round(@round.id).includes(registration_groups: { registration: [:user, :staff_teams] }, staff_teams: []).order(:id)
   end
 
   def set_groups_ungrouped!
