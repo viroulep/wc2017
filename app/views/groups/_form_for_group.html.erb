@@ -100,6 +100,9 @@ $(document).ready(function () {
             <tr id="team-<%= "#{stm.object.staff_team_id}" %>">
               <td></td>
               <td>
+                <% if current_user.can_manage_competition?(managed_competition) %>
+                  [<%= stm.object.staff_team.id %>]
+                <% end %>
                 <%= stm.object.name %>
                 <%= stm.hidden_field :id %>
               </td>
@@ -128,6 +131,9 @@ $(document).ready(function () {
             <tr id="team-<%= "#{sa.id}" %>">
               <td></td>
               <td>
+                <% if current_user.can_manage_competition?(managed_competition) %>
+                  [<%= sa.id %>]
+                <% end %>
                 <%= sa.name %>
               </td>
             </tr>
