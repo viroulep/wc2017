@@ -62,6 +62,12 @@ class RegistrationsController < ApplicationController
     redirect_to(registrations_url, flash: { success: "Imported #{all_registrations.size} registrations and users successfully!" })
   end
 
+  def badges
+    inclusion = [ :registration_detail, :user, :guests ]
+    @staff = Registration.staff_available.includes(inclusion)
+    @competitors = Registration.accepted.includes(inclusion) - @staff
+  end
+
   def cleanup
     @registrations = Registration.accepted.includes(:user, :personal_bests, :registration_detail).order(:id)
     @to_clean = {}

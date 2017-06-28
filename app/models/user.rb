@@ -2,6 +2,23 @@
 class User < ApplicationRecord
   include WCAModel
   include ApplicationHelper
+
+  MISSING_CLAIM = {
+    "Hallvard Moberg" => "2015MOBE01",
+    "Leo Noel " => "2017NOEL01",
+    "Aidan Odom" => "2017ODOM01",
+    "Alexis Godefroy" => "2017GODE01",
+    "Xingyu Wu (吴惺宇)" => "2016WUXI02",
+    "Bat-Erdene Sambuudolgor (Бат-эрдэнэ)" => "2016SAMB04",
+    "Laban Björfors Dejfen" => "2017DEJF01",
+    "Javier Álvarez Suárez" => "2017SUAR04",
+    "Artus Huet" => "2017HUET01",
+    "Ge Qu (曲歌)" => "2007GEQU01",
+  }.freeze
+
+
+  COMP_PER_PERSON = JSON.parse(File.read(Rails.root.to_s + "/config/comp_per_person.json")).freeze
+
   has_one :registration, inverse_of: :user
 
   has_many :personal_bests

@@ -1,0 +1,39 @@
+<% require 'csv' %>
+<% headers = ["Status", "Name", "Country", "WCA ID", "Competitions"] %>
+<%= CSV.generate_line(headers).html_safe -%>
+<% @staff.each do |registration| %>
+  <%= CSV.generate_line([
+    registration.user.can_manage_competition?(managed_competition) ? "Core Team" : "Staff",
+    registration.name,
+    Country.find_by_iso2(registration.user.country_iso2)[:name],
+    registration.user.wca_id,
+    User::COMP_PER_PERSON[registration.user.wca_id],
+  ]).html_safe -%>
+  <% registration.guests.each do |guest| %>
+    <%= CSV.generate_line([
+      "Guests",
+      guest.name,
+      nil,
+      nil,
+      nil,
+    ]).html_safe -%>
+  <% end %>
+<% end %>
+<% @competitors.each do |registration| %>
+  <%= CSV.generate_line([
+    "Competitor",
+    registration.name,
+    Country.find_by_iso2(registration.user.country_iso2)[:name],
+    registration.user.wca_id,
+    User::COMP_PER_PERSON[registration.user.wca_id],
+  ]).html_safe -%>
+  <% registration.guests.each do |guest| %>
+    <%= CSV.generate_line([
+      "Guests",
+      guest.name,
+      nil,
+      nil,
+      nil,
+    ]).html_safe -%>
+  <% end %>
+<% end %>

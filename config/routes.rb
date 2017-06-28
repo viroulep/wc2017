@@ -17,6 +17,7 @@ Rails.application.routes.draw do
 
   get 'mails' => 'registrations#mails'
   get 'names' => 'registrations#names'
+  get 'badges' => 'registrations#badges'
   get 'registrations/cleanup' => 'registrations#cleanup'
 
   resources :groups, except: [:show], param: :group_id
