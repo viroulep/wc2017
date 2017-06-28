@@ -23,6 +23,9 @@
       <p>This person is registered as staff</p>
     <% end %>
     <hr/>
+    <% unless current_user.can_edit_guests?(managed_competition) %>
+      <p class="help-block">Note: you can't declare or modify guests anymore</p>
+    <% end %>
     <%= render "registration_form", registration: @registration %>
     <% if current_user.can_manage_competition?(managed_competition) %>
       <hr/>

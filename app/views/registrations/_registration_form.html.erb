@@ -26,9 +26,11 @@
                 <%= g.input_field :name, as: :guest %>
               </td>
               <td class="col-xs-2 action-cell">
-                <%= link_to_with_tooltip(icon('pencil', class: "text-info"), '#', 'Edit guest', class: 'edit-link', onclick: raw("startEdit('#{input_id}')"), id: "#{input_id}_s") %>
-                <%= link_to_with_tooltip(icon('remove', class: "text-warning"), '#', 'Cancel editing', class: 'cancel-link', onclick: "cancelEdit('#{input_id}')", id: "#{input_id}_c") %>
-                <%= link_to_with_tooltip(icon('minus-circle', class: "text-danger"), '#', 'Delete Guest', class: 'delete-link', onclick: "removeGuest($(this))") %>
+                <% if current_user.can_edit_guests?(managed_competition) %>
+                  <%= link_to_with_tooltip(icon('pencil', class: "text-info"), '#', 'Edit guest', class: 'edit-link', onclick: raw("startEdit('#{input_id}')"), id: "#{input_id}_s") %>
+                  <%= link_to_with_tooltip(icon('remove', class: "text-warning"), '#', 'Cancel editing', class: 'cancel-link', onclick: "cancelEdit('#{input_id}')", id: "#{input_id}_c") %>
+                  <%= link_to_with_tooltip(icon('minus-circle', class: "text-danger"), '#', 'Delete Guest', class: 'delete-link', onclick: "removeGuest($(this))") %>
+                <% end %>
               </td>
             </tr>
           <% end %>
@@ -42,11 +44,13 @@
               </td>
             </tr>
           <% end %>
-          <tr id="add-row" class="row">
-            <td colspan="2" data-toggle="tooltip" data-trigger="hover" title="Add guest">
-              <%= link_to icon('plus', class: "text-success"), '#', class: 'add-link' %>
-            </td>
-          </tr>
+          <% if current_user.can_edit_guests?(managed_competition) %>
+            <tr id="add-row" class="row">
+              <td colspan="2" data-toggle="tooltip" data-trigger="hover" title="Add guest">
+                <%= link_to icon('plus', class: "text-success"), '#', class: 'add-link' %>
+              </td>
+            </tr>
+          <% end %>
         </table>
       </div>
     </div>

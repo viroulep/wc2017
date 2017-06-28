@@ -12,6 +12,10 @@ class User < ApplicationRecord
     #'delegate_status',
     #'teams',
 
+  def can_edit_guests?(comp)
+    Registration::EDIT_GUESTS || can_manage_competition?(comp)
+  end
+
   def can_manage_competition?(comp)
     comp.admin_ids.split(",").include?(id.to_s)
   end

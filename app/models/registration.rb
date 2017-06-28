@@ -1,5 +1,8 @@
 class Registration < ApplicationRecord
   include WCAModel
+
+  EDIT_GUESTS = true
+
   belongs_to :user, inverse_of: :registration
   belongs_to :competition
   has_many :guests, inverse_of: :registration
