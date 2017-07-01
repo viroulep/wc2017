@@ -1,5 +1,5 @@
 <% require 'csv' %>
-<% headers = ["Status", "Name", "Country", "WCA ID", "Competitions"] %>
+<% headers = ["Status", "Name", "Country", "WCA ID", "Competitions", "Staff without registration"] %>
 <%= CSV.generate_line(headers).html_safe -%>
 <% @staff.each do |registration| %>
   <%= CSV.generate_line([
@@ -8,11 +8,13 @@
     Country.find_by_iso2(registration.user.country_iso2)[:name],
     registration.user.wca_id,
     User::COMP_PER_PERSON[registration.user.wca_id],
+    registration.status == "deleted" ? "yes" : nil,
   ]).html_safe -%>
   <% registration.guests.each do |guest| %>
     <%= CSV.generate_line([
       "Guests",
       guest.name,
+      nil,
       nil,
       nil,
       nil,
@@ -26,11 +28,13 @@
     Country.find_by_iso2(registration.user.country_iso2)[:name],
     registration.user.wca_id,
     User::COMP_PER_PERSON[registration.user.wca_id],
+    nil,
   ]).html_safe -%>
   <% registration.guests.each do |guest| %>
     <%= CSV.generate_line([
       "Guests",
       guest.name,
+      nil,
       nil,
       nil,
       nil,
