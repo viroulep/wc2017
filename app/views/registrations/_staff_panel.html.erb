@@ -5,8 +5,11 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-xs-12">
-        You are in the following staff teams : <%= raw(staff_teams_to_links(@registration.staff_teams)) %>
+        <p>You are in the following staff teams : <%= raw(staff_teams_to_links(@registration.staff_teams)) %></p>
       </div>
     </div>
+  </div>
+  <div class="panel-footer">
+    [T]: Thursday, [F]: Friday, [Sa]: Saturday, [Su]: Sunday
   </div>
 </div>

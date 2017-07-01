@@ -10,7 +10,9 @@
   <% else %>
     <% if @mine %>
       <% if @registration.details.staff %>
-        <p><strong>You are registered as Staff!</strong></p>
+        <div class="row">
+          <%= render "staff_panel" %>
+        </div>
       <% end %>
       <div class="row text-center">
         <div class="col-xs-12 col-sm-12">
@@ -27,12 +29,6 @@
       <p class="help-block">Note: you can't declare or modify guests anymore</p>
     <% end %>
     <%= render "registration_form", registration: @registration %>
-    <% if current_user.can_manage_competition?(managed_competition) %>
-      <hr/>
-      <div class="row">
-        <%= render "staff_panel" %>
-      </div>
-    <% end %>
     <hr/>
     <div class="row">
       <%= render "wca_registration_panel", registration: @registration, title: "Your WCA registration" %>
