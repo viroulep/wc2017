@@ -119,6 +119,21 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def top3
+    @registrations = Registration.includes(:user, :personal_bests)
+    @lines = []
+    Event.all.each do |e|
+      ["single", "average"].each do |t|
+        sorted_registrations = @registrations.sort_by do |r|
+          r.best_for(e.id, t)&.as_solve_time || SolveTime::SKIPPED
+        end
+        sorted_registrations[0..2].each do |r|
+          @lines << [e.name, t, r.best_for(e.id, t), r.user.wca_id, r.name, Country.find_by_iso2(r.user.country_iso2)[:name], r.user.avatar_url]
+        end
+      end
+    end
+  end
+
   def index
     @registrations = Registration.all.includes(:user, :registration_detail)
   end
