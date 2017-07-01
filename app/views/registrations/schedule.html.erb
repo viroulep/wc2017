@@ -33,5 +33,8 @@ $('#calendar').fullCalendar({
   timeFormat: 'H:mm',
   slotLabelFormat: 'H:mm',
   events: '<%= registration_schedule_path(@registration, format: :json) %>',
+  eventClick: function(event, jsEvent, view) {
+    $.getScript(event.show_url, function() {});
+  },
 });
 </script>

@@ -21,14 +21,14 @@ Rails.application.routes.draw do
   get 'top3' => 'registrations#top3'
   get 'registrations/cleanup' => 'registrations#cleanup'
 
-  resources :groups, except: [:show], param: :group_id
+  resources :groups, param: :group_id
   resources :groups, only: [] do
     patch 'staff' => 'groups#update_staff'
   end
 
   resources :staff_teams
 
-  get 'groups/schedule' => 'groups#schedule'
+  get 'groups-schedule' => 'groups#schedule'
   get 'groups/e/:event_id' => 'groups#show_for_event', :as => :groups_for_event
   get 'groups/r/:round_id' => 'groups#show_for_round', :as => :groups_for_round
   patch 'groups/r/:round_id' => 'groups#update_for_round'

@@ -18,7 +18,7 @@ class Group < ApplicationRecord
   has_many :staff_registrations_groups, inverse_of: :group, dependent: :delete_all
 
   has_many :staff_teams, through: :staff_teams_groups
-  has_many :staff_registrations, through: :staff_registrations_groups
+  has_many :staff_registrations, through: :staff_registrations_groups, source: :registration
 
   belongs_to :round
 
@@ -40,6 +40,11 @@ class Group < ApplicationRecord
 
   def text_color
     "#000000"
+  end
+
+  def all_staff_people
+    # For events like MBF and big blinds, staff teams contain competitors and staff !
+    (staff_registrations + staff_teams.map(&:registrations)).flatten - registrations
   end
 
   def self.clear_for_round(round_id)

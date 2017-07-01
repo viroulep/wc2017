@@ -66,4 +66,11 @@ class ApplicationController < ActionController::Base
         end
       end
     end
+
+    def redirect_unless_can_view!
+      unless (ENV['GROUPS_VISIBLE']) || current_user&.can_manage_competition?(managed_competition) || current_user&.registration&.details.staff
+        flash[:danger] = "Groups are not yet done, or you don't have groups."
+        redirect_to root_url
+      end
+    end
 end

@@ -2,7 +2,7 @@ module RoundsHelper
   def round_colors(round)
     # Random notes: staff color #960505
     total_rounds = Round.where(event_id: round.event_id).count
-    if (total_rounds - round.r_id) == 0
+    if round.event_id == "magic" || (total_rounds - round.r_id) == 0
       return ["#009e60", "#000"]
     end
 
@@ -14,8 +14,8 @@ module RoundsHelper
     when 3
       ["#c41e3a", "#000"]
     else
-      # Lunch break and stuff
-      ["#fff", "#000"]
+      # Should not be possible
+      ["#ccc", "#000"]
     end
   end
 end

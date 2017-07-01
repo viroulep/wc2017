@@ -1,7 +1,7 @@
 class GroupsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!
-  before_action :set_group, only: [:destroy, :edit, :update, :update_staff]
+  before_action :redirect_unless_admin!, except: [:show]
+  before_action :set_group, only: [:destroy, :edit, :update, :update_staff, :show]
 
   SINGLE = %w(333bf 444bf 555bf 333fm 333mbf).freeze
   PREFIXES = %w([Su] [Mo] [Tu] [W] [T] [F] [Sa]).freeze

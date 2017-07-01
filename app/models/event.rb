@@ -19,6 +19,13 @@ class Event
 
   ALL_EVENTS = [
     {
+      # haha
+      id: "magic",
+      name: "Registration",
+      rank: 0,
+      limit: SolveTime.new('333', :single, -1),
+    },
+    {
       id: "333",
       name: "Rubik's Cube",
       rank: 10,

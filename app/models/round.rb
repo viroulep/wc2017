@@ -14,7 +14,11 @@ class Round < ApplicationRecord
   end
 
   def name
-    "#{Event.find(event_id).name} Round #{r_id}"
+    if event_id == "magic"
+      "Registration"
+    else
+      "#{Event.find(event_id).name} Round #{r_id}"
+    end
   end
 
   def self.all_ordered

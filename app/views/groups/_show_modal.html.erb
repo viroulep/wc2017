@@ -1,0 +1,63 @@
+<div class="modal fade" id="edit_event">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">
+          Information for <%= @group.name %>
+          <% if current_user&.can_manage_competition?(managed_competition) %>
+            <%= link_to icon('pencil'), edit_group_path(@group), class: "btn btn-primary btn-sm" %>
+          <% end %>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12 col-md-6">
+            <table data-toggle="table"
+                   class="table table-hover">
+              <thead>
+                <tr>
+                  <th>
+                    Competitors (<%= @group.registrations.size %>)
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @group.registrations.each do |comp|%>
+                  <tr>
+                    <td>
+                      <%= comp.name %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-xs-12 col-md-6">
+            <table data-toggle="table"
+                   class="table table-hover">
+              <thead>
+                <tr>
+                  <th>
+                    Staff member (<%= @group.all_staff_people.size %>)
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @group.all_staff_people.each do |stg|%>
+                  <tr>
+                    <td>
+                      <%= stg.name %>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        TODO
+        +edit link
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,3 +13,4 @@ if current_user&.can_manage_competition?(managed_competition)
   json.title "[#{array_to_s(group.staff_teams.map(&:id))}] #{group_name}"
   json.edit_url edit_group_url(group)
 end
+json.show_url group_url(group)

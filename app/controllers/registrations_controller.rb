@@ -143,16 +143,15 @@ class RegistrationsController < ApplicationController
   end
 
   def schedule
-    @registration = Registration.includes([staff_registrations_groups: [:group], staff_teams_groups: [:group]]).find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
+    base_model = Registration.includes([staff_registrations_groups: { group: [:round] }, staff_teams_groups: { group: [:round] }])
+    @registration = base_model.find_by_id(params[:registration_id]) || base_model.find_by(user_id: current_user.id)
     @groups = @registration.groups
     # individual schedule affectation
     @staff_registrations_groups = @registration.staff_registrations_groups.map(&:group)
     # staff schedule affectation
     @staff_groups = @registration.staff_teams_groups.map(&:group)
     @staff_groups.reject! do |g|
-      # Staff teams for MBF include staff people registered for MBF, only non
-      # registered staff people actually staff
-      g.event_id == "333mbf" && @registration.events.include?("333mbf")
+      @groups.include?(g)
     end
   end
 
@@ -266,15 +265,4 @@ class RegistrationsController < ApplicationController
       return
     end
   end
-
-  def redirect_unless_can_view!
-    # NOTE: this has the side effect that if someone provides a wrong registration id,
-    # they end up on their groups
-    registration = Registration.find_by_id(params[:registration_id]) || Registration.find_by(user_id: current_user.id)
-    unless (ENV['GROUPS_VISIBLE'] && registration.accepted?) || current_user&.can_manage_competition?(managed_competition)
-      flash[:danger] = "Groups are not yet done, or you don't have groups."
-      redirect_to root_url
-    end
-  end
-
 end
