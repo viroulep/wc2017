@@ -15,7 +15,7 @@
     <% @staff_teams.each do |staff_team| %>
       <tr>
         <td>
-          <%= link_to staff_team.name, staff_team %>
+          <%= link_to render("shared/team_name", team: staff_team), staff_team %>
           <% if current_user.can_manage_competition?(managed_competition) %>
             <%= link_to icon('pencil'), edit_staff_team_path(staff_team), class: "btn btn-primary btn-sm" %>
             <%= link_to icon('trash'), staff_team, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>

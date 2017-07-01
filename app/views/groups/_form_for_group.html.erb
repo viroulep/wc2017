@@ -103,7 +103,7 @@ $(document).ready(function () {
                 <% if current_user.can_manage_competition?(managed_competition) %>
                   [<%= stm.object.staff_team.id %>]
                 <% end %>
-                <%= stm.object.name %>
+                <%= render "shared/team_name", team: stm.object %>
                 <%= stm.hidden_field :id %>
               </td>
             </tr>
@@ -134,7 +134,7 @@ $(document).ready(function () {
                 <% if current_user.can_manage_competition?(managed_competition) %>
                   [<%= sa.id %>]
                 <% end %>
-                <%= sa.name %>
+                <%= render "shared/team_name", team: sa %>
               </td>
             </tr>
           <% end %>

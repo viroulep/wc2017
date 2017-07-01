@@ -5,4 +5,5 @@ class StaffTeamsGroup < ApplicationRecord
   validates_presence_of :staff_team
 
   delegate :name, to: :staff_team
+  delegate :comments, to: :staff_team
 end
