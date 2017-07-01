@@ -1,6 +1,7 @@
 class StaffTeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :redirect_unless_admin!
+  before_action :redirect_unless_admin!, except: [:index, :show]
+  before_action :redirect_unless_staff!
   before_action :set_staff_team, only: [:show, :edit, :update, :destroy]
   before_action :set_staff_available, only: [:edit, :update]
 
@@ -75,7 +76,7 @@ class StaffTeamsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def staff_team_params
-    params.require(:staff_team).permit(:name, :staff_team_members_attributes => [:id, :team_leader])
+    params.require(:staff_team).permit(:comments, :name, :staff_team_members_attributes => [:id, :team_leader])
   end
 
   def selected_registrations_ids

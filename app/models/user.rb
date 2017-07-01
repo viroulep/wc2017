@@ -49,6 +49,10 @@ class User < ApplicationRecord
     avatar_thumb_url
   end
 
+  def staff?
+    registration&.details.staff
+  end
+
   def self.process_json(json_user)
     # if such field exists, we are importing the WCIF,
     # else it's just a regular user login

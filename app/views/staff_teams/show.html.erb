@@ -1,9 +1,20 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+  <%= link_to 'Back to teams\' index', staff_teams_path %>
+</p>
+
+<p>
 <strong>Name:</strong>
 <%= @staff_team.name %>
 </p>
+
+<% unless @staff_team.comments.blank? %>
+  <p>
+  <strong>Comments:</strong>
+  <%= @staff_team.comments %>
+  </p>
+<% end %>
 
 <p>
 <strong>Leader:</strong>
@@ -14,7 +25,6 @@
        id="table-accepted">
   <thead>
     <tr>
-      <th>ID</th>
       <th>Name</th>
       <th>Scrambles for</th>
       <th>Runner only</th>
@@ -24,9 +34,12 @@
     <% @staff_team.registrations.each do |registration| %>
       <tr>
         <td>
-          <%= link_to registration.id, edit_registration_path(registration) %>
+          <% if current_user.can_manage_competition?(managed_competition) %>
+            <%= link_to registration.name, edit_registration_path(registration) %>
+          <% else %>
+            <%= registration.name %>
+          <% end %>
         </td>
-        <td><%= registration.name %></td>
         <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id) %></td>
         <td><%= registration.details.runner_only ? "yes" : "" %></td>
       </tr>
@@ -35,11 +48,11 @@
 </table>
 <p>Number of scramblers per event:</p>
 <p>
-<% Event.all.each do |e| %>
+<% Event.all_real.each do |e| %>
   <%= render "shared/event", event: e %>: <%= @scramblers_per_event[e.id] || 0 %>
   <br/>
 <% end %>
 </p>
-
-<%= link_to 'Edit', edit_staff_team_path(@staff_team) %> |
-<%= link_to 'Back', staff_teams_path %>
+<% if current_user.can_manage_competition?(managed_competition) %>
+  <%= link_to 'Edit', edit_staff_team_path(@staff_team) %> |
+<% end %>

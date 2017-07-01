@@ -17,6 +17,10 @@ class Event
     ALL_EVENTS
   end
 
+  def self.all_real
+    Event.all.reject { |e| e.id == "magic" }
+  end
+
   ALL_EVENTS = [
     {
       # haha
