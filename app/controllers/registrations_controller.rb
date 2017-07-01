@@ -59,11 +59,11 @@ class RegistrationsController < ApplicationController
       end
       # Create missing registrations/account for badges
       User.create(id: 27324, name: "Andrea Chana", country_iso2: "ES")
-      # Fake user id, to update if she gets an account
       User.create(id: 63476, name: "Silvia Bubendorf", country_iso2: "CH")
       User.create(id: 29176, name: "Aurelien Souchet (高凡)", country_iso2: "FR", wca_id: "2006SOUC01")
+      User.create(id: 63643, name: "Jirij Hønning", country_iso2: "DK")
       i = 1
-      [22653, 27324, 63476, 29176].each do |uid|
+      [22653, 27324, 63476, 29176, 63643].each do |uid|
         registration = Registration.create(user_id: uid, event_ids: "", status: "deleted")
         registration.id = i
         registration.details.staff = true
