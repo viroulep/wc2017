@@ -22,6 +22,9 @@
           <% line_id = "#{f.object.group_id}_#{f.object.registration_id}" %>
           <td id="<%= line_id %>">
             <%= f.object.name %>
+            <% unless (f.object.registration.events & ["333mbf", "444bf", "555bf"]).empty? %>
+              !
+            <% end %>
             <%= array_to_s(registration_teams) %>
             <%= f.hidden_field :id %>
             <%= f.hidden_field :registration_id %>
