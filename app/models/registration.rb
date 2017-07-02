@@ -55,6 +55,10 @@ class Registration < ApplicationRecord
     status == 'deleted'
   end
 
+  def scrambles_for?(event_id)
+    scramble_events.map(&:event_id).include?(event_id)
+  end
+
   def validate_guests
     unless new_record?
       errors.add(:guests, "Maximum number of guests is 5") if visible_guests.size > 5

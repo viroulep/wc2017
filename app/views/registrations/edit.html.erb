@@ -14,11 +14,6 @@
     <p>You're not registered for the competition</p>
   <% else %>
     <% if @mine %>
-      <% if @registration.details.staff %>
-        <div class="row">
-          <%= render "staff_panel" %>
-        </div>
-      <% end %>
       <div class="row text-center">
         <div class="col-xs-12 col-sm-12">
           <% if @registration.accepted? && !(@registration.details.confirmed_at || @registration.details.cancelled_at) %>
@@ -28,6 +23,11 @@
       </div>
     <% elsif @registration.details.staff %>
       <p>This person is registered as staff</p>
+    <% end %>
+    <% if @registration.details.staff %>
+      <div class="row">
+        <%= render "staff_panel" %>
+      </div>
     <% end %>
     <hr/>
     <% unless current_user.can_edit_guests?(managed_competition) %>

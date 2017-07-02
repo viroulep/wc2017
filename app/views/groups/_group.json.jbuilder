@@ -1,7 +1,17 @@
 json.extract! group, :id, :start, :end
 json.class "group"
 staff ||= nil
-group_name = staff ? "[Staff] #{group.name}" : group.name
+display_team_ids ||= nil
+group_name = group.name
+if staff
+  role = "J/R"
+  if @registration.details.runner_only
+    role = "R"
+  elsif @registration.scrambles_for?(group.event_id)
+    role = "S"
+  end
+  group_name = "[Staff - #{role}] " + group_name
+end
 json.title group_name
 bg ||= nil
 fg ||= nil
@@ -10,7 +20,9 @@ json.textColor fg ? fg : group.text_color
 
 if current_user&.can_manage_competition?(managed_competition)
   json.update_url group_url(group, format: :json)
-  json.title "[#{array_to_s(group.staff_teams.map(&:id))}] #{group_name}"
+  if display_team_ids
+    json.title "[#{array_to_s(group.staff_teams.map(&:id))}] #{group_name}"
+  end
   json.edit_url edit_group_url(group)
 end
 json.show_url group_url(group)
