@@ -8,6 +8,54 @@ class GroupsController < ApplicationController
   SINGLE = %w(333bf 444bf 555bf 333fm 333mbf).freeze
   PREFIXES = %w([Su] [Mo] [Tu] [W] [T] [F] [Sa]).freeze
 
+  def top_low_to_group
+    max_in_group = params[:n]&.to_i || 20
+    group = Group.find(params[:group_id])
+    top_low = params.require(:direction)
+    event = Event.find(group.event_id)
+    registrations = Registration.includes(:user, :personal_bests, :registration_groups).with_event_without_group_for(group.round, :user).sort_by do |r|
+      r.best_for(event.id, "average")&.as_solve_time || SolveTime::SKIPPED
+    end
+
+    group_size = group.registrations.size
+    while group_size < max_in_group && !registrations.empty?
+      r = top_low == "low" ? registrations.pop : registrations.shift
+      group_size += 1
+      group.registration_groups.build(registration: r)
+    end
+
+    group.save
+
+    redirect_to groups_for_event_path(event.id)
+  end
+
+  def fill_remaining_groups
+    max_in_group = params[:n]&.to_i || 20
+    round = Round.find(params[:round_id])
+    event = Event.find(round.event_id)
+    unless round.r_id == 1
+      flash[:warning] = "Can't generate groups for non first round!"
+      return redirect_to groups_for_round_path(round.id)
+    end
+    groups = Group.for_round(round.id).includes(registration_groups: { registration: [:user] }).order(id: :desc)
+    registrations = Registration.includes(:user, :personal_bests, :registration_groups).with_event_without_group_for(round, :user).sort_by do |r|
+      r.best_for(event.id, "average")&.as_solve_time || SolveTime::SKIPPED
+    end
+
+    groups.each do |g|
+      slot_available = max_in_group - g.registrations.size
+      if slot_available <= 0
+        next
+      end
+      to_add = registrations.slice!(0, slot_available)
+      to_add&.each do |r|
+        g.registration_groups.build(registration: r)
+      end
+      g.save
+    end
+    redirect_to groups_for_event_path(event.id)
+  end
+
   def autogenerate_group
     @round = Round.find(params[:round_id])
     unless @round.r_id == 1

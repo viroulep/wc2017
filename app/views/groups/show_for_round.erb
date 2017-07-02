@@ -1,6 +1,10 @@
 <%= render 'nav', active_event: @event.id do %>
   <% if @round %>
-    <p><a href="#" id="groups-action-expand">Expand all</a> | <a href="#" id="groups-action-collapse">Collapse all</a></p>
+    <p>
+    <a href="#" id="groups-action-expand">Expand all</a>
+    | <a href="#" id="groups-action-collapse">Collapse all</a>
+    | <%= link_to "Fillup remaining groups", fill_remaining_path(@round) %>
+    </p>
     <!--<p><%= link_to "Autogenerate groups (will erase current registration groups!)", generate_groups_path(@round.id), method: "patch" %></p>-->
     <p><%= link_to "Edit #{@round.name} schedule", edit_round_path(@round) %></p>
     <div class="row row-all-groups">
