@@ -70,6 +70,10 @@ class RegistrationsController < ApplicationController
         registration.save!(validate: false)
         i+= 1
       end
+      User::MISSING_CLAIM.each do |name,id|
+        user = User.find_by(name: name)
+        user&.update(wca_id: id)
+      end
     end
 
     redirect_to(registrations_url, flash: { success: "Imported #{all_registrations.size} registrations and users successfully!" })
