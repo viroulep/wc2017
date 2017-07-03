@@ -264,10 +264,6 @@ class GroupsController < ApplicationController
       staff_teams_groups: [:staff_team],
       staff_registrations_groups: {
         registration: [:user],
-        staff_teams: {
-          users: [],
-          registration: [:user]
-        }
       }
     }
     @group = Group.includes(inclusion).find(params[:group_id])
