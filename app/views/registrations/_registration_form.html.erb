@@ -67,8 +67,7 @@
                 <%= e %>
               </span>
             <% end %>
-            <%# temporary hide the view %>
-            <% if registration.events.include?("333mbf") && current_user.can_manage_competition?(managed_competition) %>
+            <% if registration.events.include?("333mbf") %>
               <div class="row">
                 <div class="col-xs-12">
                   <h4>Number of cubes for 3x3x3 Multi-Blind</h4>
