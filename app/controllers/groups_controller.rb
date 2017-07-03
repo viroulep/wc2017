@@ -258,7 +258,7 @@ class GroupsController < ApplicationController
       # That's a lot and messy...
       users: [],
       staff_teams: {
-        registrations: [:user],
+        registrations: [:user, :registration_detail, :scramble_events],
       },
       registrations: [:user],
       staff_teams_groups: [:staff_team],
