@@ -33,6 +33,12 @@ class User < ApplicationRecord
     Registration::EDIT_GUESTS || can_manage_competition?(comp)
   end
 
+  def best_for(event_id, type)
+    @best_for ||= {}
+    @best_for[event_id] ||= {}
+    @best_for[event_id][type] ||= personal_bests.select { |pb| pb.event_id == event_id && pb.result_type == type }.first
+  end
+
   def can_manage_competition?(comp)
     comp.admin_ids.split(",").include?(id.to_s)
   end

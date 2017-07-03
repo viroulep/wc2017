@@ -23,6 +23,7 @@ class Registration < ApplicationRecord
   accepts_nested_attributes_for :scramble_events, allow_destroy: true
 
   delegate :name, to: :user
+  delegate :best_for, to: :user
 
   validate :validate_guests
 
@@ -80,12 +81,6 @@ class Registration < ApplicationRecord
 
   def events
     @events ||= event_ids.split(",")
-  end
-
-  def best_for(event_id, type)
-    @best_for ||= {}
-    @best_for[event_id] ||= {}
-    @best_for[event_id][type] ||= personal_bests.select { |pb| pb.event_id == event_id && pb.result_type == type }.first
   end
 
   def visible_guests
