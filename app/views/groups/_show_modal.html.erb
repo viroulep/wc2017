@@ -23,7 +23,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @group.registrations.each do |comp|%>
+                <% @group.registrations.sort_by(&:name).each do |comp|%>
                   <tr>
                     <td>
                       <%= comp.name %>
@@ -47,6 +47,13 @@
                 <% @group.all_staff_people.each do |stg|%>
                   <tr>
                     <td>
+                      <% if stg.scrambles_for?(@group.event_id) %>
+                        [S]
+                      <% elsif stg.runner_only? %>
+                        [R]
+                      <% else %>
+                        [J/R]
+                      <% end %>
                       <%= stg.name %>
                     </td>
                   </tr>

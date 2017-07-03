@@ -31,7 +31,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @staff_team.registrations.each do |registration| %>
+    <% @staff_team.registrations.sort_by(&:name).each do |registration| %>
       <tr>
         <td>
           <% if current_user.can_manage_competition?(managed_competition) %>

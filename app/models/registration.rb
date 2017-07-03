@@ -59,6 +59,10 @@ class Registration < ApplicationRecord
     scramble_events.map(&:event_id).include?(event_id)
   end
 
+  def runner_only?
+    details.runner_only
+  end
+
   def validate_guests
     unless new_record?
       errors.add(:guests, "Maximum number of guests is 5") if visible_guests.size > 5

@@ -42,7 +42,7 @@
         </tr>
       </tfoot>
       <tbody>
-        <%= f.simple_fields_for :staff_team_members do |stm|%>
+        <%= f.simple_fields_for :staff_team_members, f.object.staff_team_members.sort_by(&:name) do |stm|%>
           <tr id="registration-<%= "#{stm.object.registration_id}" %>">
             <td></td>
             <td>

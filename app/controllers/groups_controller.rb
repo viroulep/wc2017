@@ -254,7 +254,23 @@ class GroupsController < ApplicationController
 
   private
   def set_group
-    @group = Group.includes({staff_teams_groups: [:staff_team], staff_registrations_groups: [:registration]}).find(params[:group_id])
+    inclusion = {
+      # That's a lot and messy...
+      users: [],
+      staff_teams: {
+        registrations: [:user],
+      },
+      registrations: [:user],
+      staff_teams_groups: [:staff_team],
+      staff_registrations_groups: {
+        registration: [:user],
+        staff_teams: {
+          users: [],
+          registration: [:user]
+        }
+      }
+    }
+    @group = Group.includes(inclusion).find(params[:group_id])
   end
 
   def set_staff_teams!

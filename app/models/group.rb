@@ -44,7 +44,7 @@ class Group < ApplicationRecord
 
   def all_staff_people
     # For events like MBF and big blinds, staff teams contain competitors and staff !
-    (staff_registrations + staff_teams.map(&:registrations)).flatten - registrations
+    ((staff_registrations + staff_teams.map(&:registrations)).flatten - registrations).sort_by(&:name)
   end
 
   def self.clear_for_round(round_id)

@@ -5,7 +5,7 @@
   <div class="panel-body">
     <div class="row">
       <div class="col-xs-12">
-        <p>You are in the following staff teams : <%= raw(staff_teams_to_links(@registration.staff_teams)) %></p>
+        <p>You are in the following staff teams : <%= raw(staff_teams_to_links(@registration.staff_teams.order(:id))) %></p>
       </div>
     </div>
   </div>
