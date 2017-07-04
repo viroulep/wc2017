@@ -33,6 +33,8 @@ Rails.application.routes.draw do
   get 'groups/r/:round_id' => 'groups#show_for_round', :as => :groups_for_round
   patch 'groups/r/:round_id' => 'groups#update_for_round'
 
+  delete 'registration_groups/:id' => 'groups#destroy_registration_group', :as => :delete_from_group
+
   patch 'groups/autogenerate/:round_id' => 'groups#autogenerate_group', :as => :generate_groups
   get 'groups/generate/:group_id/:direction(/:n)' => 'groups#top_low_to_group', :as => :top_low_groups
   get 'groups/fill/:round_id(/:n)' => 'groups#fill_remaining_groups', :as => :fill_remaining

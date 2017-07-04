@@ -26,6 +26,8 @@
               !
             <% end %>
             <%= array_to_s(registration_teams) %>
+
+            <%= link_to icon('trash'), delete_from_group_path(f.object.id), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-xs pull-right" if f.object.id %>
             <%= f.hidden_field :id %>
             <%= f.hidden_field :registration_id %>
             <%= f.hidden_field :group_id, class: "hidden-group-input" %>

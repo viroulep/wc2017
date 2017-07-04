@@ -218,6 +218,13 @@ class GroupsController < ApplicationController
     end
   end
 
+  def destroy_registration_group
+    rg = RegistrationGroup.find(params[:id])
+    round_back = rg.group.round
+    rg.destroy
+    redirect_to groups_for_round_path(round_back.id), flash: { success: "Deleted from group" }
+  end
+
   def update_for_round
     begin
       round = Round.find(params[:round_id])
