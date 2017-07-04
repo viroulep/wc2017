@@ -155,8 +155,9 @@ class RegistrationsController < ApplicationController
     @staff_registrations_groups = @registration.staff_registrations_groups.map(&:group)
     # staff schedule affectation
     @staff_groups = @registration.staff_teams_groups.map(&:group)
+    side_event = ["333mbf", "444bf", "555bf"]
     @staff_groups.reject! do |g|
-      @groups.include?(g)
+      side_event.include?(g.event_id) && @groups.include?(g)
     end
   end
 
