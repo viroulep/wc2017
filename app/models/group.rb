@@ -38,6 +38,19 @@ class Group < ApplicationRecord
     COLORS[self[:color]]
   end
 
+  def short_name
+    event_name = Event.find(event_id).short_name
+    if name =~ /Group/
+      event_name + name.sub(/.*( Group[ ]+(?<n>[0-9]*))/,' G\k<n>')
+    elsif name =~ /Attempt/
+      event_name + name.sub(/.*( Attempt (?<n>[0-9]*))/, ' #\k<n>')
+    elsif name =~ /submission/
+      event_name + " Submit cubes"
+    else
+      event_name + name
+    end
+  end
+
   def text_color
     "#000000"
   end

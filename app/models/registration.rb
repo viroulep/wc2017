@@ -48,6 +48,10 @@ class Registration < ApplicationRecord
     status == 'accepted'
   end
 
+  def staff?
+    details.staff
+  end
+
   def pending?
     status == 'pending'
   end

@@ -1,0 +1,135 @@
+<style>
+.no_break_inside, h1, h2, h3, li, p, tr, .calendar-cell {
+  page-break-inside: avoid !important;
+}
+
+.name {
+  margin-top: 1cm;
+  page-break-after: avoid !important;
+}
+.navbar {
+  display: none;
+}
+.col-xs-4 {
+  width: 6cm;
+  display: inline-block;
+}
+.fc-list-table td {
+  padding: 3px;
+}
+
+.fc-list-item-time {
+  width: 40px;
+  white-space: normal;
+  text-align: center;
+}
+
+.fc-event-dot {
+  margin-top: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+}
+
+.fc-ltr .fc-list-item-marker {
+  padding-left: 0px;
+  padding-right: 5px;
+}
+</style>
+<script>
+var commonOptions = function(day, eventsParam) {
+
+return {
+  // see: https://fullcalendar.io/docs/views/Custom_Views/
+  views: {
+    listFourDay: {
+      type: 'list',
+      duration: { days: 4 },
+      buttonText: 'Printable',
+    },
+  },
+  defaultView: 'list',
+  header: false,
+  // yep, hardcoded
+  defaultDate: day,
+  minTime:'08:00:00',
+  maxTime:'20:00:00',
+  contentHeight: 'auto',
+  //aspectRatio: '3',
+  slotDuration: '00:15:00',
+  displayEventEnd: false,
+  timeFormat: 'H:mm',
+  slotLabelFormat: 'H:mm',
+  events: eventsParam,
+  /*eventRender: function(event, element) {
+    element.html(element.html().replace(" -",""));
+  },*/
+};
+}
+</script>
+<div class="row">
+<% @registrations.each_slice((@registrations.size/3.to_f).round).each do |slice| %>
+  <div class="col-xs-4">
+  <% slice.each do |r| %>
+  <% groups = r.groups %>
+  <% individual_staff = r.staff_registrations_groups.map(&:group) %>
+  <% staff_team_groups = r.staff_teams_groups.map(&:group) %>
+  <% staff_team_groups.reject! { |g| @side_event.include?(g.event_id) && groups.include?(g) } %>
+    <div class="calendar-cell">
+    <p class="name"><b><%= r.name %></b></p>
+    <div id="calendar-<%= r.id %>"></div>
+    </div>
+    <div class="calendar-cell">
+    <p class="name"><b><%= r.name %></b></p>
+    <div id="calendar-<%= r.id %>-friday"></div>
+    </div>
+    <div class="calendar-cell">
+    <p class="name"><b><%= r.name %></b></p>
+    <div id="calendar-<%= r.id %>-saturday"></div>
+    </div>
+    <div class="calendar-cell">
+    <p class="name"><b><%= r.name %></b></p>
+    <div id="calendar-<%= r.id %>-sunday"></div>
+    </div>
+    <!--
+    <div class="calendar-cell calendar-<%= r.id %> friday"></div>
+    <div class="calendar-cell calendar-<%= r.id %> saturday"></div>
+    <div class="calendar-cell calendar-<%= r.id %> sunday"></div>
+    -->
+<script>
+var events<%= r.id %> = [
+  <% groups.each do |g| %>
+    <%= raw(render('groups/group.json.jbuilder', group: g, short: true)) %>,
+  <% end %>
+  <% individual_staff.each do |g| %>
+    <%= raw(render('groups/group.json.jbuilder', group: g, short: true, staff: true, registration: r)) %>,
+  <% end %>
+  <% staff_team_groups.each do |g| %>
+    <%= raw(render('groups/group.json.jbuilder', group: g, short: true, staff: true, registration: r)) %>,
+  <% end %>
+];
+$('#calendar-<%= r.id %>').fullCalendar(commonOptions("2017-07-13", events<%= r.id %>));
+$('#calendar-<%= r.id %>-friday').fullCalendar(commonOptions("2017-07-14", events<%= r.id %>));
+$('#calendar-<%= r.id %>-saturday').fullCalendar(commonOptions("2017-07-15", events<%= r.id %>));
+$('#calendar-<%= r.id %>-sunday').fullCalendar(commonOptions("2017-07-16", events<%= r.id %>));
+$('#calendar-<%= r.id %>').ready(function (){
+  $('#calendar-<%= r.id %>').find('.fc-scroller').removeAttr("style");
+});
+$('#calendar-<%= r.id %>-friday').ready(function (){
+  $('#calendar-<%= r.id %>-friday').find('.fc-scroller').removeAttr("style");
+});
+$('#calendar-<%= r.id %>-saturday').ready(function (){
+  $('#calendar-<%= r.id %>-saturday').find('.fc-scroller').removeAttr("style");
+});
+$('#calendar-<%= r.id %>-sunday').ready(function (){
+  $('#calendar-<%= r.id %>-sunday').find('.fc-scroller').removeAttr("style");
+});
+</script>
+<% end %>
+  </div>
+<% end %>
+<script>
+
+
+</script>
+</div>

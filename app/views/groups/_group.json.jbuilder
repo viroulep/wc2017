@@ -1,16 +1,26 @@
 json.extract! group, :id, :start, :end
 json.class "group"
+short ||= nil
 staff ||= nil
+registration ||= @registration
 display_team_ids ||= nil
-group_name = group.name
+group_name = if short
+               group.short_name
+             else
+               group.name
+             end
 if staff
   role = "J/R"
-  if @registration.details.runner_only
+  if registration.details.runner_only
     role = "R"
-  elsif @registration.scrambles_for?(group.event_id)
+  elsif registration.scrambles_for?(group.event_id)
     role = "S"
   end
-  group_name = "[Staff - #{role}] " + group_name
+  group_name = if short
+                 "[#{role}] " + group_name
+               else
+                 "[Staff - #{role}] " + group_name
+               end
 end
 json.title group_name
 bg ||= nil
