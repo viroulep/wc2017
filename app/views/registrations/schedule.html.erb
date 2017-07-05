@@ -1,10 +1,12 @@
-<h1>Schedule for <%= @registration.name %></h1>
+<h4><%= @registration.name %></h4>
 
 <div class="row">
   <div id="calendar" class="col-xs-12"></div>
 </div>
 <script>
-var defaultViewNav = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? "agenda" : "agendaFourDay";
+var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+var defaultViewNav = mobile ? "agenda" : "agendaFourDay";
+var viewAvail = mobile ? "agendaFourDay,agenda" : "listFourDay,agendaFourDay,agenda";
 
 $('#calendar').fullCalendar({
   // see: https://fullcalendar.io/docs/views/Custom_Views/
@@ -26,14 +28,14 @@ $('#calendar').fullCalendar({
   defaultView: defaultViewNav,
   header: {
     left: '',
-    center: 'listFourDay,agendaFourDay,agenda',
+    center: viewAvail,
     right: 'prev,next',
   },
   // yep, hardcoded
   defaultDate: '2017-07-13',
   minTime:'08:00:00',
   maxTime:'20:00:00',
-  //aspectRatio: '3',
+  aspectRatio: '0.75',
   slotDuration: '00:15:00',
   timeFormat: 'H:mm',
   slotLabelFormat: 'H:mm',
