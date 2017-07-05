@@ -19,8 +19,10 @@ Rails.application.routes.draw do
   get 'names' => 'registrations#names'
   get 'badges' => 'registrations#badges'
   get 'top3' => 'registrations#top3'
-  get 'printable_schedules' => 'registrations#printable_schedules'
   get 'registrations/cleanup' => 'registrations#cleanup'
+
+  get 'printable_schedules' => 'printing#printable_schedules'
+  get 'registrations_sheet' => 'printing#registrations'
 
   resources :groups, param: :group_id
   resources :groups, only: [] do
