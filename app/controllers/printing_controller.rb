@@ -19,7 +19,7 @@ class PrintingController < ApplicationController
 
   def registrations
     inclusion = [ :registration_detail, :user, :guests ]
-    @staff = Registration.staff_available.includes(inclusion).sort_by(&:name)
-    @competitors = (Registration.accepted.includes(inclusion) - @staff).sort_by(&:name)
+    @staff = Registration.staff_available.includes(inclusion).sort_by { |r| I18n.transliterate(r.name) }
+    @competitors = (Registration.accepted.includes(inclusion) - @staff).sort_by { |r| I18n.transliterate(r.name) }
   end
 end
