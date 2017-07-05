@@ -42,7 +42,6 @@ $('#calendar').fullCalendar({
   events: '<%= registration_schedule_path(@registration, format: :json) %>',
   eventRender: function(event, element) {
     if (event.staff_event) {
-      console.log(element);
       element.addClass("staff_event");
     }
   },

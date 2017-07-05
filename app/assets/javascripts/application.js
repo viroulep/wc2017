@@ -36,7 +36,6 @@ function setupSelectTable(tableId, buttonContainerId, fieldId) {
     $.each(selected, function(arrayId, elem) {
       selected_id.push(elem._id);
     });
-    console.log(selected_id);
     input.val(selected_id.join(","));
   });
 }

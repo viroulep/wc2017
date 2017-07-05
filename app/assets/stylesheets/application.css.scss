@@ -24,11 +24,14 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 
-.staff_event {
-  font-weight: bold;
-  .fc-content {
-    font-weight: bold;
+.fc-time-grid-event.fc-short .fc-content {
+  .fc-title {
+    font-size: .95em;
   }
+}
+
+.fc-event.staff_event {
+  font-weight: bold;
 }
 
 .cubing-icon {
