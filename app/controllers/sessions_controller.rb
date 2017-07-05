@@ -43,7 +43,8 @@ class SessionsController < ApplicationController
     session[:access_token] = access_token
 
     Rails.logger.info "WCA Logged in as '#{me_data['name']}'."
-    redirect_to root_url, flash: { success: 'Signed in !' }
+    return_to = session.delete(:return_to) || root_path
+    redirect_to(return_to, flash: { success: 'Signed in !' })
   end
 
   def destroy
