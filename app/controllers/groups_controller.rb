@@ -281,7 +281,7 @@ class GroupsController < ApplicationController
     prefix = PREFIXES[@group.start.strftime("%w").to_i]
     @team_available = StaffTeam.all.reject { |s| existing_team_ids.include?(s.id) }.select { |s| s.name.start_with?(prefix) }
     existing_ids = @group.staff_registrations_groups.map(&:registration_id)
-    base_scope = @group.event_id == "333mbf" ? Registration.staff_available_mbf : Registration.staff_available
+    base_scope = ["555bf", "444bf", "333mbf"].include?(@group.event_id) ? Registration.staff_available_mbf : Registration.staff_available
     @staff_available = base_scope.includes(:user).reject { |r| existing_ids.include?(r.id) }
   end
 
