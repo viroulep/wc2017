@@ -22,7 +22,14 @@
 <% 5.times do %>
   <%= CSV.generate_line([nil,nil,nil,nil,nil,nil]).html_safe -%>
 <% end %>
+<% split = ["E", "L", "Q"] %>
 <% @competitors.each do |registration| %>
+  <% if split.include?(I18n.transliterate(registration.name)[0]) %>
+    <% split.shift %>
+    <% 5.times do %>
+      <%= CSV.generate_line([nil,nil,nil,nil,nil,nil]).html_safe -%>
+    <% end %>
+  <% end %>
   <%= CSV.generate_line([
     "Competitor",
     registration.name,
