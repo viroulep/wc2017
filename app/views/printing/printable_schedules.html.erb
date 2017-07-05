@@ -61,6 +61,12 @@ return {
   timeFormat: 'H:mm',
   slotLabelFormat: 'H:mm',
   events: eventsParam,
+  eventRender: function(event, element) {
+    if (event.staff_event) {
+      console.log(element);
+      element.addClass("staff_event");
+    }
+  },
   /*eventRender: function(event, element) {
     element.html(element.html().replace(" -",""));
   },*/

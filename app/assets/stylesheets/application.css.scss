@@ -24,6 +24,13 @@
 @import "font-awesome-sprockets";
 @import "font-awesome";
 
+.staff_event {
+  font-weight: bold;
+  .fc-content {
+    font-weight: bold;
+  }
+}
+
 .cubing-icon {
   margin: 3px;
 }
