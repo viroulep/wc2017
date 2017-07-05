@@ -97,6 +97,7 @@
                   <%= d.input_field :mbf3, class: "form-control", min: 0 %>
                 </div>
               </div>
+              <hr/>
             <% end %>
             <% if current_user.can_manage_competition?(managed_competition) %>
               <hr/>
@@ -111,6 +112,7 @@
 
           <% if current_user.can_manage_competition?(managed_competition) %>
             <%= render 'shared/associated_events_picker', form_builder: r %>
+            <hr/>
           <% end %>
 
           <div class="row" style="margin-top:10px">
