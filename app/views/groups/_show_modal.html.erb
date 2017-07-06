@@ -44,6 +44,7 @@
                 </tr>
               </thead>
               <tbody>
+                <% additional_staff = @group.staff_registrations_groups %>
                 <% @group.all_staff_people.each do |stg|%>
                   <tr>
                     <td>
@@ -53,6 +54,10 @@
                         [R]
                       <% end %>
                       <%= stg.name %>
+                      <% extra = additional_staff.find { |srg| srg.registration_id == stg.id } %>
+                      <% unless extra&.role.blank? %>
+                        <%= icon('info-circle', data: { toggle: "tooltip", placement: "top" }, title: extra.role) %>
+                      <% end %>
                     </td>
                   </tr>
                 <% end %>
@@ -64,3 +69,6 @@
     </div>
   </div>
 </div>
+<script>
+  $('[data-toggle="tooltip"]').tooltip()
+</script>
