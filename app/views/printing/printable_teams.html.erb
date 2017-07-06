@@ -1,0 +1,43 @@
+<style>
+.no_break_inside, h1, h2, li, p, tr, .calendar-cell, .row {
+  page-break-inside: avoid !important;
+}
+
+.name {
+}
+.navbar {
+  display: none;
+}
+p {
+  margin: 0px;
+}
+.pb {
+  page-break-after: always !important;
+}
+
+.row {
+  width: 29.6cm;
+  margin-bottom: 1cm;
+}
+
+.title {
+  margin-bottom: 0.1cm;
+}
+
+.col-people {
+  float: left;
+  width: 7.4cm;
+  padding-left: 15px;
+}
+</style>
+<% @teams_array.each do |_,ta| %>
+  <% ta.in_groups_of(4) do |teams| %>
+    <div class="row people-list">
+      <% teams.compact.each do |t| %>
+        <% title = raw("<p class=\"title\"><b>#{t.name} (#{array_to_s(t.leaders).partition(" ").first})</b></p>") %>
+        <%= render "people_list", people: t.users.sort_by(&:name), title: title %>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="row pb"></div>
+<% end %>

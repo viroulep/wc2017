@@ -20,13 +20,16 @@ p {
   width: 29.6cm;
   border: 1px;
 }
-.col-xs-3 {
+
+.col-people {
+  float: left;
   width: 7.4cm;
+  padding-left: 15px;
 }
 </style>
 <% @registrations.each do |e, people| %>
   <h3><%= e.name %></h3>
   <div class="row people-list">
-    <%= render "people_list", people: people %>
+    <%= render "split_people_list", people: people %>
   </div>
 <% end %>

@@ -22,6 +22,8 @@ Rails.application.routes.draw do
   get 'registrations/cleanup' => 'registrations#cleanup'
 
   get 'printable_schedules' => 'printing#printable_schedules'
+  get 'printable_groups' => 'printing#printable_groups'
+  get 'printable_teams' => 'printing#printable_teams'
   get 'rooms_side' => 'printing#rooms_side'
   get 'registrations_sheet' => 'printing#registrations'
 

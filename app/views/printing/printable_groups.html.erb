@@ -1,0 +1,51 @@
+<style>
+.no_break_inside, h1, h2, li, p, tr, .calendar-cell, .row {
+  page-break-inside: avoid !important;
+}
+
+.name {
+}
+.navbar {
+  display: none;
+}
+p {
+  margin: 0px;
+}
+.pb {
+  page-break-after: always !important;
+}
+
+.row {
+  width: 21cm;
+  margin-bottom: 1cm;
+}
+
+.title {
+  margin-bottom: 0.1cm;
+  font-weight: bold;
+}
+
+.col-people {
+  float: left;
+  width: 7cm;
+  padding-left: 15px;
+}
+</style>
+<% @groups.in_groups_of(3) do |groups| %>
+  <div class="row people-list">
+    <% groups.compact.each do |g| %>
+      <% title = raw("") %>
+      <div class="col-people">
+        <%= title %>
+        <p class="title">
+        <%= "#{g.name} (#{array_to_s(g.staff_teams.first&.leaders || []).partition(" ").first})" %>
+        <br/>
+        <%= "#{g.start.strftime("%H:%M")} - #{g.end.strftime("%H:%M")}" %>
+        </p>
+        <% g.registrations.sort_by { |r| I18n.transliterate(r.name) }.each do |u| %>
+          <p class="name"><%= u.name %></p>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

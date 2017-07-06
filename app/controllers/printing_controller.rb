@@ -23,6 +23,33 @@ class PrintingController < ApplicationController
     @competitors = (Registration.accepted.includes(inclusion) - @staff).sort_by { |r| I18n.transliterate(r.name) }
   end
 
+  def printable_groups
+    @groups = Group.includes(round: [], staff_teams: { staff_team_members: { registration: [:user] }}, registrations: [:user]).all.order(:start).reject { |g| ["444bf", "555bf", "333fm", "magic", "333mbf"].include?(g.event_id) || g.registrations.empty? }
+  end
+
+  def printable_teams
+    @teams = StaffTeam.all.includes(registrations: [], users: [], staff_team_members: { registration: [:user]}).order(:name)
+    @teams_array = {}
+    @teams.each do |t|
+      if t.name =~ /\[T/
+        @teams_array["T"] ||= []
+        @teams_array["T"] << t
+      elsif t.name =~ /\[F/
+        @teams_array["F"] ||= []
+        @teams_array["F"] << t
+      elsif t.name =~ /\[Sa/
+        @teams_array["Sa"] ||= []
+        @teams_array["Sa"] << t
+      elsif t.name =~ /\[Su/
+        @teams_array["Su"] ||= []
+        @teams_array["Su"] << t
+      else
+        @teams_array["O"] ||= []
+        @teams_array["O"] << t
+      end
+    end
+  end
+
   def rooms_side
     inclusion = {user: [:personal_bests]}
     @side_events = ["333mbf", "444bf", "555bf", "333fm"].map { |id| Event.find(id) }
