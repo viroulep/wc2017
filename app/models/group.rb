@@ -38,8 +38,11 @@ class Group < ApplicationRecord
     COLORS[self[:color]]
   end
 
-  def short_name
+  def short_name(with_round_id=false)
     event_name = Event.find(event_id).short_name
+    if with_round_id && event_id != "magic"
+      event_name += " R#{round.r_id}"
+    end
     if name =~ /Group/
       event_name + name.sub(/.*( Group[ ]+(?<n>[0-9]*))/,' G\k<n>')
     elsif name =~ /Attempt/

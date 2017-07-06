@@ -23,6 +23,11 @@ class PrintingController < ApplicationController
     @competitors = (Registration.accepted.includes(inclusion) - @staff).sort_by { |r| I18n.transliterate(r.name) }
   end
 
+  def printable_groups_schedule
+    @groups = Group.includes(staff_teams: {staff_team_members: {registration: [:user]}}, round:[]).all.order(:id)
+    @schedule_events = ScheduleEvent.all
+  end
+
   def printable_groups
     @groups = Group.includes(round: [], staff_teams: { staff_team_members: { registration: [:user] }}, registrations: [:user]).all.order(:start).reject { |g| ["444bf", "555bf", "333fm", "magic", "333mbf"].include?(g.event_id) || g.registrations.empty? }
   end
