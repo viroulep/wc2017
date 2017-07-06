@@ -1,0 +1,32 @@
+<style>
+.no_break_inside, h1, h2, li, p, tr, .calendar-cell {
+  page-break-inside: avoid !important;
+}
+
+.people-list {
+  page-break-after: always !important;
+}
+
+.name {
+}
+.navbar {
+  display: none;
+}
+p {
+  margin: 0px;
+}
+
+.row {
+  width: 29.6cm;
+  border: 1px;
+}
+.col-xs-3 {
+  width: 7.4cm;
+}
+</style>
+<% @registrations.each do |e, people| %>
+  <h3><%= e.name %></h3>
+  <div class="row people-list">
+    <%= render "people_list", people: people %>
+  </div>
+<% end %>

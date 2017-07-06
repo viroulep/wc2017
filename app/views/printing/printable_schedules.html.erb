@@ -11,7 +11,7 @@
   display: none;
 }
 .col-xs-4 {
-  width: 6cm;
+  width: 5.7cm;
   display: inline-block;
 }
 .fc-list-table td {
@@ -73,7 +73,7 @@ return {
 }
 </script>
 <div class="row">
-<% @registrations.each_slice((@registrations.size/3.to_f).round).each do |slice| %>
+<% @registrations.each_slice((@registrations.size/3.to_f).ceil).each do |slice| %>
   <div class="col-xs-4">
   <% slice.each do |r| %>
   <% groups = r.groups %>

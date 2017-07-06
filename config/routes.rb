@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get 'registrations/cleanup' => 'registrations#cleanup'
 
   get 'printable_schedules' => 'printing#printable_schedules'
+  get 'rooms_side' => 'printing#rooms_side'
   get 'registrations_sheet' => 'printing#registrations'
 
   resources :groups, param: :group_id

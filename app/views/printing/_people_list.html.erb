@@ -1,0 +1,20 @@
+<%
+  people ||= []
+  sorted_people ||= []
+%>
+<% people.each_slice((people.size/4.to_f).ceil).each do |slice| %>
+  <% sorted_people << slice.sort_by! { |r| I18n.transliterate(r.name) } %>
+<% end %>
+<% middle = (sorted_people[1]+sorted_people[2]).flatten %>
+<% middle.sort_by! { |r| I18n.transliterate(r.name) } %>
+<% middle = middle.in_groups(2) %>
+<% sorted_people[1] = middle[0] %>
+<% sorted_people[2] = middle[1] %>
+
+<% sorted_people.each do |slice| %>
+  <div class="col-xs-3">
+  <% slice.each do |r| %>
+    <p class="name"><b><%= r.name %></b></p>
+  <% end %>
+  </div>
+<% end %>

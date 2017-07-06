@@ -22,4 +22,19 @@ class PrintingController < ApplicationController
     @staff = Registration.staff_available.includes(inclusion).sort_by { |r| I18n.transliterate(r.name) }
     @competitors = (Registration.accepted.includes(inclusion) - @staff).sort_by { |r| I18n.transliterate(r.name) }
   end
+
+  def rooms_side
+    inclusion = {user: [:personal_bests]}
+    @side_events = ["333mbf", "444bf", "555bf", "333fm"].map { |id| Event.find(id) }
+    @registrations = {}
+
+    @side_events.each do |e|
+      @registrations[e] = Registration.with_event(e.id, inclusion)
+      if e.id == "333mbf"
+        @registrations[e].sort_by! { |r| r.best_for(e.id, "single") }
+      else
+        @registrations[e].sort_by! { |r| I18n.transliterate(r.name) }
+      end
+    end
+  end
 end
