@@ -44,6 +44,10 @@ module ApplicationHelper
     link_to(text, url, args)
   end
 
+  def anonymous_password
+    ENV['ANON_PASS']
+  end
+
   def alert(type, content = nil, note: false, &block)
     content = capture(&block) if block_given?
     if note

@@ -57,5 +57,7 @@ Rails.application.routes.draw do
 
   get '/wca_callback' => 'sessions#create'
   get '/signin' => 'sessions#new', :as => :signin
+  get '/wca_down' => 'sessions#anon_staff'
+  post '/wca_down' => 'sessions#login_anon_staff'
   get '/signout' => 'sessions#destroy', :as => :signout
 end

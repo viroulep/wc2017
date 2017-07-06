@@ -1,0 +1,9 @@
+<h3>Hey there</h3>
+<div class="row">
+  <div class="col-md-12">
+    <%= simple_form_for :anon_staff, url: wca_down_path do |f| %>
+      <%= f.input :password, as: :password, label: false %>
+      <%= f.submit "Go!", class: "btn btn-primary" %>
+    <% end %>
+  </div>
+</div>

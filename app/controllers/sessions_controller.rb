@@ -1,4 +1,10 @@
 class SessionsController < ApplicationController
+  before_action only: [:anon_staff, :login_anon_staff] do
+    if current_user
+      redirect_to root_url, flash: { success: 'Already in' }
+    end
+  end
+
   def new
     # NOTE: we import user data from registrations with admin rights, we don't
     # actually need these scopes.
@@ -7,6 +13,23 @@ class SessionsController < ApplicationController
       scopes += " manage_competitions"
     end
     redirect_to wca_login_url(scopes)
+  end
+
+  def anon_staff
+  end
+
+  def login_anon_staff
+    if anonymous_password.blank?
+      return redirect_to root_url, flash: { danger: 'Anonymous access not setup' }
+    end
+    anon_user = User.find(-666)
+    submitted = params.require(:anon_staff).require(:password)
+    if submitted == anonymous_password
+      session[:user_id] = -666
+      redirect_to(root_url, flash: { success: 'Signed in as anonymous!' })
+    else
+      redirect_to(root_url)
+    end
   end
 
   # The WCA.org OAuth code redirects to here after user logs in
