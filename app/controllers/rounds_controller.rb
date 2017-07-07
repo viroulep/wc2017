@@ -46,6 +46,9 @@ class RoundsController < ApplicationController
     # For these, we actually want to display all attempts (ie: groups)
     fm_mbf = ["333fm", "333mbf"]
     @groups = Group.joins(:round).where('rounds.event_id': fm_mbf)
+    # Hack for nations cup
+    @groups = @groups.to_a
+    @groups << Group.find(459)
     @rounds = Round.where.not(event_id: fm_mbf)
     @schedule_events = ScheduleEvent.all
   end

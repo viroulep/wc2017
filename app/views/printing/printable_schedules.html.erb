@@ -74,33 +74,13 @@ return {
 </script>
 <div class="row">
 <% @registrations.each_slice((@registrations.size/3.to_f).ceil).each do |slice| %>
+
   <div class="col-xs-4">
   <% slice.each do |r| %>
   <% groups = r.groups %>
   <% individual_staff = r.staff_registrations_groups.map(&:group) %>
   <% staff_team_groups = r.staff_teams_groups.map(&:group) %>
   <% staff_team_groups.reject! { |g| @side_event.include?(g.event_id) && groups.include?(g) } %>
-    <div class="calendar-cell">
-    <p class="name"><b><%= r.name %></b></p>
-    <div id="calendar-<%= r.id %>"></div>
-    </div>
-    <div class="calendar-cell">
-    <p class="name"><b><%= r.name %></b></p>
-    <div id="calendar-<%= r.id %>-friday"></div>
-    </div>
-    <div class="calendar-cell">
-    <p class="name"><b><%= r.name %></b></p>
-    <div id="calendar-<%= r.id %>-saturday"></div>
-    </div>
-    <div class="calendar-cell">
-    <p class="name"><b><%= r.name %></b></p>
-    <div id="calendar-<%= r.id %>-sunday"></div>
-    </div>
-    <!--
-    <div class="calendar-cell calendar-<%= r.id %> friday"></div>
-    <div class="calendar-cell calendar-<%= r.id %> saturday"></div>
-    <div class="calendar-cell calendar-<%= r.id %> sunday"></div>
-    -->
 <script>
 var events<%= r.id %> = [
   <% groups.each do |g| %>
@@ -113,22 +93,70 @@ var events<%= r.id %> = [
     <%= raw(render('groups/group.json.jbuilder', group: g, short: true, staff: true, registration: r)) %>,
   <% end %>
 ];
+<%
+events_count = {}
+[13,14,15,16].each do |i|
+  function_select = lambda { |g| g.start.day == i }
+  events_count[i] = groups.select(&function_select).size +
+                 individual_staff.select(&function_select).size +
+                 staff_team_groups.select(&function_select).size
+end
+%>
+</script>
+<% if events_count[13] > 0 %>
+    <div class="calendar-cell">
+    <p class="name"><b><%= r.name %></b></p>
+    <div id="calendar-<%= r.id %>"></div>
+    </div>
+<% end %>
+<% if events_count[14] > 0 %>
+    <div class="calendar-cell">
+    <p class="name"><b><%= r.name %></b></p>
+    <div id="calendar-<%= r.id %>-friday"></div>
+    </div>
+<% end %>
+<% if events_count[15] > 0 %>
+    <div class="calendar-cell">
+    <p class="name"><b><%= r.name %></b></p>
+    <div id="calendar-<%= r.id %>-saturday"></div>
+    </div>
+<% end %>
+<% if events_count[16] > 0 %>
+    <div class="calendar-cell">
+    <p class="name"><b><%= r.name %></b></p>
+    <div id="calendar-<%= r.id %>-sunday"></div>
+    </div>
+<% end %>
+    <!--
+    <div class="calendar-cell calendar-<%= r.id %> friday"></div>
+    <div class="calendar-cell calendar-<%= r.id %> saturday"></div>
+    <div class="calendar-cell calendar-<%= r.id %> sunday"></div>
+    -->
+<script>
+<% if events_count[13] > 0 %>
 $('#calendar-<%= r.id %>').fullCalendar(commonOptions("2017-07-13", events<%= r.id %>));
-$('#calendar-<%= r.id %>-friday').fullCalendar(commonOptions("2017-07-14", events<%= r.id %>));
-$('#calendar-<%= r.id %>-saturday').fullCalendar(commonOptions("2017-07-15", events<%= r.id %>));
-$('#calendar-<%= r.id %>-sunday').fullCalendar(commonOptions("2017-07-16", events<%= r.id %>));
 $('#calendar-<%= r.id %>').ready(function (){
   $('#calendar-<%= r.id %>').find('.fc-scroller').removeAttr("style");
 });
+<% end %>
+<% if events_count[14] > 0 %>
+$('#calendar-<%= r.id %>-friday').fullCalendar(commonOptions("2017-07-14", events<%= r.id %>));
 $('#calendar-<%= r.id %>-friday').ready(function (){
   $('#calendar-<%= r.id %>-friday').find('.fc-scroller').removeAttr("style");
 });
+<% end %>
+<% if events_count[15] > 0 %>
+$('#calendar-<%= r.id %>-saturday').fullCalendar(commonOptions("2017-07-15", events<%= r.id %>));
 $('#calendar-<%= r.id %>-saturday').ready(function (){
   $('#calendar-<%= r.id %>-saturday').find('.fc-scroller').removeAttr("style");
 });
+<% end %>
+<% if events_count[16] > 0 %>
+$('#calendar-<%= r.id %>-sunday').fullCalendar(commonOptions("2017-07-16", events<%= r.id %>));
 $('#calendar-<%= r.id %>-sunday').ready(function (){
   $('#calendar-<%= r.id %>-sunday').find('.fc-scroller').removeAttr("style");
 });
+<% end %>
 </script>
 <% end %>
   </div>
