@@ -28,6 +28,14 @@ class PrintingController < ApplicationController
     @schedule_events = ScheduleEvent.all
   end
 
+  def printable_rounds_schedule
+    # For these, we actually want to display all attempts (ie: groups)
+    fm_mbf = ["333fm", "333mbf"]
+    @groups = Group.joins(:round).includes(:round).where('rounds.event_id': fm_mbf)
+    @rounds = Round.where.not(event_id: fm_mbf)
+    @schedule_events = ScheduleEvent.all
+  end
+
   def printable_groups
     @groups = Group.includes(round: [], staff_teams: { staff_team_members: { registration: [:user] }}, registrations: [:user]).all.order(:start).reject { |g| ["444bf", "555bf", "333fm", "magic", "333mbf"].include?(g.event_id) || g.registrations.empty? }
   end

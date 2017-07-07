@@ -1,0 +1,95 @@
+<style>
+.no_break_inside, h1, h2, h3, li, p, tr, .calendar-cell {
+  page-break-inside: avoid !important;
+}
+
+.name {
+  margin-top: 1cm;
+  page-break-after: avoid !important;
+}
+.navbar {
+  display: none;
+}
+.row {
+  width: 21cm;
+}
+.fc-list-table td {
+  padding: 3px;
+}
+
+.fc-list-item-time {
+  width: 3cm;
+  white-space: normal;
+  text-align: center;
+}
+
+.fc-event-dot {
+  margin-top: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+}
+
+.fc-ltr .fc-list-item-marker {
+  padding-left: 0px;
+  padding-right: 5px;
+}
+</style>
+<script>
+var commonOptions = function(day, eventsParam) {
+
+return {
+  // see: https://fullcalendar.io/docs/views/Custom_Views/
+  views: {
+    listFourDay: {
+      type: 'list',
+      duration: { days: 4 },
+      buttonText: 'Printable',
+    },
+  },
+  defaultView: 'listFourDay',
+  header: false,
+  // yep, hardcoded
+  defaultDate: day,
+  minTime:'08:00:00',
+  maxTime:'20:00:00',
+  contentHeight: 'auto',
+  //aspectRatio: '3',
+  slotDuration: '00:15:00',
+  displayEventEnd: true,
+  timeFormat: 'H:mm',
+  slotLabelFormat: 'H:mm',
+  events: eventsParam,
+  eventRender: function(event, element) {
+    if (event.staff_event) {
+      element.addClass("staff_event");
+    }
+  },
+  /*eventRender: function(event, element) {
+    element.html(element.html().replace(" -",""));
+  },*/
+};
+}
+</script>
+<div class="row">
+  <div class="col-xs-12">
+    <div id="calendar"></div>
+  </div>
+</div>
+<script>
+var events = [
+  <% @rounds.each do |g| %>
+    <%= raw(render('rounds/round.json.jbuilder', round: g)) %>,
+  <% end %>
+  <% @groups.each do |g| %>
+    <%= raw(render('groups/group.json.jbuilder', group: g, fg: '#000', bg: '#009e60')) %>,
+  <% end %>
+  <% @schedule_events.each do |g| %>
+    <%= raw(render('schedule_events/schedule_event.json.jbuilder', schedule_event: g)) %>,
+  <% end %>
+];
+$('#calendar').fullCalendar(commonOptions("2017-07-13", events));
+$('#calendar').ready(function (){
+  $('#calendar').find('.fc-scroller').removeAttr("style");
+});
+</script>
