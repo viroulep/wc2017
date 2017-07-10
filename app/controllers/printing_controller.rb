@@ -10,6 +10,8 @@ class PrintingController < ApplicationController
     case params[:type]
     when "staff"
       @registrations = @registrations.staff_available.sort_by { |r| I18n.transliterate(r.name) }
+    when "registration"
+      @registrations = [Registration.find(params[:id])]
     else
       offset = params[:off]&.to_i || 0
       @registrations = @registrations.accepted.reject { |r| r.staff? }.sort_by { |r| I18n.transliterate(r.name) }
