@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get 'printable_groups_schedule' => 'printing#printable_groups_schedule'
   get 'printable_rounds_schedule' => 'printing#printable_rounds_schedule'
   get 'printable_teams' => 'printing#printable_teams'
+  get 'staff_lunches' => 'printing#staff_lunches'
   get 'rooms_side' => 'printing#rooms_side'
   get 'registrations_sheet' => 'printing#registrations'
 

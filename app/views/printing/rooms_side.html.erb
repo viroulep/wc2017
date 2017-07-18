@@ -30,6 +30,6 @@ p {
 <% @registrations.each do |e, people| %>
   <h3><%= e.name %></h3>
   <div class="row people-list">
-    <%= render "split_people_list", people: people %>
+    <%= render "split_people_list", people: people, event: e %>
   </div>
 <% end %>

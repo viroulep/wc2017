@@ -2,6 +2,7 @@
   people ||= []
   sorted_people ||= []
 %>
+<% if event.id == "333mbf" %>
 <% people.each_slice((people.size/4.to_f).ceil).each do |slice| %>
   <% sorted_people << slice.sort_by! { |r| I18n.transliterate(r.name) } %>
 <% end %>
@@ -10,6 +11,25 @@
 <% middle = middle.in_groups(2) %>
 <% sorted_people[1] = middle[0] %>
 <% sorted_people[2] = middle[1] %>
+<% elsif event.id == "444bf" || event.id == "555bf" %>
+<% people.each_slice((people.size/4.to_f).ceil).each do |slice| %>
+  <% sorted_people << slice.sort_by! { |r| I18n.transliterate(r.name) } %>
+<% end %>
+<% left = (sorted_people[0]+sorted_people[1]).flatten %>
+<% left.sort_by! { |r| I18n.transliterate(r.name) } %>
+<% left = left.in_groups(2) %>
+<% sorted_people[0] = left[0].compact %>
+<% sorted_people[1] = left[1].compact %>
+<% right = (sorted_people[2]+sorted_people[3]).flatten %>
+<% right.sort_by! { |r| I18n.transliterate(r.name) } %>
+<% right = right.in_groups(2) %>
+<% sorted_people[2] = right[0].compact %>
+<% sorted_people[3] = right[1].compact %>
+<% else %>
+  <% people.each_slice((people.size/4.to_f).ceil).each do |slice| %>
+    <% sorted_people << slice %>
+  <% end %>
+<% end %>
 
 <% sorted_people.each do |slice| %>
   <%= render "people_list", people: slice %>

@@ -1,0 +1,24 @@
+<% require 'csv' %>
+<% headers = ["Name", "Thursday", "Friday", "Saturday", "Sunday"] %>
+<%= CSV.generate_line(headers).html_safe -%>
+
+<% @registrations.each do |r| %>
+  <% individual_staff = r.staff_registrations_groups.map(&:group) %>
+  <% staff_team_groups = r.staff_teams_groups.map(&:group) %>
+  <%
+      events_count = {}
+  [13,14,15,16].each do |i|
+    function_select = lambda { |g| g.start.day == i }
+    events_count[i] = 
+      individual_staff.select(&function_select).size +
+      staff_team_groups.select(&function_select).size
+  end
+%>
+  <%= CSV.generate_line([
+    r.name,
+    events_count[13] > 0 ? 1 : 0,
+    events_count[14] > 0? 1 : 0,
+    events_count[15] > 0? 1 : 0,
+    events_count[16] > 0? 1 : 0,
+  ]).html_safe -%>
+<% end %>
