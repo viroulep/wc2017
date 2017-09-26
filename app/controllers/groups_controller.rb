@@ -8,8 +8,10 @@ class GroupsController < ApplicationController
   SINGLE = %w(333bf 444bf 555bf 333fm 333mbf).freeze
   PREFIXES = %w([Su] [Mo] [Tu] [W] [T] [F] [Sa]).freeze
 
+  DEFAULT_GROUP_SIZE=20
+
   def top_low_to_group
-    max_in_group = params[:n]&.to_i || 20
+    max_in_group = params[:n]&.to_i || DEFAULT_GROUP_SIZE
     group = Group.find(params[:group_id])
     top_low = params.require(:direction)
     event = Event.find(group.event_id)
@@ -30,7 +32,7 @@ class GroupsController < ApplicationController
   end
 
   def fill_remaining_groups
-    max_in_group = params[:n]&.to_i || 20
+    max_in_group = params[:n]&.to_i || DEFAULT_GROUP_SIZE
     round = Round.find(params[:round_id])
     event = Event.find(round.event_id)
     unless round.r_id == 1
