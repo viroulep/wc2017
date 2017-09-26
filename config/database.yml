@@ -16,7 +16,7 @@ development:
   adapter:  postgresql
   host:     localhost
   encoding: unicode
-  database: wc2017_development
+  database: io2017_development
   pool:     5
   username: wc2017
   password: wca
@@ -44,7 +44,7 @@ test:
   adapter:  postgresql
   host:     localhost
   encoding: unicode
-  database: wc2017_test
+  database: io2017_test
   pool:     5
   username: wc2017
   password: wca
