@@ -9,7 +9,7 @@
   <%= f.input :round_id, as: :select, collection: Round.all_ordered, value_method: lambda { |r| r.id }, label_method: lambda { |r| r.name }, disabled: disabled, hint: hint, input_html: { id: 'round-selector' } %>
   <%= f.input :color, as: :select, collection: Group::COLORS.keys %>
   <div class='row datetimerange'>
-    <% default_input_value = group.start ? {} : { value: "13/07/2017 10:00" } %>
+    <% default_input_value = group.start ? {} : { value: "07/10/2017 10:00" } %>
     <%= f.input :start, as: :datetime_picker, wrapper: :ranged_datetime, input_html: { id: 'group-start-datetime' }.merge(default_input_value) %>
     <%= f.input :end, as: :datetime_picker, wrapper: :ranged_datetime, input_html: { id: 'group-end-datetime' }.merge(default_input_value) %>
   </div>

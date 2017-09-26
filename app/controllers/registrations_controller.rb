@@ -147,6 +147,9 @@ class RegistrationsController < ApplicationController
   def schedule
     base_model = Registration.includes([staff_registrations_groups: { group: [:round] }, staff_teams_groups: { group: [:round] }])
     @registration = base_model.find_by_id(params[:registration_id]) || base_model.find_by(user_id: current_user.id)
+    unless @registration
+      return redirect_to my_registration_path
+    end
     @groups = @registration.groups
     # individual schedule affectation
     @staff_registrations_groups = @registration.staff_registrations_groups.map(&:group)
