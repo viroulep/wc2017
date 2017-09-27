@@ -45,6 +45,8 @@ class Group < ApplicationRecord
     end
     if name =~ /Group/
       event_name + name.sub(/.*( Group[ ]+(?<n>[0-9]*))/,' G\k<n>')
+    elsif name =~ /Gruppo/
+      event_name + name.sub(/.*(Gruppo[ ]+(?<n>[0-9]*))/,' G\k<n>')
     elsif name =~ /Attempt/
       event_name + name.sub(/.*( Attempt (?<n>[0-9]*))/, ' #\k<n>')
     elsif name =~ /submission/
