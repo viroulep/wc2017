@@ -1,6 +1,6 @@
 class PrintingController < ApplicationController
-  before_action :authenticate_user!
-  before_action :redirect_unless_admin!
+  #before_action :authenticate_user!
+  #before_action :redirect_unless_admin!
 
   def printable_schedules
     @registrations = Registration.includes([registration_detail: [], scramble_events: [], user: [], groups: [:round], staff_registrations_groups: { group: [:round] }, staff_teams_groups: { group: [:round] }])
