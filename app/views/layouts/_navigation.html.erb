@@ -21,7 +21,7 @@
           <% if current_user&.can_manage_competition?(managed_competition) %>
             <%= render 'layouts/navigation_admin' %>
           <% end %>
-          <% if current_user&.staff? %>
+          <% if current_user&.staff? || current_user&.can_manage_competition?(managed_competition) %>
             <%= render 'layouts/navigation_staff' %>
           <% end %>
           <li class="dropdown">
