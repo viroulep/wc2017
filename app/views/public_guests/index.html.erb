@@ -1,0 +1,28 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Public Guests</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Fullname</th>
+      <th>Email</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @public_guests.each do |public_guest| %>
+      <tr>
+        <td><%= public_guest.fullname %></td>
+        <td><%= public_guest.email %></td>
+        <td><%= link_to 'Edit', edit_public_guest_path(public_guest) %></td>
+        <td><%= link_to 'Destroy', public_guest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Public Guest', new_public_guest_path %>

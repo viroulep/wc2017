@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :public_guests, except: [:show]
   resources :schedule_events, except: [:show]
   resources :rounds, only: [:index, :edit, :update]
 

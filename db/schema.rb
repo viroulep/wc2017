@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170701184314) do
+ActiveRecord::Schema.define(version: 20180216105024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,6 +57,13 @@ ActiveRecord::Schema.define(version: 20170701184314) do
     t.integer "national_ranking",    default: 0, null: false
     t.index ["event_id"], name: "index_personal_bests_on_event_id", using: :btree
     t.index ["user_id"], name: "index_personal_bests_on_user_id", using: :btree
+  end
+
+  create_table "public_guests", force: :cascade do |t|
+    t.string   "fullname"
+    t.string   "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "registration_details", force: :cascade do |t|
