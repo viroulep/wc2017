@@ -112,6 +112,16 @@
                 <%= d.input_field :tshirt, as: :radio_buttons, collection: RegistrationDetail::TSHIRT_SIZES, min: 0, item_wrapper_class: "tshirt-radio" %>
               </div>
             </div>
+              <hr/>
+            <div class="row">
+              <div class="col-xs-12">
+                <span>Restaurant for sunday evening</span>
+                <div class="help-block">Description for restaurant</div>
+              </div>
+              <div class="col-xs-12 form-group">
+                <%= d.input :restaurant_guests, min: 0, label: "People" %>
+              </div>
+            </div>
             <% if current_user.can_manage_competition?(managed_competition) %>
               <hr/>
               <%= d.input :staff %>

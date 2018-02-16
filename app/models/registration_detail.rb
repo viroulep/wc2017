@@ -9,6 +9,8 @@ class RegistrationDetail < ApplicationRecord
   #validates_numericality_of :mbf2, greater_than_or_equal_to: 0
   #validates_numericality_of :mbf3, greater_than_or_equal_to: 0
 
+  validates_numericality_of :restaurant_guests, greater_than_or_equal_to: 0
+
   validate :validates_mbf
 
   def validates_mbf

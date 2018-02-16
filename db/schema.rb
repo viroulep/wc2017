@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180216105024) do
+ActiveRecord::Schema.define(version: 20180216145606) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,18 +67,19 @@ ActiveRecord::Schema.define(version: 20180216105024) do
   end
 
   create_table "registration_details", force: :cascade do |t|
-    t.integer  "registration_id",                 null: false
+    t.integer  "registration_id",                   null: false
     t.string   "tshirt"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.datetime "confirmed_at"
-    t.boolean  "staff",           default: false
+    t.boolean  "staff",             default: false
     t.datetime "cancelled_at"
-    t.boolean  "runner_only",     default: false
-    t.integer  "mbf1",            default: 0
-    t.integer  "mbf2",            default: 0
-    t.integer  "mbf3",            default: 0
-    t.boolean  "mbf_judge",       default: false
+    t.boolean  "runner_only",       default: false
+    t.integer  "mbf1",              default: 0
+    t.integer  "mbf2",              default: 0
+    t.integer  "mbf3",              default: 0
+    t.boolean  "mbf_judge",         default: false
+    t.integer  "restaurant_guests", default: 0
     t.index ["registration_id"], name: "index_registration_details_on_registration_id", using: :btree
   end
 
