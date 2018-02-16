@@ -7,6 +7,8 @@
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <% submit_value = @public_guest.new_record? ? "Register" : "Update visitor" %>
+    <%# FIXME: onclick the button's text changes... %>
+    <%= f.button :submit, value: submit_value %>
   </div>
 <% end %>

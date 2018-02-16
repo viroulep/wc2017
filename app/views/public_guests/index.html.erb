@@ -1,13 +1,35 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Public Guests</h1>
+<h2>Visitors coming with a competitor</h2>
+  Please ask this competitor to declare you as guest in his registration details page, do not register here!
 
-<table>
+<h2>All other visitors</h2>
+
+You're very welcome to come and watch the competition!
+Due to venue constraints, you need to register with your fullname and email if you want to come and watch the French Championship 2018 as a visitor.
+<br/>
+Registration is mandatory but free of charge!
+<br/>
+<br/>
+<p>
+  <%= link_to 'Register here!', new_public_guest_path, class: "btn btn-primary" %>
+</p>
+
+<h2>List of registered public visitors</h2>
+
+<table class="table table-hover"
+  <% if current_user&.can_manage_competition?(managed_competition) %>
+    data-toggle="table"
+    data-search="true"
+  <% end %>
+       id="table-visitors">
   <thead>
     <tr>
       <th>Fullname</th>
-      <th>Email</th>
-      <th colspan="3"></th>
+      <% if current_user&.can_manage_competition?(managed_competition) %>
+        <th>Email</th>
+        <th>Actions</th>
+      <% end %>
     </tr>
   </thead>
 
@@ -15,9 +37,13 @@
     <% @public_guests.each do |public_guest| %>
       <tr>
         <td><%= public_guest.fullname %></td>
-        <td><%= public_guest.email %></td>
-        <td><%= link_to 'Edit', edit_public_guest_path(public_guest) %></td>
-        <td><%= link_to 'Destroy', public_guest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user&.can_manage_competition?(managed_competition) %>
+          <td><%= public_guest.email %></td>
+          <td>
+            <%= link_to 'Edit', edit_public_guest_path(public_guest) %>
+            <%= link_to 'Destroy', public_guest, method: :delete, data: { confirm: 'Are you sure?' } %>
+          </td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
@@ -25,4 +51,3 @@
 
 <br>
 
-<%= link_to 'New Public Guest', new_public_guest_path %>
