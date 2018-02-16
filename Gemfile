@@ -24,8 +24,10 @@ end
 gem 'bootstrap-sass'
 gem 'bootstrap-table-rails'
 gem 'high_voltage'
-gem 'pg'
+gem 'pg', '~> 0.21.0'
 gem 'simple_form'
+gem 'flag-icons-rails'
+
 group :development do
   gem 'better_errors'
   gem 'rails_layout'
