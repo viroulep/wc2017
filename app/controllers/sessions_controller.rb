@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
     token_params = {
       code: params[:code],
       grant_type: 'authorization_code',
-      redirect_uri: wca_callback_url,
+      redirect_uri: fixed_wca_callback_url,
       client_id: wca_client_id,
       client_secret: wca_client_secret,
     }
