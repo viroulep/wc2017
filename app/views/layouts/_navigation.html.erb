@@ -37,6 +37,22 @@
         </ul>
       <% end %>
       <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle top-nav" data-toggle="dropdown" data-hover="dropdown">
+            <% active_locale_info = Locales::AVAILABLE[I18n.locale] %>
+            <%= flag_icon active_locale_info[:flag_id] %> <span class="hidden-sm"><%= active_locale_info[:name] %></span>
+            <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu countries" role="menu">
+            <% Locales::AVAILABLE.each do |l, data| %>
+              <% unless l == I18n.locale %>
+                <li>
+                  <%= link_to raw("#{flag_icon(data[:flag_id])} #{data[:name]}"), { :locale => l } %>
+                </li>
+              <% end %>
+            <% end %>
+          </ul>
+        </li>
         <% if current_user %>
           <li>
             <%= link_to icon('sign-out', 'Sign out'), signout_path %>

@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   helper_method :managed_competition
 
   before_action :check_managed_competition
+  before_action :set_locale
 
   private
     def current_user
@@ -81,5 +82,13 @@ class ApplicationController < ActionController::Base
         flash[:danger] = "You can't access this page"
         redirect_to root_url
       end
+    end
+
+    def set_locale
+      I18n.locale = params[:locale] || I18n.default_locale
+    end
+
+    def default_url_options
+      { locale: I18n.locale }
     end
 end

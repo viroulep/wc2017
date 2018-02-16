@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="well text-center">
-                Welcome to the French Championship 2018 Registration Manager. Please <%= link_to "login", signin_path %> in order to edit or complete your additional registration data.
+                <%= t('homepage.welcome_html', login_link: link_to(t('homepage.login'), signin_path)) %>
                 <% if params[:with_scopes] %>
                     <br/>
                     <%= link_to "With scopes", signin_path(admin: true) %>

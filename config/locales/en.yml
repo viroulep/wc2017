@@ -20,4 +20,6 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  homepage:
+    welcome_html: "Welcome to the French Championship 2018 Registration Manager. Please %{login_link} in order to edit or complete your additional registration data."
+    login: "login"

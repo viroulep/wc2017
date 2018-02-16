@@ -27,6 +27,7 @@ db/*.sqlite3
 # various artifacts
 public/assets
 pids
+.byebug_history
 **.war
 *.rbc
 *.sassc

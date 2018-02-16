@@ -1,0 +1,4 @@
+fr:
+  homepage:
+    welcome_html: "Bienvenue sur l'application de gestion des inscriptions des Championnats de France 2018. Merci de vous %{login_link} pour éditer ou ajouter des informations à votre inscription."
+    login: "connecter"

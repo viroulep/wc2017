@@ -20,7 +20,7 @@ module ApplicationHelper
   end
 
   def wca_login_url(scopes)
-    "#{wca_base_url}/oauth/authorize?response_type=code&client_id=#{wca_client_id}&scope=#{URI.encode(scopes)}&redirect_uri=#{ENV['WCA_CALLBACK_URL']}"
+    "#{wca_base_url}/oauth/authorize?response_type=code&client_id=#{wca_client_id}&scope=#{URI.encode(scopes)}&redirect_uri=#{wca_callback_url}"
   end
 
   def wca_client_secret
@@ -68,5 +68,11 @@ module ApplicationHelper
 
   def staff_teams_to_links(teams)
     array_to_s(teams.map { |team| link_to(team.name, team, target: "_blank") })
+  end
+
+  def flag_icon(iso2, html_options = {})
+    html_options[:class] ||= ""
+    html_options[:class] += " flag-icon flag-icon-#{iso2.downcase}"
+    content_tag :span, "", html_options
   end
 end
