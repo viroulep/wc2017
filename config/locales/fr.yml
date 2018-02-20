@@ -69,8 +69,8 @@ fr:
   activerecord:
     attributes:
       registration_detail:
-        #original_hash: e49ff0d
-        restaurant_guests: Accompagnateurs au restaurant
+        #original_hash: aacbe98
+        restaurant_guests: Nombre de personnes à venir
   simple_form:
     labels:
       registration_detail:
@@ -143,7 +143,7 @@ fr:
       #original_hash: 5f07e25
       coming: "Je viens\_!"
       #original_hash: 51fe033
-      alert_coming: Êtes-vous sûr·e de vouloir confirmer votre inscription?
+      alert_coming: "Êtes-vous sûr·e de vouloir confirmer votre inscription\_?"
       #original_hash: 3c09d88
       not_coming: Je ne viens finalement pas
       #original_hash: 373ed91
@@ -174,8 +174,8 @@ fr:
     restaurant:
       #original_hash: 24b84f5
       title: Restaurant dimanche 1er avril (soir)
-      #original_hash: 64e1542
-      desc: "Nous pourrons manger ensemble au Ninkasi Gerland. Le prix sera de 15€ par personne et le menu comprendra 2 mini burgers (soit un poulet et un bœuf soit deux végétariens (steak de lentilles)), une portion de frites et une boisson de 50cl (bière blonde, Coca-cola ou jus de pomme). Si vous voulez venir, vous devez vous enregistrer avant le 28 mars\_!"
+      #original_hash: ead16e4
+      desc: "Nous pourrons manger ensemble au Ninkasi Gerland. Le prix sera de 15€ par personne et le menu comprendra 2 mini burgers (soit un poulet et un bœuf soit deux végétariens (steak de lentilles)), une portion de frites et une boisson de 50cl (bière blonde, Coca-cola ou jus de pomme). Si vous voulez venir, vous devez nous dire combien vous serez avant le 28 mars\_! (\"0\" veut dire que vous ne viendrez pas, \"1\" veut dire que vous viendrez, \"2\" veut dire que vous viendrez avec 1 accompagnateur·rice, etc.)"
     #original_hash: 7526a0e
     personnal_schedule_html: "Veuillez trouver votre planning personnel %{link}\_!"
     #original_hash: 0154c0d
@@ -215,6 +215,6 @@ fr:
       #original_hash: d4ac148
       registered_as_staff: Cette personne est inscrite en tant que staff
       #original_hash: 906b993
-      help_block: "Note\_:\_vous ne pouvez plus déclarer ou modifié vos accompagnateurs désormais"
+      help_block: "Note\_:\_vous ne pouvez plus déclarer ou modifier vos accompagnateurs désormais"
       #original_hash: 4b43d2e
       title_wca_panel: Votre inscription WCA
