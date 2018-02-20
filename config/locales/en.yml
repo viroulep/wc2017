@@ -57,7 +57,7 @@ en:
   activerecord:
     attributes:
       registration_detail:
-        restaurant_guests: "Restaurant guests"
+        restaurant_guests: "Number of people coming"
   simple_form:
     labels:
       registration_detail:
@@ -117,7 +117,7 @@ en:
       disclaimer: "Will be kept private and used for organizational purpose. You can still submit a different number during the competition."
     restaurant: 
       title: "Restaurant Sunday, April 1st (evening)"
-      desc: "We can eat together at Ninkasi Gerland Restaurant. It will cost 15€ per person and the menu will be 2 mini-burgers (either one chicken, one beef or two veggies (lentils' steak)), one portion of fries and one 50cl drink (blond beer, Coca-cola or apple juice). You need to register for this before March 28th!"
+      desc: "We can eat together at Ninkasi Gerland Restaurant. It will cost 15€ per person and the menu will be 2 mini-burgers (either one chicken, one beef or two veggies (lentils' steak)), one portion of fries and one 50cl drink (blond beer, Coca-cola or apple juice). You need to tell us how many you will be before March 28th! (\"0\" means you won't come, \"1\" means you'll come, \"2\" means you'll come with one guest, etc.)"
     personnal_schedule_html: "Please find your personal schedule %{link}!"
     here: "here"
     save_changes: "Save changes"
