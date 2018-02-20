@@ -1,4 +1,220 @@
 fr:
+  #original_hash: 29b87ee
+  competition_name: Championnat de France 2018
+  #original_hash: 377a77c
+  registration_manager: Gestionnaire d'inscriptions
+  #original_hash: afff122
+  competition_description: France 2018
+  usual_buttons:
+    #original_hash: 5301648
+    edit: Éditer
+    #original_hash: 577ef7d
+    destroy: Supprimer
+  alerts:
+    #original_hash: 410bf23
+    are_you_sure: "Êtes-vous sûr·e\_?"
   homepage:
-    welcome_html: "Bienvenue sur l'application de gestion des inscriptions des Championnats de France 2018. Merci de vous %{login_link} pour éditer ou ajouter des informations à votre inscription."
-    login: "connecter"
+    #original_hash: ecea03c
+    welcome_html: >-
+      Bienvenue sur l'application de gestion des inscriptions du championnat de
+      France 2018. Merci de vous %{login_link} pour éditer ou ajouter des
+      informations à votre inscription.
+    #original_hash: 2736fab
+    login: connecter
+    how_to:
+      #original_hash: 088409e
+      title: "Comment utiliser ce site\_?"
+      #original_hash: 50ee3e6
+      content: >-
+        Vous devez vous connecter grâce à votre compte WCA. Ensuite, vous
+        pourrez voir les informations concernants votre inscription.
+    contact:
+      #original_hash: b37456c
+      title: Contact
+      #original_hash: 74b1621
+      content: >-
+        Si vous avez la moindre question, n'hésitez pas à nous envoyer un email
+        à
+  navigation:
+    #original_hash: 532eca5
+    competition_schedule: Planning de la compétition
+    #original_hash: ada2e9e
+    signin: Se connecter
+    #original_hash: dc1649a
+    signout: Se déconnecter
+    #original_hash: 1ec0b00
+    toggle_navigation: Basculer la navigation
+    #original_hash: 0eb5ed5
+    information: Information
+    #original_hash: c279174
+    visitors_list: Liste des visiteurs
+    #original_hash: ad0eda2
+    my_registration: Mon inscription
+    #original_hash: 420f8ba
+    my_personal_schedule: Mon planning personnel
+    #original_hash: 7b50842
+    signin_with_wca: Se connecter via la WCA
+    admin:
+      #original_hash: dddbe64
+      registrations: Inscriptions
+      #original_hash: 18b74bd
+      staff_registrations: Inscriptions staff
+      #original_hash: ae9629f
+      groups: Groupes
+    staff:
+      #original_hash: 7eddd0c
+      groups_schedule: Planning des groupes
+      #original_hash: cbfd44d
+      teams: Équipes
+  activerecord:
+    attributes:
+      registration_detail:
+        #original_hash: e49ff0d
+        restaurant_guests: Accompagnateurs au restaurant
+  simple_form:
+    labels:
+      registration_detail:
+        #original_hash: 28739bc
+        tshirt: Votre taille de t-shirt
+        #original_hash: ff31d21
+        mbf1: Essai 1
+        #original_hash: 969a17c
+        mbf2: Essai 2
+        #original_hash: 1e35a52
+        mbf3: Essai 3
+        #original_hash: a4730a2
+        staff: Staff
+        #original_hash: e2676c0
+        mbf_judge: Juge le multi
+        #original_hash: 37ddc2d
+        runner_only: Runner uniquement
+      public_guests:
+        #original_hash: e69f20e
+        fullname: Nom complet
+  groups:
+    #original_hash: eec6be7
+    move_selection: Déplacer la sélection vers
+    #original_hash: 0cc0daf
+    reset_changes: Remettre à zéro les changements de la sélection
+    #original_hash: 1ee83ea
+    submit_changes: Soumettre les changements
+  public_guests:
+    visitors_guests:
+      #original_hash: 7efd726
+      title: Accompagnateurs d'un compétiteur
+      #original_hash: 8a980a0
+      explanation: "Veuillez demander à ce compétiteur de vous déclarer comme invité sur la page contenant les détails de son inscription. Ne vous enregistrez pas ici\_!"
+    other_visitors:
+      #original_hash: 6e3c7c9
+      title: Tous les autres visiteurs
+      #original_hash: aa290c1
+      explanations: "Vous êtes les bienvenus pour venir voir la compétition\_! En raison de contraintes liées à la salle, vous devez vous inscrire avec votre nom complet et votre email si vous souhaitez venir voir le championnat de France 2018 en tant que visiteur."
+      #original_hash: 313f6dd
+      conditions: "L'inscription est obligatoire mais gratuite\_!"
+      #original_hash: e675529
+      register_here: "Inscrivez-vous ici\_!"
+    list:
+      #original_hash: 8982a2f
+      title: Liste des visiteurs inscrits
+      #original_hash: 9b14588
+      fullname: Nom complet
+      #original_hash: 84add5b
+      email: Email
+      #original_hash: c3cd636
+      actions: Actions
+    new:
+      #original_hash: bd89b84
+      title: S'inscrire en tant que visiteur
+      #original_hash: 58b7fd6
+      link_back: Retour à la liste des visiteurs
+    form:
+      #original_hash: d672995
+      submit_new: S'inscrire
+      #original_hash: 2dbaa87
+      submit_update: Mettre à jour le visiteur
+  registration:
+    #original_hash: ad0eda2
+    title: Mon inscription
+    confirmation_panel:
+      #original_hash: 7e92c31
+      title: Inscription confirmée
+      #original_hash: e91ebc3
+      please_confirm_or_cancel: "Veuillez confirmez ou annulez votre inscription ci-dessous\_:"
+      #original_hash: 5f07e25
+      coming: "Je viens\_!"
+      #original_hash: 51fe033
+      alert_coming: Êtes-vous sûr·e de vouloir confirmer votre inscription?
+      #original_hash: 3c09d88
+      not_coming: Je ne viens finalement pas
+      #original_hash: 373ed91
+      alert_not_coming: "Vous êtes sur le point de supprimer votre inscription, êtes-vous sûr·e\_?"
+    guests:
+      #original_hash: 3c23a67
+      title: Accompagnateurs
+      #original_hash: c4af0a8
+      edit: Éditer l'accompagnateur
+      #original_hash: 26bbc04
+      cancel_edit: Annuler l'édition
+      #original_hash: c0837e3
+      delete: Supprimer l'accompagnateur
+      #original_hash: ef5cccb
+      fullname: Nom complet de l'accompagnateur
+      #original_hash: 357de4e
+      add: Ajouter un accompagnateur
+    #original_hash: 911a0b3
+    additional: Informations complémentaires
+    multiblind:
+      #original_hash: 83164a5
+      title: Nombre de cubes pour le 3x3x3 Multi-Blind
+      #original_hash: 819d7cd
+      disclaimer: >-
+        Sera conservé de manière privée et utilisé uniquement à des fins
+        organisationnelles. Vous pourrez tout de même soumettre un nombre de
+        cube différent lors de la compétition
+    restaurant:
+      #original_hash: 24b84f5
+      title: Restaurant dimanche 1er avril (soir)
+      #original_hash: 64e1542
+      desc: "Nous pourrons manger ensemble au Ninkasi Gerland. Le prix sera de 15€ par personne et le menu comprendra 2 mini burgers (soit un poulet et un bœuf soit deux végétariens (steak de lentilles)), une portion de frites et une boisson de 50cl (bière blonde, Coca-cola ou jus de pomme). Si vous voulez venir, vous devez vous enregistrer avant le 28 mars\_!"
+    #original_hash: 7526a0e
+    personnal_schedule_html: "Veuillez trouver votre planning personnel %{link}\_!"
+    #original_hash: 0154c0d
+    here: ici
+    #original_hash: 179359b
+    save_changes: Sauvegarder les changements
+    wca_panel:
+      #original_hash: 0a718e6
+      edit_on_website: Éditer sur le site de la WCA
+      #original_hash: e6f2360
+      please_contact: >-
+        Veuillez contacter l'équipe d'organisation si vous devez changer quelque
+        chose
+      #original_hash: 84add5b
+      email: Email
+      #original_hash: c5497bc
+      events: Épreuves
+      #original_hash: 153d7a5
+      comment: Commentaire
+      #original_hash: 3424edc
+      confirmation: Confirmation
+      #original_hash: 88bedf4
+      confirmed: "Confirmé\_!"
+      #original_hash: abd82b9
+      cancelled: "Inscription annulée\_!"
+      #original_hash: 5586b55
+      pending: En attente de confirmation
+    edit:
+      #original_hash: 28c4d80
+      welcome: "Bienvenue %{person}\_!"
+      #original_hash: bafd38d
+      title: 'Édition de l''inscription de %{person}'
+      #original_hash: 11e9ba2
+      schedule: planning
+      #original_hash: 820df02
+      not_registered: Vous n'êtes pas inscrit à cette compétition
+      #original_hash: d4ac148
+      registered_as_staff: Cette personne est inscrite en tant que staff
+      #original_hash: 906b993
+      help_block: "Note\_:\_vous ne pouvez plus déclarer ou modifié vos accompagnateurs désormais"
+      #original_hash: 4b43d2e
+      title_wca_panel: Votre inscription WCA
