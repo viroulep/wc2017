@@ -3,7 +3,7 @@
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="sr-only">Toggle navigation</span>
+	<span class="sr-only"><%= t('navigation.toggle_navigation') %></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -15,7 +15,7 @@
       <% end %>
     </div>
     <div class="collapse navbar-collapse text-center">
-      <div class="title-app navbar-text hidden-sm">French Championship 2018</div>
+    <div class="title-app navbar-text hidden-sm"><%= t('competition_name') %></div>
       <ul class="nav navbar-nav">
         <% if current_user&.can_manage_competition?(managed_competition) %>
           <%= render 'layouts/navigation_admin' %>
@@ -25,14 +25,14 @@
         <% end %>
         <li class="dropdown">
           <a href="" class="dropdown-toggle top-nav" data-toggle="dropdown" data-hover="dropdown">
-            <%= icon('info-circle') %> Information <span class="caret"></span>
+	  <%= icon('info-circle') %> <%= t('navigation.information') %> <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" role="menu">
-            <li><%= link_to icon('calendar', 'Competition\'s schedule'), schedule_path %></li>
-            <li><%= link_to icon('bars', 'Visitors list'), public_guests_path %></li>
+            <li><%= link_to icon('calendar', t('navigation.competition_schedule')), schedule_path %></li>
+            <li><%= link_to icon('bars', t('navigation.visitors_list')), public_guests_path %></li>
             <% if current_user %>
-              <li><%= link_to icon('user-circle-o', 'My registration'), root_path %></li>
-              <li><%= link_to icon('calendar-check-o', 'My personal schedule'), my_schedule_path %></li>
+              <li><%= link_to icon('user-circle-o', t('navigation.my_registration')), root_path %></li>
+              <li><%= link_to icon('calendar-check-o', t('navigation.my_personal_schedule')), my_schedule_path %></li>
             <% end %>
           </ul>
         </li>
@@ -56,12 +56,12 @@
         </li>
         <% if current_user %>
           <li>
-            <%= link_to icon('sign-out', 'Sign out'), signout_path %>
+            <%= link_to icon('sign-out', t('navigation.signout')), signout_path %>
           </li>
         <% else %>
           <li>
             <div class="signin-elem">
-              <%= link_to 'Sign in with WCA', signin_path, class: "btn btn-block btn-Worldcubeassociation" %>
+              <%= link_to t('navigation.signin_with_wca'), signin_path, class: "btn btn-block btn-Worldcubeassociation" %>
             </div>
           </li>
         <% end %>

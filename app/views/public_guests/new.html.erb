@@ -1,5 +1,5 @@
-<h1>Register as a visitor</h1>
+<h1><%= t('public_guests.new.title') %></h1>
 
 <%= render 'form', public_guest: @public_guest %>
 
-<%= link_to 'Back to the visitors list', public_guests_path %>
+<%= link_to t('public_guests.new.link_back'), public_guests_path %>

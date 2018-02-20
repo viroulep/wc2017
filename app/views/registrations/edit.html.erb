@@ -1,17 +1,17 @@
 <div class="container">
   <% if @mine || @registration.nil? %>
-    <h2>My registration</h2>
-    <p>Welcome <%= current_user.name %>!</p>
+    <h2><%= t('registration.title') %></h2>
+    <p><%= t('registration.edit.welcome', person: current_user.name) %></p>
   <% else %>
     <h2>
-      Editing registration for <%= @user.name %> (<%= @user.wca_id %>)
+      <%= t('registration.edit.title', person: @user.name) %> (<%= @user.wca_id %>)
       <% if current_user.can_manage_competition?(managed_competition) %>
-        (<%= link_to "schedule", registration_schedule_path(@registration)  %>)
+        (<%= link_to t('registration.edit.schedule'), registration_schedule_path(@registration)  %>)
       <% end %>
     </h2>
   <% end %>
   <% unless @registration %>
-    <p>You're not registered for the competition</p>
+    <p><%= t('registration.edit.not_registered') %></p>
   <% else %>
     <% if @mine %>
       <div class="row text-center">
@@ -22,7 +22,7 @@
         </div>
       </div>
     <% elsif @registration.details.staff %>
-      <p>This person is registered as staff</p>
+      <p><%= t('registration.edit.registered_as_staff') %></p>
     <% end %>
     <% if @registration.details.staff %>
       <div class="row">
@@ -31,12 +31,12 @@
     <% end %>
     <hr/>
     <% unless current_user.can_edit_guests?(managed_competition) %>
-      <p class="help-block">Note: you can't declare or modify guests anymore</p>
+      <p class="help-block"><%= t('registration.edit.help_block') %></p>
     <% end %>
     <%= render "registration_form", registration: @registration %>
     <hr/>
     <div class="row">
-      <%= render "wca_registration_panel", registration: @registration, title: "Your WCA registration" %>
+      <%= render "wca_registration_panel", registration: @registration, title: t('registration.edit.title_wca_panel') %>
     </div>
   <% end %>
 </div>

@@ -20,6 +20,122 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  competition_name: "French Championship 2018"
+  registration_manager: "Registration Manager"
+  competition_description: "France 2018"
+  usual_buttons:
+    edit: "Edit"
+    destroy: "Destroy"
+  alerts:
+    are_you_sure: "Are you sure?"
   homepage:
     welcome_html: "Welcome to the French Championship 2018 Registration Manager. Please %{login_link} in order to edit or complete your additional registration data."
     login: "login"
+    how_to: 
+      title: "How to use this website?"
+      content: "You need to sign in with your WCA account. Then you will be displayed with your registration's information."
+    contact:
+      title: "Contact"
+      content: "If you have any question, do not hesitate to write us a mail at"
+  navigation: 
+    competition_schedule: "Competition's schedule"
+    signin: "Sign in"
+    signout: "Sign out"
+    toggle_navigation: "Toggle navigation"
+    information: "Information"
+    visitors_list: "Visitors list"
+    my_registration: "My registration"
+    my_personal_schedule: "My personal schedule"
+    signin_with_wca: "Sign in with WCA"
+    admin:
+      registrations: "Registrations"
+      staff_registrations: "Staff registrations"
+      groups: "Groups"
+    staff:
+      groups_schedule: "Groups schedule"
+      teams: "Teams"
+  activerecord:
+    attributes:
+      registration_detail:
+        restaurant_guests: "Restaurant guests"
+  simple_form:
+    labels:
+      registration_detail:
+        tshirt: "Your t-shirt size"
+        mbf1: "Attempt 1"
+        mbf2: "Attempt 2"
+        mbf3: "Attempt 3"
+        staff: "Staff"
+        mbf_judge: "Judges MBF"
+        runner_only: "Runner only"
+#does not work
+      public_guests:
+        fullname: "F"
+  groups:
+    move_selection: "Move selection to"
+    reset_changes: "Reset changes for selection"
+    submit_changes: "Submit changes"
+  public_guests:
+    visitors_guests: 
+      title: "Visitors coming with a competitor"
+      explanation: "Please ask this competitor to declare you as guest in his registration details page, do not register here!"
+    other_visitors:
+      title: "All other visitors"
+      explanations: "You're very welcome to come and watch the competition! Due to venue constraints, you need to register with your fullname and email if you want to come and watch the French Championship 2018 as a visitor."
+      conditions: "Registration is mandatory but free of charge!"
+      register_here: "Register here!"
+    list:
+      title: "List of registered public visitors"
+      fullname: "Fullname"
+      email: "Email"
+      actions: "Actions"
+    new:
+      title: "Register as a visitor"
+      link_back: "Back to the visitors list"
+    form:
+      submit_new: "Register"
+      submit_update: "Update Visitor"
+  registration:
+    title: "My registration"
+    confirmation_panel:
+      title: "Registration confirmation"
+      please_confirm_or_cancel: "Please confirm or cancel your registration below:"
+      coming: "I'm definitely coming"
+      alert_coming: "Are you sure you want to confirm your registration?"
+      not_coming: "I'm not coming anymore"
+      alert_not_coming: "You are about to cancel your registration, are you sure?"
+    guests:
+      title: "Guests"
+      edit: "Edit guest"
+      cancel_edit: "Cancel editing"
+      delete: "Delete Guest"
+      fullname: "Guest's full name"
+      add: "Add guest"
+    additional: "Additional information"
+    multiblind:
+      title: "Number of cubes for 3x3x3 Multi-Blind"
+      disclaimer: "Will be kept private and used for organizational purpose. You can still submit a different number during the competition."
+    restaurant: 
+      title: "Restaurant Sunday, April 1st (evening)"
+      desc: "We can eat together at Ninkasi Gerland Restaurant. It will cost 15€ per person and the menu will be 2 mini-burgers (either one chicken, one beef or two veggies (lentils' steak)), one portion of fries and one 50cl drink (blond beer, Coca-cola or apple juice). You need to register for this before March 28th!"
+    personnal_schedule_html: "Please find your personal schedule %{link}!"
+    here: "here"
+    save_changes: "Save changes"
+    wca_panel:
+      edit_on_website: "Edit on the WCA Website"
+      please_contact: "Please contact the organization team if you need to change any of these"
+      email: "Email"
+      events: "Events"
+      comment: "Comment"
+      confirmation: "Confirmation"
+      confirmed: "Confirmed!"
+      cancelled: "Registration cancelled!"
+      pending: "Pending confirmation"
+    edit:
+      welcome: "Welcome %{person}!"
+      title: "Editing registration for %{person}"
+      schedule: "schedule"
+      not_registered: "You're not registered for the competition"
+      registered_as_staff: "This person is registered as staff"
+      help_block: "Note: you can't declare or modify guests anymore"
+      title_wca_panel: "Your WCA registration"

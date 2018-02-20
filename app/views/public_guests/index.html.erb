@@ -1,21 +1,19 @@
 <p id="notice"><%= notice %></p>
 
-<h2>Visitors coming with a competitor</h2>
-  Please ask this competitor to declare you as guest in his registration details page, do not register here!
+<h2><%= t('public_guests.visitors_guests.title') %></h2>
+<%= t('public_guests.visitors_guests.explanation') %>
 
-<h2>All other visitors</h2>
-
-You're very welcome to come and watch the competition!
-Due to venue constraints, you need to register with your fullname and email if you want to come and watch the French Championship 2018 as a visitor.
+<h2><%= t('public_guests.other_visitors.title') %></h2>
+<%= t('public_guests.other_visitors.explanations') %>
 <br/>
-Registration is mandatory but free of charge!
+<%= t('public_guests.other_visitors.conditions') %>
 <br/>
 <br/>
 <p>
-  <%= link_to 'Register here!', new_public_guest_path, class: "btn btn-primary" %>
+  <%= link_to t('public_guests.other_visitors.register_here'), new_public_guest_path, class: "btn btn-primary" %>
 </p>
 
-<h2>List of registered public visitors</h2>
+<h2><%= t('public_guests.list.title') %></h2>
 
 <table class="table table-hover"
   <% if current_user&.can_manage_competition?(managed_competition) %>
@@ -25,10 +23,10 @@ Registration is mandatory but free of charge!
        id="table-visitors">
   <thead>
     <tr>
-      <th>Fullname</th>
+      <th><%= t('public_guests.list.fullname') %></th>
       <% if current_user&.can_manage_competition?(managed_competition) %>
-        <th>Email</th>
-        <th>Actions</th>
+        <th><%= t('public_guests.list.email') %></th>
+        <th><%= t('public_guests.list.actions') %></th>
       <% end %>
     </tr>
   </thead>
@@ -40,8 +38,8 @@ Registration is mandatory but free of charge!
         <% if current_user&.can_manage_competition?(managed_competition) %>
           <td><%= public_guest.email %></td>
           <td>
-            <%= link_to 'Edit', edit_public_guest_path(public_guest) %>
-            <%= link_to 'Destroy', public_guest, method: :delete, data: { confirm: 'Are you sure?' } %>
+            <%= link_to t('usual_buttons.edit'), edit_public_guest_path(public_guest) %>
+            <%= link_to t('usual_buttons.destroy'), public_guest, method: :delete, data: { confirm: t('alerts.are_you_sure') } %>
           </td>
         <% end %>
       </tr>

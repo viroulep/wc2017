@@ -1,16 +1,16 @@
 <div class="panel panel-default text-center">
   <div class="panel-heading">
-    <h3 class="panel-title">Registration confirmation</h3>
+    <h3 class="panel-title"><%= t('registration.confirmation_panel.title') %></h3>
   </div>
   <div class="panel-body">
-    <p>Please confirm or cancel your registration below:</p>
+    <p><%= t('registration.confirmation_panel.please_confirm_or_cancel')%></p>
     <div class="btn-group inline">
       <%= simple_form_for :confirm, url: confirm_path do |f| %>
-        <%= button_tag(type: 'submit', name: "registration-action", value: "confirm", class: "btn btn-success confirm-btn", data: { confirm: "Are you sure you want to confirm your registration?" }) do %>
-          I'm definitely coming
+        <%= button_tag(type: 'submit', name: "registration-action", value: "confirm", class: "btn btn-success confirm-btn", data: { confirm: t('registration.confirmation_panel.alert_coming') }) do %>
+	  <%= t('registration.confirmation_panel.coming') %>
         <% end %>
-        <%= button_tag(type: 'submit', name: "registration-action", value: "cancel", class: "btn btn-danger", data: { confirm: "You are about to cancel your registration, are you sure?" }) do %>
-          I'm not coming anymore
+        <%= button_tag(type: 'submit', name: "registration-action", value: "cancel", class: "btn btn-danger", data: { confirm: t('registration.confirmation_panel.alert_not_coming') }) do %>
+	  <%= t('registration.confirmation_panel.not_coming') %>
         <% end %>
       <% end %>
     </div>

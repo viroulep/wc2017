@@ -14,13 +14,13 @@
   <div class="panel-body">
   <% if current_user&.can_manage_competition?(managed_competition) %>
     <p>
-      <%= link_to icon('pencil', 'Edit on the WCA Website'), wca_registration_url(@registration.id), target: "_blank" %>
+      <%= link_to icon('pencil', t('registration.wca_panel.edit_on_website')), wca_registration_url(@registration.id), target: "_blank" %>
     </p>
   <% end %>
-    <p>Please contact the organization team if you need to change any of these</p>
+    <p><%= t('registration.wca_panel.please_contact') %></p>
     <div class="row">
       <div class="col-sm-2 div-label">
-        Email
+        <%= t('registration.wca_panel.email') %>
       </div>
       <div class="col-sm-10">
         <%= registration.user.email %>
@@ -28,7 +28,7 @@
     </div>
     <div class="row">
       <div class="col-sm-2 div-label">
-        Events
+        <%= t('registration.wca_panel.events') %>
       </div>
       <div class="col-sm-10">
         <%= render "shared/event_id_collection", event_ids: registration.events %>
@@ -37,7 +37,7 @@
     <% unless registration.comments.blank? %>
       <div class="row">
         <div class="col-sm-2 div-label">
-          Comment
+          <%= t('registration.wca_panel.comment') %>
         </div>
         <div class="col-sm-10">
           <div class="well">
@@ -48,15 +48,15 @@
     <% end %>
     <div class="row">
       <div class="col-sm-2 div-label">
-        Confirmation
+        <%= t('registration.wca_panel.confirmation') %>
       </div>
       <div class="col-sm-10">
         <% if registration.details.confirmed_at %>
-          <span class="text-success bg-success">Confirmed!</span>
+          <span class="text-success bg-success"><%= t('registration.wca_panel.confirmed') %></span>
         <% elsif registration.details.cancelled_at %>
-          <span class="text-danger bg-danger">Registration cancelled!</span>
+          <span class="text-danger bg-danger"><%= t('registration.wca_panel.cancelled') %></span>
         <% else %>
-          <span class="text-danger bg-warning">Pending confirmation</span>
+          <span class="text-danger bg-warning"><%= t('registration.wca_panel.pending') %></span>
         <% end %>
       </div>
     </div>
