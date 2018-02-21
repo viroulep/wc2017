@@ -3,6 +3,16 @@ class RegistrationDetail < ApplicationRecord
 
   TSHIRT_SIZES = %w(XS S M L XL XXL XXXL).freeze
 #  validates_inclusion_of :tshirt, in: TSHIRT_SIZES, message: "%{value} is not a valid size"
+  validate :is_a_size_or_blank
+
+  private def is_a_size_or_blank
+    if !TSHIRT_SIZES.include?(tshirt)
+      unless tshirt.blank?
+        errors.add(:tshirt, "Not a valid size")
+      end
+    end
+  end
+
   validates_inclusion_of :staff, in: [true, false]
 
   validates_numericality_of :mbf1, greater_than_or_equal_to: 0
