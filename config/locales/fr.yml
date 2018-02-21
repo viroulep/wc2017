@@ -103,12 +103,12 @@ fr:
       #original_hash: 7efd726
       title: Accompagnateurs d'un compétiteur
       #original_hash: 8a980a0
-      explanation: "Veuillez demander à ce compétiteur de vous déclarer comme invité sur la page contenant les détails de son inscription. Ne vous enregistrez pas ici\_!"
+      explanation: "Veuillez demander à ce compétiteur de vous déclarer comme accompagnateur sur la page contenant les détails de son inscription. Ne vous enregistrez pas ici\_!"
     other_visitors:
       #original_hash: 6e3c7c9
       title: Tous les autres visiteurs
       #original_hash: aa290c1
-      explanations: "Vous êtes les bienvenus pour venir voir la compétition\_! En raison de contraintes liées à la salle, vous devez vous inscrire avec votre nom complet et votre email si vous souhaitez venir voir le championnat de France 2018 en tant que visiteur."
+      explanations: "Vous êtes les bienvenus\_! En raison de contraintes liées à la salle, vous devez vous inscrire avec votre nom complet et votre email si vous souhaitez venir voir le championnat de France 2018 en tant que visiteur."
       #original_hash: 313f6dd
       conditions: "L'inscription est obligatoire mais gratuite\_!"
       #original_hash: e675529
