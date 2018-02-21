@@ -1,7 +1,12 @@
 <p id="notice"><%= notice %></p>
 
+<h2><%= t('public_guests.competitors.title' ) %></h2>
+<b><%= t('public_guests.do_not_register_here') %></b>
+<%= t('public_guests.competitors.explanations_html',wca_website: link_to(t('public_guests.competitors.wca_website'), "https://www.worldcubeassociation.org/competitions/France2018/register"),my_registration_link: link_to(t('public_guests.competitors.here'), my_registration_url)) %>
+
 <h2><%= t('public_guests.visitors_guests.title') %></h2>
-<%= t('public_guests.visitors_guests.explanation') %>
+<b><%= t('public_guests.do_not_register_here') %></b>
+<%= t('public_guests.visitors_guests.explanation_html',rd_page: link_to(t('public_guests.visitors_guests.registration_details_page'), my_registration_url)) %>
 
 <h2><%= t('public_guests.other_visitors.title') %></h2>
 <%= t('public_guests.other_visitors.explanations') %>

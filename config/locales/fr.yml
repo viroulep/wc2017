@@ -28,6 +28,17 @@ fr:
       content: >-
         Vous devez vous connecter grâce à votre compte WCA. Ensuite, vous
         pourrez voir les informations concernants votre inscription.
+    more_info:
+      #original_hash: f925f9b
+      title: Plus d'informations
+      #original_hash: 2c84441
+      content_html: >-
+        Vous pouvez trouver toutes les informations concernant cette competition
+        sur %{wca_website} et %{only_cube_website}.
+      #original_hash: 4d00091
+      wca_website: le site de la World Cube Association
+      #original_hash: 347a187
+      only_cube_website: le site d'Only Cube
     contact:
       #original_hash: b37456c
       title: Contact
@@ -101,11 +112,26 @@ fr:
     #original_hash: 1ee83ea
     submit_changes: Soumettre les changements
   public_guests:
+    #original_hash: 007709f
+    do_not_register_here: "Ne vous inscrivez pas ici\_!"
+    competitors:
+      #original_hash: 855bd26
+      title: Compétiteurs
+      #original_hash: fc6c69f
+      explanations_html: "Si vous voulez participer en tant que compétiteur·rice, vous DEVEZ d'abord vous inscrire sur %{wca_website}\_! Ensuite, vous pourrez vous rendre %{my_registration_link} pour gérer les détails de votre inscription."
+      #original_hash: 3a67a94
+      wca_website: le site de la WCA
+      #original_hash: 0154c0d
+      here: ici
     visitors_guests:
       #original_hash: 7efd726
       title: Accompagnateurs d'un compétiteur
-      #original_hash: 8a980a0
-      explanation: "Veuillez demander à ce compétiteur de vous déclarer comme accompagnateur sur la page contenant les détails de son inscription. Ne vous enregistrez pas ici\_!"
+      #original_hash: f15018a
+      explanation_html: >-
+        Veuillez demander à votre compétiteur·rice de vous déclarer en tant
+        qu'accompagnateur·rice sur %{rd_page}
+      #original_hash: 899405c
+      registration_details_page: sa page contenant les détails de son inscription
     other_visitors:
       #original_hash: 6e3c7c9
       title: Tous les autres visiteurs

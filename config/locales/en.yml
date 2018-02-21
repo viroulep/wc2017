@@ -1,5 +1,4 @@
-# Files in the config/locales directory are used for internationalization
-# and are automatically loaded by Rails. If you want to use locales other
+# Files in the config/locales directory are used for internationalization and are automatically loaded by Rails. If you want to use locales other
 # than English, add the necessary files in this directory.
 #
 # To use the locales, use `I18n.t`:
@@ -34,6 +33,11 @@ en:
     how_to: 
       title: "How to use this website?"
       content: "You need to sign in with your WCA account. Then you will be displayed with your registration's information."
+    more_info:
+      title: "More information"
+      content_html: "You can find every information about this competition on %{wca_website} and %{only_cube_website}."
+      wca_website: "World Cube Association's website"
+      only_cube_website: "Only Cube's website"
     contact:
       title: "Contact"
       content: "If you have any question, do not hesitate to write us a mail at"
@@ -76,9 +80,16 @@ en:
     reset_changes: "Reset changes for selection"
     submit_changes: "Submit changes"
   public_guests:
+    do_not_register_here: "Do not register here!"
+    competitors:
+      title: "Competitors"
+      explanations_html: "If you want to compete, you MUST register on %{wca_website} first! Then you can go %{my_registration_link} to manage your registration details."
+      wca_website: "WCA's website"
+      here: "here"
     visitors_guests: 
       title: "Visitors coming with a competitor"
-      explanation: "Please ask this competitor to declare you as guest in his registration details page, do not register here!"
+      explanation_html: "Please ask this competitor to declare you as guest in their %{rd_page}."
+      registration_details_page: "registration details page"
     other_visitors:
       title: "All other visitors"
       explanations: "You're very welcome to come and watch the competition! Due to venue constraints, you need to register with your fullname and email if you want to come and watch the French Championship 2018 as a visitor."
