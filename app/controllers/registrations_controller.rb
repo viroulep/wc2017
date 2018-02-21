@@ -226,7 +226,7 @@ class RegistrationsController < ApplicationController
       (@registration.guests - updated_guests).map(&:mark_for_destruction)
     end
 
-    permitted_details = [:mbf1, :tshirt, :restaurant_guests]
+    permitted_details = [:mbf1, :tshirt, :restaurant_guests, :vg]
     if current_user.can_manage_competition?(managed_competition)
       permitted_details << [:staff, :runner_only, :mbf_judge]
     end

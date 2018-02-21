@@ -66,6 +66,7 @@ en:
     labels:
       registration_detail:
         tshirt: "Your t-shirt size"
+        vg: "Vegetarian"
         mbf1: "Attempt 1"
         mbf2: "Attempt 2"
         mbf3: "Attempt 3"

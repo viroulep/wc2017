@@ -68,6 +68,10 @@ class Registration < ApplicationRecord
     details.runner_only
   end
 
+  def vg?
+    details.vg
+  end
+
   def validate_guests
     unless new_record?
       errors.add(:guests, "Maximum number of guests is 5") if visible_guests.size > 5
