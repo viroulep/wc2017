@@ -88,9 +88,11 @@ fr:
         mbf_judge: Juge le multi
         #original_hash: 37ddc2d
         runner_only: Runner uniquement
-      public_guests:
-        #original_hash: e69f20e
+      public_guest:
+        #original_hash: 9b14588
         fullname: Nom complet
+        #original_hash: 84add5b
+        email: Email
   groups:
     #original_hash: eec6be7
     move_selection: Déplacer la sélection vers

@@ -68,9 +68,9 @@ en:
         staff: "Staff"
         mbf_judge: "Judges MBF"
         runner_only: "Runner only"
-#does not work
-      public_guests:
-        fullname: "F"
+      public_guest:
+        fullname: "Fullname"
+        email: "Email"
   groups:
     move_selection: "Move selection to"
     reset_changes: "Reset changes for selection"
