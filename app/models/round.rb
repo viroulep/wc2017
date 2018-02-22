@@ -9,8 +9,8 @@ class Round < ApplicationRecord
 
   before_save :default_values
   def default_values
-    self.start ||= DateTime.new(2017, 10, 7, 10, 0, 0)
-    self.end ||= DateTime.new(2017, 10, 7, 10, 20, 0)
+    self.start ||= DateTime.new(2018, 03, 31, 10, 0, 0)
+    self.end ||= DateTime.new(2018, 04, 02, 10, 20, 0)
   end
 
   def name

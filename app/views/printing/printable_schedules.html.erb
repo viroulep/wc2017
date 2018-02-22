@@ -44,7 +44,7 @@ return {
   views: {
     listFourDay: {
       type: 'list',
-      duration: { days: 2 },
+      duration: { days: 3 },
       buttonText: 'Printable',
     },
   },
@@ -122,13 +122,13 @@ end
     -->
 <script>
 <% if events_count[7] > 0 %>
-$('#calendar-<%= r.id %>').fullCalendar(commonOptions("2017-10-07", events<%= r.id %>));
+$('#calendar-<%= r.id %>').fullCalendar(commonOptions("2018-03-31", events<%= r.id %>));
 $('#calendar-<%= r.id %>').ready(function (){
   $('#calendar-<%= r.id %>').find('.fc-scroller').removeAttr("style");
 });
 <% end %>
 <% if events_count[8] > 0 %>
-$('#calendar-<%= r.id %>-friday').fullCalendar(commonOptions("2017-10-08", events<%= r.id %>));
+$('#calendar-<%= r.id %>-friday').fullCalendar(commonOptions("2018-03-31", events<%= r.id %>));
 $('#calendar-<%= r.id %>-friday').ready(function (){
   $('#calendar-<%= r.id %>-friday').find('.fc-scroller').removeAttr("style");
 });
