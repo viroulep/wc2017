@@ -1,11 +1,11 @@
 <% panel_class, status = if registration.details.cancelled_at
-                           ["danger", "Cancelled"]
+                           ["danger", t('registration.wca_panel.cancelled')]
                          elsif registration.status == "accepted"
-                           ["success", "Accepted"]
+                           ["success", t('registration.wca_panel.accepted')]
                          elsif registration.status == "pending"
-                           ["warning", "Waiting List"]
+                           ["warning",  t('registration.wca_panel.waiting_list')]
                          else
-                           ["danger", "Deleted"]
+                           ["danger",  t('registration.wca_panel.deleted')]
                          end %>
 <div class="panel panel-<%= panel_class %>">
   <div class="panel-heading">
