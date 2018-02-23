@@ -7,6 +7,14 @@
     <p><%= @registrations.accepted.confirmed.count %> people confirmed their registration, <%= @registrations.accepted.cancelled.count %> people cancelled their registration.<p>
     <p>Please remember to delete cancelled people on the WCA website, accept the next one on the waiting list, and re-import data.</p>
     <p>There are currently <%= Guest.all.count %> declared guests.</p>
+    <h3>Tshirt sizes</h3>
+    <ul>
+      <% @tshirts.each do |tshirt| %>
+        <li><%= tshirt.size %> : <%= tshirt.nb %></li>
+      <% end %>
+    </ul>
+    <h3>Restaurant</h3>
+    <p><%= RegistrationDetail.sum(:restaurant_guests) %> people want to eat at the restaurant</p>
     <% # TODO: DRY this, add bootstrap-table for easy filtering %>
     <table class="table table-hover"
            data-toggle="table"
@@ -17,6 +25,9 @@
           <th>ID</th>
           <th>Confirmation status</th>
           <th>Name</th>
+	  <th>Tshirt</th>
+	  <th>Restaurant</th>
+	  <th>Guests</th>
           <th>Events</th>
         </tr>
       </thead>
@@ -38,6 +49,9 @@
               <% end %>
             </td>
             <td><%= registration.user.name %></td>
+            <td><%= registration.details.tshirt %></td>
+            <td><%= registration.details.restaurant_guests %></td>
+            <td><%= registration.guests.count %></td>
             <td><%= render "shared/event_id_collection", event_ids: registration.events, summary: summary %></td>
           </tr>
         <% end %>
