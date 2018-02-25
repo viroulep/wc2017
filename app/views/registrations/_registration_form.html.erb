@@ -120,8 +120,9 @@
               </div>
               <div class="col-xs-12 form-group">
                 <%= d.input :restaurant_guests, min: 0 %>
-		<br>
-		<%= d.input :vg %>
+              </div>
+              <div class="col-xs-12 form-group">
+		<%= d.input :nb_vg %>
               </div>
             </div>
             <% if current_user.can_manage_competition?(managed_competition) %>

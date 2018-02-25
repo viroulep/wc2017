@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221203527) do
+ActiveRecord::Schema.define(version: 20180225214538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -80,7 +80,7 @@ ActiveRecord::Schema.define(version: 20180221203527) do
     t.integer  "mbf3",              default: 0
     t.boolean  "mbf_judge",         default: false
     t.integer  "restaurant_guests", default: 0
-    t.boolean  "vg"
+    t.integer  "nb_vg"
     t.index ["registration_id"], name: "index_registration_details_on_registration_id", using: :btree
   end
 

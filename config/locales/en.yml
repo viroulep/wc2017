@@ -30,7 +30,7 @@ en:
   homepage:
     welcome_html: "Welcome to the French Championship 2018 Registration Manager. Please %{login_link} in order to edit or complete your additional registration data."
     login: "login"
-    how_to: 
+    how_to:
       title: "How to use this website?"
       content: "You need to sign in with your WCA account. Then you will be displayed with your registration's information."
     more_info:
@@ -41,7 +41,7 @@ en:
     contact:
       title: "Contact"
       content: "If you have any question, do not hesitate to write us a mail at"
-  navigation: 
+  navigation:
     competition_schedule: "Competition's schedule"
     signin: "Sign in"
     signout: "Sign out"
@@ -66,7 +66,7 @@ en:
     labels:
       registration_detail:
         tshirt: "Your t-shirt size"
-        vg: "Vegetarian"
+        nb_vg: "Number of vegetarians"
         mbf1: "Attempt 1"
         mbf2: "Attempt 2"
         mbf3: "Attempt 3"
@@ -87,7 +87,7 @@ en:
       explanations_html: "If you want to compete, you MUST register on %{wca_website} first! Then you can go %{my_registration_link} to manage your registration details."
       wca_website: "WCA's website"
       here: "here"
-    visitors_guests: 
+    visitors_guests:
       title: "Visitors coming with a competitor"
       explanation_html: "Please ask this competitor to declare you as guest in their %{rd_page}."
       registration_details_page: "registration details page"
@@ -127,7 +127,7 @@ en:
     multiblind:
       title: "Number of cubes for 3x3x3 Multi-Blind"
       disclaimer: "Will be kept private and used for organizational purpose. You can still submit a different number during the competition."
-    restaurant: 
+    restaurant:
       title: "Restaurant Sunday, April 1st (evening)"
       desc: "We can eat together at Ninkasi Gerland Restaurant. It will cost 15€ per person and the menu will be 2 mini-burgers (either one chicken, one beef or two veggies (lentils' steak)), one portion of fries and one 50cl drink (blond beer, Coca-cola or apple juice). You need to tell us how many you will be before March 28th! (\"0\" means you won't come, \"1\" means you'll come, \"2\" means you'll come with one guest, etc.)"
     personnal_schedule_html: "Please find your personal schedule %{link}!"
