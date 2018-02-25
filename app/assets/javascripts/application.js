@@ -15,6 +15,7 @@
 //= require bootstrap-sprockets
 //= require bootstrap-table
 //= require moment
+//= require moment/fr.js
 //= require fullcalendar
 //= require bootstrap-datetimepicker
 //= require pickers

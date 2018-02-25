@@ -138,6 +138,7 @@ class RegistrationsController < ApplicationController
 
   def index
     @registrations = Registration.all.includes(:user, :registration_detail)
+    @tshirts = RegistrationDetail.group(:tshirt).select('tshirt as size, count(*) as nb').order('nb desc')
   end
 
   def staff

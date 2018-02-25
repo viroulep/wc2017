@@ -1,16 +1,17 @@
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Staff panel</h3>
+    <h3 class="panel-title"><%= t('registration.staff_panel.title') %></h3>
   </div>
   <div class="panel-body">
     <div class="row">
       <div class="col-xs-12">
-        <p>You are in the following staff teams : <%= raw(staff_teams_to_links(@registration.staff_teams.order(:id))) %></p>
-        <p><b>Your schedule is <%= link_to "here", my_schedule_path %>!</b></p>
+        <p><%= t('registration.staff_panel.you_are_in_the_following_html', teams: raw(staff_teams_to_links(@registration.staff_teams.order(:id)))) %></p>
+        <p><b><%= t('registration.staff_panel.your_schedule_is_here_html', here: link_to(t('registration.staff_panel.here'), my_schedule_path)) %></b></p>
       </div>
     </div>
   </div>
   <div class="panel-footer">
-    [T]: Thursday, [F]: Friday, [Sa]: Saturday, [Su]: Sunday
+    <% #TODO (ap): either automatically generate or delete this %>
+    [S]: Samedi, [D]: Dimanche, [L]: Lundi
   </div>
 </div>

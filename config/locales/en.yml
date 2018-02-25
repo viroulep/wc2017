@@ -134,6 +134,10 @@ en:
     here: "here"
     save_changes: "Save changes"
     wca_panel:
+      accepted: "Accepted"
+      cancelled: "Cancelled"
+      waiting_list: "Waiting list"
+      deleted: "Deleted"
       edit_on_website: "Edit on the WCA Website"
       please_contact: "Please contact the organization team if you need to change any of these"
       email: "Email"
@@ -151,3 +155,8 @@ en:
       registered_as_staff: "This person is registered as staff"
       help_block: "Note: you can't declare or modify guests anymore"
       title_wca_panel: "Your WCA registration"
+    staff_panel:
+      title: "Staff panel"
+      you_are_in_the_following_html: "You are in the following staff teams: %{teams}"
+      your_schedule_is_here_html: "Your schedule is %{here}!"
+      here: "here"
