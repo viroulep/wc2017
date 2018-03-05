@@ -34,6 +34,9 @@ class RegistrationsController < ApplicationController
       user = User.wca_new(json_user)
       if json_registration
         json_registration["event_ids"] = json_registration.delete("eventIds")&.join(",")
+        unless json_registration["id"]
+          json_registration["id"] = json_registration["wcaRegistrationId"]
+        end
         json_registration["user_id"] = json_user["id"]
         json_registration.delete("guests")
         all_registrations << Registration.wca_new(json_registration)
