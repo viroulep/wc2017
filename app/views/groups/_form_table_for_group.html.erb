@@ -22,8 +22,11 @@
           <% line_id = "#{f.object.group_id}_#{f.object.registration_id}" %>
           <td id="<%= line_id %>">
             <%= f.object.name %>
-            <% unless (f.object.registration.events & ["333mbf", "444bf", "555bf"]).empty? %>
-              !
+            <% unless (f.object.registration.events & ["333mbf"]).empty? %>
+              M
+            <% end %>
+            <% unless (f.object.registration.events & ["444bf", "555bf"]).empty? %>
+              BBF
             <% end %>
             <%= array_to_s(registration_teams) %>
 
