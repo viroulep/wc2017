@@ -215,6 +215,11 @@ $(document).ready(function () {
               <td></td>
               <td>
                 <%= sa.name %>
+                <% sa.scramble_events.each do |se| %>
+                  <% if se.event_id == group.event_id %>
+                    (SCR)
+                  <% end %>
+                <% end %>
               </td>
             </tr>
           <% end %>
