@@ -33,7 +33,7 @@ class Event
     },
     {
       id: "333",
-      name: "Rubik's Cube",
+      name: "3x3x3 Cube",
       short_name: "3x3",
       rank: 10,
       limit: SolveTime.new('333', :single, -1),
@@ -117,7 +117,7 @@ class Event
     },
     {
       id: "clock",
-      name: "Rubik's Clock",
+      name: "Clock",
       short_name: "Clock",
       rank: 130,
       limit: SolveTime.new('clock', :average, 1500),
