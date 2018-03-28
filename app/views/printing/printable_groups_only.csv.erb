@@ -5,7 +5,7 @@
 <%= CSV.generate_line(headers).html_safe -%>
 <% @groups.each do |group| -%>
 <%= CSV.generate_line([
-      Event.find(group.event_id).name,
+      group.event_id,
       group.round.r_id,
       group.name,
       group.hex_color,
