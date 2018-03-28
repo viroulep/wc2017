@@ -26,7 +26,11 @@
                 <% @group.registrations.sort_by(&:name).each do |comp|%>
                   <tr>
                     <td>
-                      <%= comp.name %>
+                      <% if current_user&.can_manage_competition?(managed_competition) %>
+                        <%= link_to comp.name, registration_schedule_path(comp) %>
+                      <% else %>
+                        <%= comp.name %>
+                      <% end %>
                     </td>
                   </tr>
                 <% end %>
@@ -53,7 +57,11 @@
                       <% elsif stg.runner_only? %>
                         [R]
                       <% end %>
-                      <%= stg.name %>
+                      <% if current_user&.can_manage_competition?(managed_competition) %>
+                        <%= link_to stg.name, registration_schedule_path(stg) %>
+                      <% else %>
+                        <%= stg.name %>
+                      <% end %>
                       <% extra = additional_staff.find { |srg| srg.registration_id == stg.id } %>
                       <% unless extra&.role.blank? %>
                         <%= icon('info-circle', data: { toggle: "tooltip", placement: "top" }, title: extra.role) %>
