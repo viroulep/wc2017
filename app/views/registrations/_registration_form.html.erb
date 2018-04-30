@@ -128,6 +128,7 @@
             <% if current_user.can_manage_competition?(managed_competition) %>
               <hr/>
               <%= d.input :staff %>
+              <%= d.input :orga %>
               <%= d.input :mbf_judge %>
               <%= d.input :runner_only %>
             <% end %>
@@ -136,6 +137,15 @@
           <% if current_user.can_manage_competition?(managed_competition) %>
             <%= render 'shared/associated_events_picker', form_builder: r %>
             <hr/>
+            <div class="col-xs-12 form-group">
+              Doesn't scramble for: <%= render 'shared/event_id_collection', event_ids: registration.doesnt_scramble_events %>
+            </div>
+            <div class="col-xs-12 form-group">
+              Warmup for: <%= render 'shared/event_id_collection', event_ids: registration.warmup_events %>
+            </div>
+            <div class="col-xs-12 form-group">
+              Days helping: <%= registration.details.days_helping %>
+            </div>
           <% end %>
 
           <div class="row" style="margin-top:10px">

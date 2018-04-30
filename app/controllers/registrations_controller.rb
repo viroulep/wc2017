@@ -26,6 +26,8 @@ class RegistrationsController < ApplicationController
     wcif = JSON.parse(wcif_string_content)
     all_users = []
     all_registrations = []
+    all_registrations_details = []
+    all_scramble_events = []
     all_pb = []
     wcif["persons"]&.each do |json_user|
       json_registration = json_user.delete("registration")
@@ -37,7 +39,31 @@ class RegistrationsController < ApplicationController
         unless json_registration["id"]
           json_registration["id"] = json_registration["wcaRegistrationId"]
         end
+        unless json_registration["id"]
+          json_registration["id"] = user.id
+        end
         json_registration["user_id"] = json_user["id"]
+        attrs = {
+          registration_id: json_registration["id"],
+          staff: json_user["roles"]&.include?("staff"),
+          orga: json_user["roles"]&.include?("organization"),
+        }
+        if json_user["extensions"]
+          attrs[:days_helping] = json_user["extensions"]["days"].join(",")
+          attrs[:warmup] = json_user["extensions"]["events_w"].join(",")
+          attrs[:not_scramble] = json_user["extensions"]["events_n"].join(",")
+        end
+        all_registrations_details << RegistrationDetail.new(attrs)
+        if attrs[:staff]
+          json_user["extensions"]["events_s"].each do |eventId|
+            se_attr = {
+              registration_id: json_registration["id"],
+              event_id: eventId,
+            }
+            all_scramble_events << ScrambleEvent.new(se_attr)
+          end
+        end
+
         json_registration.delete("guests")
         all_registrations << Registration.wca_new(json_registration)
       end
@@ -50,10 +76,17 @@ class RegistrationsController < ApplicationController
       # Checking everything all the time is long, let's just clear the table...
       User.delete_all
       Registration.delete_all
+      RegistrationDetail.delete_all
       PersonalBest.delete_all
+      if all_scramble_events.any?
+        # we're importing a wcif with extensions
+        ScrambleEvent.delete_all
+      end
       ActiveRecord::Base.logger.silence do
         User.import(all_users, recursive: true)
         Registration.import(all_registrations)
+        RegistrationDetail.import(all_registrations_details)
+        ScrambleEvent.import(all_scramble_events)
       end
 
       Registration.where("comments ILIKE :search", search: "%staff%").each do |r|
@@ -140,7 +173,7 @@ class RegistrationsController < ApplicationController
   end
 
   def index
-    @registrations = Registration.all.includes(:user, :registration_detail)
+    @registrations = Registration.all.includes(:user, :registration_detail, :guests)
     @tshirts = RegistrationDetail.group(:tshirt).select('tshirt as size, count(*) as nb').order('nb desc')
   end
 
@@ -232,7 +265,7 @@ class RegistrationsController < ApplicationController
 
     permitted_details = [:mbf1, :tshirt, :restaurant_guests, :nb_vg]
     if current_user.can_manage_competition?(managed_competition)
-      permitted_details << [:staff, :runner_only, :mbf_judge]
+      permitted_details << [:staff, :runner_only, :mbf_judge, :orga]
     end
     details = params.require(:registration).permit(:registration_detail_attributes => permitted_details)
     updated_details = @registration.details

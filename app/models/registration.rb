@@ -91,6 +91,14 @@ class Registration < ApplicationRecord
     @events ||= event_ids.split(",")
   end
 
+  def doesnt_scramble_events
+    @doesnt_scramble_events ||= registration_detail.not_scramble.split(",")
+  end
+
+  def warmup_events
+    @warmup_events ||= registration_detail.warmup.split(",")
+  end
+
   def visible_guests
     guests.reject(&:marked_for_destruction?)
   end

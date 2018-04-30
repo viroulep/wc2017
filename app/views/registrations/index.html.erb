@@ -51,7 +51,7 @@
             <td><%= registration.user.name %></td>
             <td><%= registration.details.tshirt %></td>
             <td><%= registration.details.restaurant_guests %></td>
-            <td><%= registration.guests.count %></td>
+            <td><%= registration.guests.size %></td>
             <td><%= render "shared/event_id_collection", event_ids: registration.events, summary: summary %></td>
           </tr>
         <% end %>
