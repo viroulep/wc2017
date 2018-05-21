@@ -2,13 +2,17 @@
   <div class="row">
     <h3>Staff Registrations (<%= @registrations.size %>)</h3>
     <table class="table table-hover"
+           data-toggle="table"
+           data-search="true"
            id="table-accepted">
       <thead>
         <tr>
           <th>Name</th>
           <th>Days Helping</th>
+          <th>Warm up</th>
           <!--<th>Confirmation status</th>-->
           <th>Scrambles for</th>
+          <th>Doesn't scramble for</th>
           <th>Teams</th>
         </tr>
       </thead>
@@ -20,6 +24,11 @@
             </td>
             <td>
               <%= registration.days_helping_as_string %>
+            </td>
+            <td>
+              <% if registration.warmup_events.any? %>
+                <%= render "shared/event_id_collection", event_ids: registration.warmup_events %>
+              <% end %>
             </td>
             <!--
             <td>
@@ -33,6 +42,11 @@
             </td>
             -->
             <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id) %></td>
+            <td>
+              <% if registration.doesnt_scramble_events.any? %>
+                <%= render "shared/event_id_collection", event_ids: registration.doesnt_scramble_events %>
+              <% end%>
+            </td>
             <td><%= raw(staff_teams_to_links(registration.staff_teams)) %></td>
           </tr>
         <% end %>

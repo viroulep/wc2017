@@ -13,9 +13,10 @@
         <li><%= tshirt.size %> : <%= tshirt.nb %></li>
       <% end %>
     </ul>
-    <h3>Restaurant</h3>
+    <!--<h3>Restaurant</h3>
     <p><%= RegistrationDetail.sum(:restaurant_guests) %> people want to eat at the restaurant</p>
     <% # TODO: DRY this, add bootstrap-table for easy filtering %>
+    -->
     <table class="table table-hover"
            data-toggle="table"
            data-search="true"
@@ -26,8 +27,10 @@
           <th>Confirmation status</th>
           <th>Name</th>
 	  <th>Tshirt</th>
+          <!--
 	  <th>Restaurant</th>
 	  <th>Guests</th>
+          -->
           <th>Events</th>
         </tr>
       </thead>
@@ -50,15 +53,17 @@
             </td>
             <td><%= registration.user.name %></td>
             <td><%= registration.details.tshirt %></td>
+            <!--
             <td><%= registration.details.restaurant_guests %></td>
             <td><%= registration.guests.size %></td>
+            -->
             <td><%= render "shared/event_id_collection", event_ids: registration.events, summary: summary %></td>
           </tr>
         <% end %>
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="4">
+          <td colspan="5">
             <% # FIXME: pff, that's really ugly %>
             <% summary.each do |e, n| %>
               <%= render "shared/event", event: Event.find(e) %>: <%= n %> |
