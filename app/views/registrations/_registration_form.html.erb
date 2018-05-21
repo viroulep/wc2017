@@ -112,6 +112,7 @@
                 <%= d.input_field :tshirt, as: :radio_buttons, collection: RegistrationDetail::TSHIRT_SIZES, min: 0, item_wrapper_class: "tshirt-radio" %>
               </div>
             </div>
+            <!--
               <hr/>
             <div class="row">
               <div class="col-xs-12">
@@ -125,6 +126,7 @@
 		<%= d.input :nb_vg %>
               </div>
             </div>
+            -->
             <% if current_user.can_manage_competition?(managed_competition) %>
               <hr/>
               <%= d.input :staff %>
@@ -144,7 +146,7 @@
               Warmup for: <%= render 'shared/event_id_collection', event_ids: registration.warmup_events %>
             </div>
             <div class="col-xs-12 form-group">
-              Days helping: <%= registration.details.days_helping %>
+              Days helping: <%= registration.days_helping_as_string %>
             </div>
           <% end %>
 

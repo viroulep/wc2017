@@ -22,8 +22,8 @@
     <meta name="msapplication-wide310x150logo" content="mstile-310x150.png" />
     <meta name="msapplication-square310x310logo" content="mstile-310x310.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= content_for?(:title) ? yield(:title) : t('competition_name') + ' - ' + t('registration_manager') %></title>
-    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : t('competition_description') %>">
+    <title><%= content_for?(:title) ? yield(:title) : managed_competition&.name + ' - ' + t('registration_manager') %></title>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : managed_competition&.name %>">
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
     <%= csrf_meta_tags %>

@@ -178,7 +178,7 @@ class RegistrationsController < ApplicationController
   end
 
   def staff
-    @registrations = Registration.includes(:user, :registration_detail, :scramble_events, :staff_team_members, :staff_teams).where(registration_details: { staff: true }).order(:id)
+    @registrations = Registration.includes(:user, :registration_detail, :scramble_events, :staff_team_members, :staff_teams).where(registration_details: { staff: true })
   end
 
   def schedule

@@ -2,6 +2,7 @@ class RegistrationDetail < ApplicationRecord
   belongs_to :registration
 
   TSHIRT_SIZES = %w(XS S M L XL XXL XXXL).freeze
+  DAYS = %w(Th. Fri. Sa. Su.).freeze
 #  validates_inclusion_of :tshirt, in: TSHIRT_SIZES, message: "%{value} is not a valid size"
   validate :is_a_size_or_blank
 
@@ -27,5 +28,9 @@ class RegistrationDetail < ApplicationRecord
     if !registration.events.include?("333mbf") && (mbf1 != 0)
       errors.add(:mbf, "Not registered for mbf")
     end
+  end
+
+  def days_helping_as_string
+    days_helping.split(",").map { |d| DAYS[d.to_i] }.join(" ")
   end
 end

@@ -24,6 +24,7 @@ class Registration < ApplicationRecord
 
   delegate :name, to: :user
   delegate :best_for, to: :user
+  delegate :days_helping_as_string, to: :registration_detail
 
   validate :validate_guests
 
@@ -97,6 +98,10 @@ class Registration < ApplicationRecord
 
   def warmup_events
     @warmup_events ||= registration_detail.warmup.split(",")
+  end
+
+  def days_helping
+    @days_helping ||= registration_detail.days_helping.split(",")
   end
 
   def visible_guests

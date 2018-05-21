@@ -1,22 +1,27 @@
 <div class="container">
   <div class="row">
-    <h3>Staff Registrations</h3>
+    <h3>Staff Registrations (<%= @registrations.size %>)</h3>
     <table class="table table-hover"
            id="table-accepted">
       <thead>
         <tr>
           <th>Name</th>
-          <th>Confirmation status</th>
+          <th>Days Helping</th>
+          <!--<th>Confirmation status</th>-->
           <th>Scrambles for</th>
           <th>Teams</th>
         </tr>
       </thead>
       <tbody>
-        <% @registrations.each do |registration| %>
+        <% @registrations.sort_by { |r| r.user.name }.each do |registration| %>
           <tr>
             <td>
               <%= link_to registration.user.name, edit_registration_path(registration) %>
             </td>
+            <td>
+              <%= registration.days_helping_as_string %>
+            </td>
+            <!--
             <td>
               <% if registration.details.confirmed_at %>
                 <span class="text-success">confirmed</span>
@@ -26,6 +31,7 @@
                 <span class="text-warning">pending</span>
               <% end %>
             </td>
+            -->
             <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id) %></td>
             <td><%= raw(staff_teams_to_links(registration.staff_teams)) %></td>
           </tr>
