@@ -17,6 +17,7 @@
         </tr>
       </thead>
       <tbody>
+        <% summary = {} %>
         <% @registrations.sort_by { |r| r.user.name }.each do |registration| %>
           <tr>
             <td>
@@ -27,7 +28,7 @@
             </td>
             <td>
               <% if registration.warmup_events.any? %>
-                <%= render "shared/event_id_collection", event_ids: registration.warmup_events %>
+                <%= render "shared/event_id_collection", event_ids: registration.warmup_events.sort %>
               <% end %>
             </td>
             <!--
@@ -41,16 +42,26 @@
               <% end %>
             </td>
             -->
-            <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id) %></td>
+            <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id).sort, summary: summary %></td>
             <td>
               <% if registration.doesnt_scramble_events.any? %>
-                <%= render "shared/event_id_collection", event_ids: registration.doesnt_scramble_events %>
+                <%= render "shared/event_id_collection", event_ids: registration.doesnt_scramble_events.sort %>
               <% end%>
             </td>
             <td><%= raw(staff_teams_to_links(registration.staff_teams)) %></td>
           </tr>
         <% end %>
       </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="5">
+            <% # FIXME: pff, that's really ugly %>
+            <% summary.each do |e, n| %>
+              <%= render "shared/event", event: Event.find(e) %>: <%= n %> |
+            <% end %>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 </div>

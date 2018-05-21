@@ -6,6 +6,8 @@ class PublicGuestsController < ApplicationController
   # GET /public_guests.json
   def index
     @public_guests = PublicGuest.all
+    # tmp fix for Euro
+    render :noop
   end
 
   # GET /public_guests/new
