@@ -43,7 +43,7 @@ return {
   views: {
     listFourDay: {
       type: 'list',
-      duration: { days: 3 },
+      duration: { days: 4 },
       buttonText: 'Printable',
     },
   },
@@ -88,7 +88,7 @@ var events = [
     <%= raw(render('schedule_events/schedule_event.json.jbuilder', schedule_event: g)) %>,
   <% end %>
 ];
-$('#calendar').fullCalendar(commonOptions("2018-03-31", events));
+$('#calendar').fullCalendar(commonOptions("2018-07-19", events));
 $('#calendar').ready(function (){
   $('#calendar').find('.fc-scroller').removeAttr("style");
 });

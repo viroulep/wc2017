@@ -13,12 +13,12 @@ $('#calendar').fullCalendar({
   views: {
     agendaFourDay: {
       type: 'agenda',
-      duration: { days: 3 },
+      duration: { days: 4 },
       buttonText: 'Calendar',
     },
     listFourDay: {
       type: 'list',
-      duration: { days: 3 },
+      duration: { days: 4 },
       buttonText: 'Printable',
     },
     agenda: {
@@ -32,8 +32,8 @@ $('#calendar').fullCalendar({
     right: 'prev,next',
   },
   eventOrder: "id",
-  // yep, hardcoded
-  defaultDate: '2018-03-31',
+  // FIXME yep, hardcoded
+  defaultDate: '2018-07-19',
   minTime:'08:00:00',
   maxTime:'22:00:00',
   aspectRatio: '0.75',
