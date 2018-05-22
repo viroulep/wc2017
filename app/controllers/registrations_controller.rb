@@ -20,6 +20,15 @@ class RegistrationsController < ApplicationController
       end
     when "file"
       wcif_string_content = File.read(WCIF_FILE_URL)
+    when "url"
+      # We're loading remote content. It's extremely dangerous, but hopefully only rightful people have access to this
+      remote_url = params.require(:wcif).require(:url)
+      begin
+        wcif_response = RestClient.get(remote_url)
+        wcif_string_content = wcif_response.body
+      rescue RestClient::ExceptionWithResponse => err
+        return redirect_to(registrations_url, alert: "Failed to fetch url data: #{err.message}")
+      end
     else
       raise ArgumentError.new("Only 'wca' and 'file' are supported.")
     end

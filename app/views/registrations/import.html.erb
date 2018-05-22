@@ -4,5 +4,12 @@
     From here you can import the WCIF for the competition.
     <p>Import registrations from WCA (requires you're logged in with the "manage_competitions" scope): <%= link_to icon('upload', "Import from WCA"), import_registrations_path(source: 'wca'), method: 'patch', class: 'btn btn-primary' %></p>
     <p>Import registrations from file (drop the wcif.json at the app's root): <%= link_to icon('upload', "Import from file"), import_registrations_path(source: 'file'), method: 'patch', class: 'btn btn-primary' %></p>
+    <p>Import registrations from url:</p>
+    <%= simple_form_for :wcif, url: import_registrations_path(source: 'url'), wrapper: :horizontal_form, method: :patch do |f| %>
+      <%= f.input :url, label: false %>
+      <%= f.button :button, class: "btn btn-primary" do %>
+        <%= icon('upload', "Import from url") %>
+      <% end %>
+    <% end %>
   </div>
 </div>
