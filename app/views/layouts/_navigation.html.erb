@@ -8,8 +8,9 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <% brand_url = current_user&.has_avatar? ? current_user.avatar : 'onlycube.jpg' %>
-      <%= link_to image_tag(brand_url, class: "avatar-thumbnail"), root_path, class: 'navbar-brand' %>
+      <% if current_user&.has_avatar? %>
+        <%= link_to image_tag(current_user.avatar, class: "avatar-thumbnail"), root_path, class: 'navbar-brand' %>
+      <% end %>
       <% if current_user %>
         <p class="navbar-text"><%= current_user.name %></p>
       <% end %>

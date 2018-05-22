@@ -36,6 +36,7 @@ class RegistrationsController < ApplicationController
     all_users = []
     all_registrations = []
     all_registrations_details = []
+    original_registrations_details = RegistrationDetail.all.group_by(&:registration_id)
     all_scramble_events = []
     all_pb = []
     wcif["persons"]&.each do |json_user|
@@ -62,7 +63,9 @@ class RegistrationsController < ApplicationController
           attrs[:warmup] = json_user["extensions"]["events_w"].join(",")
           attrs[:not_scramble] = json_user["extensions"]["events_n"].join(",")
         end
-        all_registrations_details << RegistrationDetail.new(attrs)
+        registration_details = original_registrations_details[attrs[:registration_id]]&.first || RegistrationDetail.new
+        registration_details.assign_attributes(attrs)
+        all_registrations_details << registration_details
         if attrs[:staff]
           json_user["extensions"]["events_s"].each do |eventId|
             se_attr = {
