@@ -26,6 +26,7 @@
   <thead>
     <tr>
       <th>Name</th>
+      <th>Events</th>
       <th>Scrambles for</th>
       <th>Runner only</th>
     </tr>
@@ -39,6 +40,9 @@
           <% else %>
             <%= registration.name %>
           <% end %>
+        </td>
+        <td>
+          <%= render "shared/event_id_collection", event_ids: registration.events %>
         </td>
         <td><%= render "shared/event_id_collection", event_ids: registration.scramble_events.map(&:event_id) %></td>
         <td><%= registration.details.runner_only ? "yes" : "" %></td>
