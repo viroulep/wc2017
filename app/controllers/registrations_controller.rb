@@ -129,6 +129,13 @@ class RegistrationsController < ApplicationController
   def show_wcif
     associations = {
       registrations: {
+        groups: [],
+        staff_registrations_groups: {
+          group: [:round],
+        },
+        staff_teams_groups: {
+          group: [:round],
+        },
         scramble_events: [],
         competition: [],
         user: [],

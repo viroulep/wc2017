@@ -16,6 +16,7 @@ class Registration < ApplicationRecord
 
   has_many :staff_registrations_groups, inverse_of: :registration
   has_many :staff_teams_groups, through: :staff_teams
+  # FIXME: not used?!
   has_many :staff_groups, through: :staff_teams
 
   accepts_nested_attributes_for :guests, :registration_detail
@@ -126,6 +127,45 @@ class Registration < ApplicationRecord
     if competition.admins_array.include?(self.user_id)
       roles << "organization"
     end
+    # individual group assignment
+    competitor_groups = self.groups
+    competitor_assignment = competitor_groups.map do |g|
+      {
+        "activityId": g.id,
+        "assignmentCode": "competitor",
+      }
+    end
+    # individual schedule assignment
+    individual_staff_assignment = self.staff_registrations_groups.map(&:group).map do |g|
+      code = if details.runner_only
+               "staff-runner"
+             elsif scrambles_for?(g.event_id)
+               "staff-scrambler"
+             else
+               "staff-judge-runner"
+             end
+      {
+        "activityId": g.id,
+        "assignmentCode": code,
+      }
+    end
+    # staff schedule affectation
+    staff_team_assignment = self.staff_teams_groups.map(&:group).reject do |g|
+      # reject duplicate assignment
+      ["333mbf", "444bf", "555bf"].include?(g.event_id) && competitor_groups.include?(g)
+    end.map do |g|
+      code = if details.runner_only
+               "staff-runner"
+             elsif scrambles_for?(g.event_id)
+               "staff-scrambler"
+             else
+               "staff-judge-runner"
+             end
+      {
+        "activityId": g.id,
+        "assignmentCode": code,
+      }
+    end
     {
       "registrantId": self.id,
       "name": self.name,
@@ -140,6 +180,7 @@ class Registration < ApplicationRecord
         "eventIds": self.events,
         "status": self.status,
       },
+      "assignments": (competitor_assignment + individual_staff_assignment + staff_team_assignment).flatten,
       "extensions": {
         "events_s": scramble_events.map(&:event_id),
         "events_n": registration_detail.not_scramble.split(","),
