@@ -57,6 +57,9 @@ class Competition < ApplicationRecord
           ],
         ],
       },
+      "extensions": {
+        "staff_teams": StaffTeam.all.includes(staff_team_members: { registration: :user }).map(&:to_wcif),
+      },
     }
   end
 

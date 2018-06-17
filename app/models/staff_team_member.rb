@@ -13,4 +13,12 @@ class StaffTeamMember < ApplicationRecord
     others = staff_team.staff_team_members.where(registration_id: registration_id).reject { |s| s == self }
     errors.add(:registration, "Registration already in the team") if others.any?
   end
+
+  def to_wcif
+    {
+      "registrantId": self.registration_id,
+      "name": self.name,
+      "teamLeader": self.team_leader,
+    }
+  end
 end

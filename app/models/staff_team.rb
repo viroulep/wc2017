@@ -12,4 +12,12 @@ class StaffTeam < ApplicationRecord
   def leaders
     staff_team_members.select(&:team_leader).map(&:name)
   end
+
+  def to_wcif
+    {
+      "name": self.name,
+      "comments": self.comments,
+      "members": staff_team_members.map(&:to_wcif),
+    }
+  end
 end
