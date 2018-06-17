@@ -53,6 +53,7 @@ class RegistrationsController < ApplicationController
           json_registration["id"] = user.id
         end
         json_registration["user_id"] = json_user["id"]
+        json_registration["competition_id"] = managed_competition.id
         attrs = {
           registration_id: json_registration["id"],
           staff: json_user["roles"]&.include?("staff"),
@@ -123,6 +124,19 @@ class RegistrationsController < ApplicationController
       @registrations = @registrations.accepted.reject { |r| r.staff? }.sort_by(&:name)
       @registrations = @registrations.slice!(offset, length)
     end
+  end
+
+  def show_wcif
+    associations = {
+      registrations: {
+        scramble_events: [],
+        competition: [],
+        user: [],
+        registration_detail: [],
+      },
+    }
+    comp = Competition.includes(associations).find_by_id!(app_comp_id)
+    render json: JSON.pretty_generate(comp.to_wcif, indent: "    ")
   end
 
   def badges

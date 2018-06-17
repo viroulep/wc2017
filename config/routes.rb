@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
     get '/schedule' => 'rounds#schedule'
 
+    get '/wcif' => 'registrations#show_wcif'
+
     patch 'rounds/add/:event_id' => 'rounds#add', :as => :add_round
     patch 'rounds/remove/:event_id' => 'rounds#remove', :as => :remove_round
 

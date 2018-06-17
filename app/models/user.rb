@@ -29,6 +29,10 @@ class User < ApplicationRecord
     #'delegate_status',
     #'teams',
 
+  def transliterated_name
+    I18n.transliterate(name)
+  end
+
   def can_edit_guests?(comp)
     Registration::EDIT_GUESTS || can_manage_competition?(comp)
   end
