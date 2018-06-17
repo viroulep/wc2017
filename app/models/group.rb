@@ -33,9 +33,21 @@ class Group < ApplicationRecord
   accepts_nested_attributes_for :staff_registrations_groups
 
   scope :for_round, -> (id) { where(round_id: id) }
+  scope :for_color, -> (color) { where(color: color) }
 
   def hex_color
     COLORS[self[:color]]
+  end
+
+  def activity_code
+    code = "#{event_id}-r#{round.r_id}"
+    if name =~ /Group/
+      code += "-g#{name.sub(/.*( Group[ ]+(?<n>[0-9]*))/,'\k<n>')}"
+    end
+    if name =~ /Attempt/
+      code += "-a#{name.sub(/.*( Attempt[ ]+(?<n>[0-9]*))/, '\k<n>')}"
+    end
+    code
   end
 
   def short_name(with_round_id=false)
@@ -63,6 +75,17 @@ class Group < ApplicationRecord
   def all_staff_people
     # For events like MBF and big blinds, staff teams contain competitors and staff !
     ((staff_registrations + staff_teams.map(&:registrations)).flatten - registrations).sort_by(&:name)
+  end
+
+  def to_wcif(timezone)
+    {
+      "id": self.id,
+      "name": self.name,
+      "activityCode": self.activity_code,
+      "startTime": timezone.local_to_utc(self.start),
+      "endTime": timezone.local_to_utc(self[:end]),
+      "childActivities": [],
+    }
   end
 
   def self.clear_for_round(round_id)

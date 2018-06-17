@@ -23,9 +23,48 @@ class Competition < ApplicationRecord
         "startDate": "2018-07-19",
         "numberOfDays": 4,
         "venues": [
-
-        ]
+          "id": 1,
+          "name": "Glass Pavilion",
+          "latitudeMicrodegrees": 0,
+          "longitudeMicrodegrees": 0,
+          "timezone": "Europe/Madrid",
+          "rooms": [
+            {
+              "id": 2,
+              "name": "Stage 1",
+              "activities": Competition.activities_for_room("blue"),
+            },
+            {
+              "id": 3,
+              "name": "Stage 2",
+              "activities": Competition.activities_for_room("orange"),
+            },
+            {
+              "id": 4,
+              "name": "Stage 3",
+              "activities": Competition.activities_for_room("green"),
+            },
+            {
+              "id": 5,
+              "name": "Stage 4",
+              "activities": Competition.activities_for_room("yellow"),
+            },
+            {
+              "id": 6,
+              "name": "Side room",
+              "activities": Competition.activities_for_room("white"),
+            },
+          ],
+        ],
       },
     }
+  end
+
+  def self.activities_for_room(color)
+    associations = {
+      round: [],
+    }
+    timezone = ActiveSupport::TimeZone.new("Europe/Madrid")
+    Group.includes(associations).for_color(color).map { |g| g.to_wcif(timezone) }
   end
 end
