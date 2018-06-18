@@ -1,5 +1,5 @@
 class RegistrationsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:schedule]
   before_action :redirect_unless_admin!, except: [:edit, :update, :confirm, :schedule]
   before_action :redirect_unless_can_edit!, only: [:edit, :update, :confirm]
   before_action :redirect_unless_can_view_groups!, only: [:schedule]
