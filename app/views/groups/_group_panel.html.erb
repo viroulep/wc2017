@@ -1,7 +1,7 @@
 <% group_id ||= "nogroup" %>
 <% title ||= "untitled" %>
 <% color ||= "white" %>
-<% staff_teams_ids = group.id.nil? ? [] : group.staff_teams.map(&:id) %>
+<% staff_teams_ids = group.id.nil? ? [] : group.staff_teams.map(&:team_id) %>
 <div class="col-xs-6 col-sm-3">
   <div class="panel <%= "panel-#{color}" unless color.blank? %>">
     <div class="panel-heading heading-as-link collapsed" data-toggle="collapse" data-target="#collapse-<%= group_id %>">

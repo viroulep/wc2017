@@ -20,4 +20,12 @@ class StaffTeam < ApplicationRecord
       "members": staff_team_members.map(&:to_wcif),
     }
   end
+
+  def team_id
+    friendly_id = id
+    if name =~ /Team/
+      friendly_id = name.sub(/.*(Team #(?<n>[0-9]*).*)/, '#\k<n>')
+    end
+    friendly_id
+  end
 end

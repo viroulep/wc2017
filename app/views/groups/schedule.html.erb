@@ -40,7 +40,7 @@ $('#calendar').fullCalendar({
   slotDuration: '00:15:00',
   timeFormat: 'H:mm',
   slotLabelFormat: 'H:mm',
-  events: '<%= groups_schedule_path(format: :json) %>',
+  events: '<%= groups_schedule_path(format: :json, with_id: params[:with_id]) %>',
   eventClick: function(event, jsEvent, view) {
     $.getScript(event.show_url, function() {});
   },

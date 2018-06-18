@@ -23,7 +23,7 @@ json.textColor fg ? fg : group.text_color
 if current_user&.can_manage_competition?(managed_competition)
   json.update_url group_url(group, format: :json)
   if display_team_ids
-    json.title "[#{array_to_s(group.staff_teams.map(&:id))}] #{group_name}"
+    json.title "[#{array_to_s(group.staff_teams.map(&:team_id))}] #{group_name}"
   end
   json.edit_url edit_group_url(group)
 end
