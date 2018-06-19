@@ -1,12 +1,12 @@
 class Group < ApplicationRecord
-
+  #Colors are BLUE > YELLOW > RED > GREEN
   COLORS = Hash[
     #Five stage colors, blue is the front row, red the back row, +white the side venue
-    "blue" => "#2e81f8",
-    "orange" => "#ff9307",
-    "green" => "#46c81c",
-    "yellow" => "#ffff1b",
-    "red" => "#ff4439",
+    "blue" => "#304a96",
+    "orange" => "#ddda45",
+    "green" => "#e02826",
+    "yellow" => "#3d9c46",
+    "red" => "#ff9307",
     "white" => "#dddddd",
   ].freeze
 
