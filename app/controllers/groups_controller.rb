@@ -257,7 +257,7 @@ class GroupsController < ApplicationController
   end
 
   def schedule
-    @groups = Group.includes(:staff_teams).all.order(:id)
+    @groups = Group.includes(:staff_teams, :round).all.order(:id)
     @schedule_events = ScheduleEvent.all
   end
 
