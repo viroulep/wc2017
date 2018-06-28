@@ -28,4 +28,24 @@ class StaffTeam < ApplicationRecord
     end
     friendly_id
   end
+
+  def self.as_resources(user_ids_selected, except_team_ids=[])
+    resources = []
+    StaffTeam.includes(:users).where.not(id: except_team_ids).order(:name).each do |st|
+      selected_users_in_team = st.users.select { |u| user_ids_selected.include?(u.id) }
+      if selected_users_in_team.any?
+        resources << {
+          "id": "team_#{st.id}",
+          "title": st.name,
+          "children": selected_users_in_team.map do |u|
+            {
+              id: "#{st.id}-#{u.id.to_s}",
+              title: u.name,
+            }
+          end,
+        }
+      end
+    end
+    resources
+  end
 end

@@ -17,6 +17,7 @@
 //= require moment
 //= require moment/fr.js
 //= require fullcalendar
+//= require scheduler.min
 //= require bootstrap-datetimepicker
 //= require pickers
 //= require_tree .

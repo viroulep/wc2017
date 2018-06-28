@@ -40,7 +40,9 @@ Rails.application.routes.draw do
       patch 'staff' => 'groups#update_staff'
     end
 
-    resources :staff_teams
+    resources :staff_teams do
+      get 'schedule' => 'staff_teams#schedule'
+    end
 
     get 'groups-schedule' => 'groups#schedule', :as => :groups_schedule
     get 'groups/e/:event_id' => 'groups#show_for_event', :as => :groups_for_event

@@ -1,0 +1,73 @@
+<h4>Schedule for <%= @staff_team.name %></h4>
+
+<div class="row">
+  <div id="calendar" class="col-xs-12"></div>
+</div>
+<script>
+var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+var defaultViewNav = mobile ? "agenda" : "agendaFourDay";
+
+$('#calendar').fullCalendar({
+  header: {
+    left: 'prev,next',
+    center: 'title',
+    right: 'timelineDay'
+  },
+  titleFormat: "dddd, MMMM Do YYYY",
+  defaultView: 'timelineDay',
+  eventOrder: "id",
+  // FIXME yep, hardcoded
+  defaultDate: '2018-07-19',
+  minTime:'08:00:00',
+  maxTime:'22:00:00',
+  aspectRatio: '0.75',
+  slotDuration: '00:30:00',
+  timeFormat: 'H:mm',
+  schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+  slotLabelFormat: 'H:mm',
+  resourceLabelText: 'Rooms',
+  events: <%= raw(@all_events.to_json) %>,
+  //resources: <%= raw(@staff_team.users.map { |u| { id: u.id.to_s, title: u.name } }.to_json) %>,
+  resources: <%= raw(@resources.to_json) %>,
+  eventRender: function(event, element) {
+    if (event.staff_event) {
+      element.addClass("staff_event");
+    }
+  },
+  /*resources: [
+  { id: 'a', title: 'Auditorium A' },
+  { id: 'b', title: 'Auditorium B', eventColor: 'green' },
+  { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
+    { id: 'd', title: 'Auditorium D', children: [
+      { id: 'd1', title: 'Room D1' },
+      { id: 'd2', title: 'Room D2' }
+    ] },
+    { id: 'e', title: 'Auditorium E' },
+      { id: 'f', title: 'Auditorium F', eventColor: 'red' },
+      { id: 'g', title: 'Auditorium G' },
+        { id: 'h', title: 'Auditorium H' },
+        { id: 'i', title: 'Auditorium I' },
+          { id: 'j', title: 'Auditorium J' },
+          { id: 'k', title: 'Auditorium K' },
+            { id: 'l', title: 'Auditorium L' },
+            { id: 'm', title: 'Auditorium M' },
+              { id: 'n', title: 'Auditorium N' },
+              { id: 'o', title: 'Auditorium O' },
+                { id: 'p', title: 'Auditorium P' },
+                { id: 'q', title: 'Auditorium Q' },
+                  { id: 'r', title: 'Auditorium R' },
+                  { id: 's', title: 'Auditorium S' },
+                    { id: 't', title: 'Auditorium T' },
+                    { id: 'u', title: 'Auditorium U' },
+                      { id: 'v', title: 'Auditorium V' },
+                      { id: 'w', title: 'Auditorium W' },
+                        { id: 'x', title: 'Auditorium X' },
+                        { id: 'y', title: 'Auditorium Y' },
+                          { id: 'z', title: 'Auditorium Z' }
+  ],
+  events: [
+  { id: '1', resourceId: 'b', start: '2018-07-19T10:00:00', end: '2018-07-19T13:00:00', title: 'event 1' },
+  ]
+  */
+});
+</script>

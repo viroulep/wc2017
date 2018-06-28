@@ -88,6 +88,18 @@ class Group < ApplicationRecord
     }
   end
 
+  def to_event(user, staff=false)
+    {
+      "id": self.id,
+      "resourceIds": user.registration.staff_teams.map { |st| "#{st.id}-#{user.id}" },
+      "staff_event": staff,
+      "title": self.name,
+      "start": self.start,
+      "color": self.hex_color,
+      "end": self[:end],
+    }
+  end
+
   def self.clear_for_round(round_id)
     Group.for_round(round_id).map do |g|
       # There is no :dependent destroy, we can just delete all!

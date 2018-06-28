@@ -13,12 +13,13 @@
  *= require_self
  *= require bootstrap-table
  *= require bootstrap-datetimepicker
- *= require fullcalendar
  */
-@import "1st_load_framework.css.scss";
+@import "1st_load_framework";
 @import "navbar-static-top";
 @import "registration-form";
 @import "cubing-icons";
+@import "fullcalendar";
+@import "scheduler.min";
 @import "groups";
 @import "flag-icon";
 @import "collapsible-panels";
