@@ -16,7 +16,7 @@
     </thead>
     <tbody>
       <%= eg.simple_fields_for :registration_groups, group.registration_groups do |f|%>
-        <% registration_teams = f.object.staff_teams.map(&:id) %>
+        <% registration_teams = f.object.staff_teams.map(&:team_id) %>
         <tr class="<%= "danger" unless (group_teams & registration_teams).empty? %>">
           <td></td>
           <% line_id = "#{f.object.group_id}_#{f.object.registration_id}" %>
