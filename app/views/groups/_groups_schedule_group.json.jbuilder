@@ -4,7 +4,8 @@ staff ||= nil
 registration ||= @registration
 display_team_ids ||= nil
 group_name = group.short_name(true)
-json.title "#{group_name} (#{array_to_s(group.staff_teams.map(&:leaders).map(&:first).map { |name| name.partition(" ").first })})"
+leaders = group.staff_teams.map(&:leaders).flatten
+json.title "#{group_name} (#{array_to_s(leaders.map { |name| name.partition(" ").first })})"
 bg ||= nil
 fg ||= nil
 json.color bg ? bg : group.hex_color
