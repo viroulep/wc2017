@@ -50,6 +50,14 @@ class Group < ApplicationRecord
     code
   end
 
+  def group_number
+    if name =~ /Group/
+      name.sub(/.*( Group[ ]+(?<n>[0-9]*))/,'\k<n>').to_i
+    else
+      1
+    end
+  end
+
   def short_name(with_round_id=false)
     event_name = Event.find(event_id).short_name
     if with_round_id && event_id != "magic"
