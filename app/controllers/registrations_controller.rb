@@ -217,7 +217,11 @@ class RegistrationsController < ApplicationController
   end
 
   def schedule
-    base_model = Registration.includes([staff_registrations_groups: { group: [:round] }, staff_teams_groups: { group: [:round] }])
+    base_model = Registration.includes({
+      staff_registrations_groups: { group: [:round] },
+      staff_teams_groups: { group: [:round] },
+      groups: [:round],
+    })
     @registration = base_model.find_by_id(params[:registration_id]) || base_model.find_by(user_id: current_user.id)
     unless @registration
       return redirect_to my_registration_path
@@ -229,9 +233,11 @@ class RegistrationsController < ApplicationController
     @staff_groups = @registration.staff_teams_groups.map(&:group)
     side_event = ["333mbf", "444bf", "555bf"]
     side_events_registered_to = @registration.events.select { |e| side_event.include?(e) }
+    # Groups for which the person is replaced
+    replacement_groups = StaffRegistrationsGroup.includes(group: [:round]).replacements_for(@registration.name).map(&:group)
     @staff_groups.reject! do |g|
       # filter out staff assignment if they have to compete too
-      @groups.include?(g) || side_events_registered_to.include?(g.event_id)
+      @groups.include?(g) || side_events_registered_to.include?(g.event_id) || replacement_groups.include?(g)
     end
   end
 
