@@ -1,3 +1,12 @@
+<script>
+// SAVED: https://github.com/c3js/c3/issues/552#issuecomment-55269072
+Function.prototype.bind = Function.prototype.bind || function (thisp) {
+  var fn = this;
+  return function () {
+    return fn.apply(thisp, arguments);
+  };
+};
+</script>
 <style>
 .no_break_inside, h1, h2, h3, li, p, tr, .calendar-cell {
   page-break-inside: avoid !important;
