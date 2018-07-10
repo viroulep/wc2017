@@ -31,6 +31,12 @@
   border-radius: 7px;
 }
 
+.fc-scroller {
+  height: auto !important;
+  overflow-x: initial !important;
+  overflow-y: initial !important;
+}
+
 .fc-ltr .fc-list-item-marker {
   padding-left: 0px;
   padding-right: 5px;
@@ -136,27 +142,15 @@ end
 <script>
 <% if events_count[19] > 0 %>
 $('#calendar-<%= r.id %>').fullCalendar(commonOptions("2018-07-19", events<%= r.id %>));
-$('#calendar-<%= r.id %>').ready(function (){
-  $('#calendar-<%= r.id %>').find('.fc-scroller').removeAttr("style");
-});
 <% end %>
 <% if events_count[20] > 0 %>
 $('#calendar-<%= r.id %>-friday').fullCalendar(commonOptions("2018-07-20", events<%= r.id %>));
-$('#calendar-<%= r.id %>-friday').ready(function (){
-  $('#calendar-<%= r.id %>-friday').find('.fc-scroller').removeAttr("style");
-});
 <% end %>
 <% if events_count[21] > 0 %>
 $('#calendar-<%= r.id %>-saturday').fullCalendar(commonOptions("2018-07-21", events<%= r.id %>));
-$('#calendar-<%= r.id %>-saturday').ready(function (){
-  $('#calendar-<%= r.id %>-saturday').find('.fc-scroller').removeAttr("style");
-});
 <% end %>
 <% if events_count[22] > 0 %>
 $('#calendar-<%= r.id %>-sunday').fullCalendar(commonOptions("2018-07-22", events<%= r.id %>));
-$('#calendar-<%= r.id %>-sunday').ready(function (){
-  $('#calendar-<%= r.id %>-sunday').find('.fc-scroller').removeAttr("style");
-});
 <% end %>
 </script>
 <% end %>
