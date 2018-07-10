@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   before_action :authenticate_user!, except: [:schedule]
-  before_action :redirect_unless_admin!, except: [:edit, :update, :confirm, :schedule, :staff]
+  before_action :redirect_unless_admin!, except: [:edit, :update, :confirm, :schedule, :staff, :random]
   before_action :redirect_unless_staff!, only: [:staff]
   before_action :redirect_unless_can_edit!, only: [:edit, :update, :confirm]
   #FIXME: this has been made public for integration within myeuro
@@ -111,6 +111,10 @@ class RegistrationsController < ApplicationController
     end
 
     redirect_to(registrations_url, flash: { success: "Imported #{all_registrations.size} registrations and users successfully!" })
+  end
+
+  def random
+    @registrations = Registration.staff_available.sample(10)
   end
 
   def printable_schedules

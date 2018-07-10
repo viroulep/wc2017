@@ -1,0 +1,10 @@
+<div class="container">
+  <div class="row">
+    <h3>Some random staff registrations</h3>
+    <div class="list-group">
+      <% @registrations.each do |registration| %>
+        <%= link_to registration.name, registration_schedule_path(registration), target: "_blank", class: "list-group-item" %>
+      <% end %>
+    </div>
+  </div>
+</div>

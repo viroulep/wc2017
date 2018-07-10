@@ -11,6 +11,8 @@ Rails.application.routes.draw do
     patch 'rounds/add/:event_id' => 'rounds#add', :as => :add_round
     patch 'rounds/remove/:event_id' => 'rounds#remove', :as => :remove_round
 
+    get 'registrations/random' => 'registrations#random'
+
     resources :registrations, only: [:index, :edit, :update] do
       get 'groups' => 'groups#show_for_registration'
       get 'schedule' => 'registrations#schedule'
