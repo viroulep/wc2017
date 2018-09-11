@@ -24,7 +24,7 @@ module ApplicationHelper
   end
 
   def fixed_wca_callback_url
-    wca_callback_url.sub("localhost", "127.0.0.1")
+    wca_callback_url
   end
 
   def wca_client_secret
