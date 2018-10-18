@@ -5,10 +5,17 @@ class Competition < ApplicationRecord
   validates :name, presence: true
   validates :admin_ids, presence: true, allow_blank: false
 
-  @@obj_info = %w(id name admin_ids)
+  # NOTE: we *should* be validating start_date <= end_date,
+  # but we fetch data from the WCA and we assume it's alright.
+
+  @@obj_info = %w(id name admin_ids start_date end_date)
 
   def admins_array
     @admins_array ||= admin_ids.split(",").map(&:to_i)
+  end
+
+  def number_of_days
+    (end_date - start_date).to_i + 1
   end
 
   def to_wcif

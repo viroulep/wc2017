@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.0'
+ruby '2.5.1'
 gem 'rails', '5.0.2'
 gem 'sass-rails', '~> 5.0'
 gem 'font-awesome-sass', '~> 4.7.0'

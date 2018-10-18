@@ -51,7 +51,10 @@ WCA_CLIENT_ID="blablabla"
 WCA_CLIENT_SECRET="coucou"
 # Local url for the WCA website
 WCA_BASE_URL="http://localhost:1234"
+WCA_COMP_ID="MyComp2018"
 ```
+
+You need to register your application on the WCA website to get the client ID and secret. When setting the callback urls, they should take into account the locale, eg: `http://localhost:3000/fr/wca_callback` *and* `http://localhost:3000/en/wca_callback`.
 
 `config/initializers/default_environment.rb` contains some default value for the development environment, they are overridable in the `.env` file.
 
@@ -67,9 +70,7 @@ sudo chown wc2017:wc2017 /home/wc2017/
 #as wc2017
 sudo apt-get install nginx nodejs
 sudo apt-get install postgresql postgresql-contrib libpq-dev
-sudo -u postgres createuser -s wc2017
-sudo -u postgres psql
-#+change password
+sudo -u postgres psql -c "create role wc2017 login password 'apassword' createdb;"
 #install rvm
 gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3
 \curl -sSL https://get.rvm.io | bash -s stable
