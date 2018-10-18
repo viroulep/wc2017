@@ -60,7 +60,7 @@ class User < ApplicationRecord
   end
 
   def staff?
-    registration&.details&.staff
+    registration&.details&.staff || can_manage_competition?(managed_competition)
   end
 
   def self.process_json(json_user)

@@ -35,50 +35,22 @@
   padding-right: 5px;
 }
 </style>
-<script>
-var commonOptions = function(day, eventsParam) {
-
-return {
-  // see: https://fullcalendar.io/docs/views/Custom_Views/
-  views: {
-    listFourDay: {
-      type: 'list',
-      duration: { days: 4 },
-      buttonText: 'Printable',
-    },
-  },
-  defaultView: 'listFourDay',
-  header: false,
-  // yep, hardcoded
-  defaultDate: day,
-  minTime:'08:00:00',
-  maxTime:'20:00:00',
-  contentHeight: 'auto',
-  schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-  //aspectRatio: '3',
-  slotDuration: '00:15:00',
-  displayEventEnd: true,
-  timeFormat: 'H:mm',
-  slotLabelFormat: 'H:mm',
-  events: eventsParam,
-  eventRender: function(event, element) {
-    if (event.staff_event) {
-      element.addClass("staff_event");
-    }
-  },
-  /*eventRender: function(event, element) {
-    element.html(element.html().replace(" -",""));
-  },*/
-};
-}
-</script>
 <div class="row">
   <div class="col-xs-12">
     <div id="calendar"></div>
   </div>
 </div>
 <script>
-var events = [
+let options = {
+  contentHeight: 'auto',
+  displayEventEnd: true,
+  slotDuration: '00:15:00',
+  eventRender: function(event, element) {
+    if (event.staff_event) {
+      element.addClass("staff_event");
+    }
+  },
+  events: [
   <% @rounds.each do |g| %>
     <%= raw(render('rounds/round.json.jbuilder', round: g)) %>,
   <% end %>
@@ -88,8 +60,11 @@ var events = [
   <% @schedule_events.each do |g| %>
     <%= raw(render('schedule_events/schedule_event.json.jbuilder', schedule_event: g)) %>,
   <% end %>
-];
-$('#calendar').fullCalendar(commonOptions("2018-07-19", events));
+  ],
+};
+
+setupFullCalendarOn("#calendar", '<%= managed_competition.start_date %>', '<%= managed_competition.number_of_days %>', "fullcomp-list", options, false);
+
 $('#calendar').ready(function (){
   $('#calendar').find('.fc-scroller').removeAttr("style");
 });

@@ -1,7 +1,6 @@
 // See _schedule_event.json.jbuilder for why the magic number
 $('#calendar').fullCalendar('removeEvents', [<%= 2000+@schedule_event.id %>]);
-$('#calendar').fullCalendar(
-  'renderEvent',
+$('#calendar').fullCalendar('renderEvent',
   $.parseJSON("<%=j render('schedule_event.json.jbuilder', schedule_event: @schedule_event).html_safe %>"),
   true
 );

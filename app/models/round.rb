@@ -1,4 +1,5 @@
 class Round < ApplicationRecord
+  include ApplicationHelper
   has_many :groups, inverse_of: :round, dependent: :destroy
 
   validates_inclusion_of :event_id, in: Event::ALL_EVENTS_BY_ID, message: "%{value} is not a valid event"
@@ -9,9 +10,8 @@ class Round < ApplicationRecord
 
   before_save :default_values
   def default_values
-    # FIXME: argh
-    self.start ||= DateTime.new(2018, 07, 19, 10, 0, 0)
-    self.end ||= DateTime.new(2018, 07, 19, 12, 0, 0)
+    self.start ||= managed_competition.start_date.to_datetime.change(hour: 10)
+    self.end ||= managed_competition.start_date.to_datetime.change(hour: 12)
   end
 
   def name

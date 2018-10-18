@@ -18,6 +18,7 @@
 //= require moment/fr.js
 //= require fullcalendar
 //= require scheduler.min
+//= require calendars
 //= require bootstrap-datetimepicker
 //= require pickers
 //= require_tree .
@@ -41,4 +42,3 @@ function setupSelectTable(tableId, buttonContainerId, fieldId) {
     input.val(selected_id.join(","));
   });
 }
-

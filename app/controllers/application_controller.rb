@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
   helper_method :current_user
   helper_method :user_signed_in?
   helper_method :correct_user?
-  helper_method :managed_competition
 
   before_action :check_managed_competition
   before_action :set_locale
@@ -43,10 +42,6 @@ class ApplicationController < ActionController::Base
       unless current_user&.can_manage_competition?(managed_competition)
         redirect_to root_url, :alert => 'You need to be admin to access this page'
       end
-    end
-
-    def managed_competition
-      @managed_competition ||= Competition.find_by_id(app_comp_id)
     end
 
     def check_managed_competition

@@ -4,49 +4,22 @@
   <div id="calendar" class="col-xs-12"></div>
 </div>
 <script>
-var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-var defaultViewNav = mobile ? "agenda" : "agendaFourDay";
-var viewAvail = mobile ? "agendaFourDay,agenda" : "listFourDay,agendaFourDay,agenda";
 
-$('#calendar').fullCalendar({
-  // see: https://fullcalendar.io/docs/views/Custom_Views/
-  views: {
-    agendaFourDay: {
-      type: 'agenda',
-      duration: { days: 4 },
-      buttonText: 'Calendar',
-    },
-    listFourDay: {
-      type: 'list',
-      duration: { days: 4 },
-      buttonText: 'Printable',
-    },
-    agenda: {
-      buttonText: '1-day calendar',
-    },
-  },
-  defaultView: defaultViewNav,
-  header: {
-    left: '',
-    center: viewAvail,
-    right: 'prev,next',
-  },
-  // FIXME yep, hardcoded
-  defaultDate: '2018-07-19',
-  minTime:'08:00:00',
-  maxTime:'22:00:00',
-  aspectRatio: '0.75',
+let options = {
   slotDuration: '00:15:00',
-  timeFormat: 'H:mm',
-  slotLabelFormat: 'H:mm',
   events: '<%= registration_schedule_path(@registration, format: :json) %>',
   eventRender: function(event, element) {
     if (event.staff_event) {
       element.addClass("staff_event");
     }
   },
+<% if current_user&.staff? %>
   eventClick: function(event, jsEvent, view) {
     $.getScript(event.show_url, function() {});
   },
-});
+<% end %>
+}
+
+setupFullCalendarOn("#calendar", '<%= managed_competition.start_date %>', '<%= managed_competition.number_of_days %>', "fullcomp", options, false);
+
 </script>

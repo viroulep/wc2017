@@ -1,4 +1,6 @@
 <script>
+// TODO: extract 'printable' to a layout
+// TODO: generate calendars based on the competition's date
 // SAVED: https://github.com/c3js/c3/issues/552#issuecomment-55269072
 Function.prototype.bind = Function.prototype.bind || function (thisp) {
   var fn = this;
@@ -52,7 +54,7 @@ Function.prototype.bind = Function.prototype.bind || function (thisp) {
 }
 </style>
 <script>
-var commonOptions = function(day, eventsParam) {
+var commonOptionsi = function(day, eventsParam) {
 
 return {
   // see: https://fullcalendar.io/docs/views/Custom_Views/
@@ -150,16 +152,16 @@ end
     -->
 <script>
 <% if events_count[19] > 0 %>
-$('#calendar-<%= r.id %>').fullCalendar(commonOptions("2018-07-19", events<%= r.id %>));
+$('#calendar-<%= r.id %>').fullCalendar(commonOptionsi("2018-07-19", events<%= r.id %>));
 <% end %>
 <% if events_count[20] > 0 %>
-$('#calendar-<%= r.id %>-friday').fullCalendar(commonOptions("2018-07-20", events<%= r.id %>));
+$('#calendar-<%= r.id %>-friday').fullCalendar(commonOptionsi("2018-07-20", events<%= r.id %>));
 <% end %>
 <% if events_count[21] > 0 %>
-$('#calendar-<%= r.id %>-saturday').fullCalendar(commonOptions("2018-07-21", events<%= r.id %>));
+$('#calendar-<%= r.id %>-saturday').fullCalendar(commonOptionsi("2018-07-21", events<%= r.id %>));
 <% end %>
 <% if events_count[22] > 0 %>
-$('#calendar-<%= r.id %>-sunday').fullCalendar(commonOptions("2018-07-22", events<%= r.id %>));
+$('#calendar-<%= r.id %>-sunday').fullCalendar(commonOptionsi("2018-07-22", events<%= r.id %>));
 <% end %>
 </script>
 <% end %>

@@ -226,7 +226,7 @@ class RegistrationsController < ApplicationController
       staff_teams_groups: { group: [:round] },
       groups: [:round],
     })
-    @registration = base_model.find_by_id(params[:registration_id]) || base_model.find_by(user_id: current_user.id)
+    @registration = base_model.find_by_id(params[:registration_id]) || base_model.find_by(user_id: current_user&.id)
     unless @registration
       return redirect_to my_registration_path
     end

@@ -19,53 +19,11 @@
       <div id="calendar" class="col-xs-12"></div>
     </div>
     <script>
-var post_event = function(event, revertFunc) {
-  group_data = { 
-    group: {
-      id: event.id,
-      start: event.start.format(),
-      end: event.end.format(),
-    }
-  };
-  $.ajax({
-    url: event.update_url,
-    data: group_data,
-    type: 'PATCH',
-  })
-  .fail(function() {
-    alert("Failed to update the event, reverting");
-    revertFunc();
-  });
-};
-
-$('#calendar').fullCalendar({
-  defaultDate: '<%= @round.start.strftime("%Y-%m-%d") %>',
+let additionalOptions = {
   minTime:'<%= (@round.start - 1.hours).strftime("%H:%M:%S") %>',
-  //minTime:'08:00:00',
-  //maxTime:'20:00:00',
   maxTime:'<%= (@round.end + 1.hours).strftime("%H:%M:%S") %>',
-  //defaultView: 'listDay',
-  defaultView: 'agendaDay',
-  //aspectRatio: '3',
-  slotDuration: '00:05:00',
   events: '<%= groups_for_round_path(@round, format: :json) %>',
-  editable: true,
-  eventOrder: "id",
-  timeFormat: 'H(:mm)',
-  eventDrop: function(event, delta, revertFunc) {
-    if (!confirm("Are you sure you want to drop the group there?")) {
-      revertFunc();
-    } else {
-      post_event(event, revertFunc);
-    }
-  },
-  eventResize: function(event, delta, revertFunc) {
-    if (!confirm("Are you sure you want to resize this group?")) {
-      revertFunc();
-    } else {
-      post_event(event, revertFunc);
-    }
-  },
+  slotDuration: '00:10:00',
   eventRender: function(event, element) {
     if (event.hasOwnProperty('edit_url')) {
       // FIXME: maybe for this it actually makes sense to edit everything in the modal!
@@ -75,7 +33,10 @@ $('#calendar').fullCalendar({
       element.find('.fc-content').append(newElem);
     }
   },
-});
+};
+
+setupFullCalendarOn("#calendar", '<%= @round.start.strftime("%Y-%m-%d") %>', 1, "default", additionalOptions, true);
+
 $('#groups-action-collapse').click(function (e) {
   e.preventDefault();
   $('.panel-heading').not('.collapsed').click();

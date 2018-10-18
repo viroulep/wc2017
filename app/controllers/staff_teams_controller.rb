@@ -38,6 +38,9 @@ class StaffTeamsController < ApplicationController
   end
 
   def schedule
+    # NOTE: this was created for Euro 2018: we had several staff teams,
+    # and one "booth" team. I needed, when showing the booth team,
+    # to display the other teams the members were in to see possible gap in schedule
     @all_events = []
     @staff_team = StaffTeam.includes({
       users: {
