@@ -19,20 +19,10 @@ class PrintingController < ApplicationController
     end
   end
 
-  def staff_lunches
-    @registrations = Registration.includes([registration_detail: [], scramble_events: [], user: [], groups: [:round], staff_registrations_groups: { group: [:round] }, staff_teams_groups: { group: [:round] }])
-    @registrations = @registrations.staff_available.sort_by { |r| I18n.transliterate(r.name) }
-  end
-
-  def registrations
-    inclusion = [ :registration_detail, :user, :guests ]
-    @staff = Registration.staff_available.includes(inclusion).sort_by { |r| I18n.transliterate(r.name) }
-    @competitors = (Registration.accepted.includes(inclusion) - @staff).sort_by { |r| I18n.transliterate(r.name) }
-  end
-
   def printable_groups_schedule
     @groups = Group.includes(staff_teams: {staff_team_members: {registration: [:user]}}, round:[]).all.order(:id)
     @schedule_events = ScheduleEvent.all
+    render layout: "print"
   end
 
   def printable_rounds_schedule
@@ -45,10 +35,6 @@ class PrintingController < ApplicationController
 
   def printable_groups
     @groups = Group.includes(round: [], staff_teams: { staff_team_members: { registration: [:user] }}, registrations: [:user], staff_registrations: [:user]).all.order(:start).reject { |g| ["magic"].include?(g.event_id) || g.registrations.empty? }
-  end
-
-  def printable_groups_only
-    @groups = Group.includes(round: []).all.order(:start)
   end
 
   def printable_teams

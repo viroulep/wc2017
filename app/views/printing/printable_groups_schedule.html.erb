@@ -1,47 +1,9 @@
-<script>
-// SAVED: https://github.com/c3js/c3/issues/552#issuecomment-55269072
-Function.prototype.bind = Function.prototype.bind || function (thisp) {
-  var fn = this;
-  return function () {
-    return fn.apply(thisp, arguments);
-  };
-};
-</script>
 <style>
-.no_break_inside, h1, h2, h3, li, p, tr, .calendar-cell {
-  page-break-inside: avoid !important;
-}
-
-.name {
-  margin-top: 1cm;
-  page-break-after: avoid !important;
-}
-.navbar {
-  display: none;
+.fc-list-item-time {
+  width: 3cm;
 }
 .row {
   width: 21cm;
-}
-.fc-list-table td {
-  padding: 3px;
-}
-
-.fc-list-item-time {
-  width: 3cm;
-  white-space: normal;
-  text-align: center;
-}
-
-.fc-event-dot {
-  margin-top: 3px;
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-}
-
-.fc-ltr .fc-list-item-marker {
-  padding-left: 0px;
-  padding-right: 5px;
 }
 </style>
 <div class="row">
@@ -50,7 +12,7 @@ Function.prototype.bind = Function.prototype.bind || function (thisp) {
   </div>
 </div>
 <script>
-let options = {
+var options = {
   contentHeight: 'auto',
   displayEventEnd: true,
   slotDuration: '00:15:00',
@@ -60,14 +22,16 @@ let options = {
     }
   },
   events: [
-  <% @groups.each do |g| %>
-    <%= raw(render('groups/groups_schedule_group.json.jbuilder', group: g)) %>,
+    <% @groups.each do |g| %>
+        <%= raw(render('groups/groups_schedule_group.json.jbuilder', group: g)) %>,
   <% end %>
   ],
-}
+};
 
-setupFullCalendarOn("#calendar", '<%= managed_competition.start_date %>', '<%= managed_competition.number_of_days %>', "fullcomp-list", options, false);
+alert("toto");
+
 $('#calendar').ready(function (){
+  setupFullCalendarOn("#calendar", '<%= managed_competition.start_date %>', '<%= managed_competition.number_of_days %>', "fullcomp-list", options, false);
   $('#calendar').find('.fc-scroller').removeAttr("style");
 });
 </script>

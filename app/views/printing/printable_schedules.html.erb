@@ -21,16 +21,11 @@ Function.prototype.bind = Function.prototype.bind || function (thisp) {
 .navbar {
   display: none;
 }
-.col-xs-4 {
-  width: 5.7cm;
-  display: inline-block;
-}
 .fc-list-table td {
   padding: 3px;
 }
 
 .fc-list-item-time {
-  width: 40px;
   white-space: normal;
   text-align: center;
 }
@@ -42,15 +37,26 @@ Function.prototype.bind = Function.prototype.bind || function (thisp) {
   border-radius: 7px;
 }
 
+.fc-ltr .fc-list-item-marker {
+  padding-left: 0px;
+  padding-right: 5px;
+}
+
+// specific
+.fc-list-item-time {
+  width: 40px;
+}
+
+
 .fc-scroller {
   height: auto !important;
   overflow-x: initial !important;
   overflow-y: initial !important;
 }
 
-.fc-ltr .fc-list-item-marker {
-  padding-left: 0px;
-  padding-right: 5px;
+.col-xs-4 {
+  width: 5.7cm;
+  display: inline-block;
 }
 </style>
 <script>
