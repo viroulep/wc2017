@@ -57,7 +57,6 @@ class ApplicationController < ActionController::Base
           unless status
             return redirect_to(root_url, alert: "Failed to fetch competition info")
           end
-          @managed_competition = competition
         rescue RestClient::ExceptionWithResponse => err
           redirect_to(root_url, alert: "Failed to fetch competition info")
         end
