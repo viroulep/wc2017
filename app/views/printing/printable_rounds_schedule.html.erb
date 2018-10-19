@@ -1,39 +1,13 @@
 <style>
-.no_break_inside, h1, h2, h3, li, p, tr, .calendar-cell {
-  page-break-inside: avoid !important;
-}
-
-.name {
-  margin-top: 1cm;
-  page-break-after: avoid !important;
-}
-.navbar {
-  display: none;
-}
 .row {
   width: 21cm;
-}
-.fc-list-table td {
-  padding: 3px;
 }
 
 .fc-list-item-time {
   width: 3cm;
   white-space: normal;
-  text-align: center;
 }
 
-.fc-event-dot {
-  margin-top: 3px;
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-}
-
-.fc-ltr .fc-list-item-marker {
-  padding-left: 0px;
-  padding-right: 5px;
-}
 </style>
 <div class="row">
   <div class="col-xs-12">
@@ -41,7 +15,7 @@
   </div>
 </div>
 <script>
-let options = {
+var options = {
   contentHeight: 'auto',
   displayEventEnd: true,
   slotDuration: '00:15:00',

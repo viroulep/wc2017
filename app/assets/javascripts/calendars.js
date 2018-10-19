@@ -1,3 +1,4 @@
+// NOTE: across all this file I use 'var', because wkhtmltopdf doesn't like 'let'!
 
 var postEventData = function(event, delta, revertFunc) {
   event_data = {};
@@ -19,9 +20,9 @@ var postEventData = function(event, delta, revertFunc) {
 
 var viewOptions = function(name, numberOfDays) {
   if (name == "fullcomp") {
-    let mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    let defaultViewNav = mobile ? "agenda" : "agendaFourDay";
-    let viewAvail = mobile ? "agendaFourDay,agenda" : "listFourDay,agendaFourDay,agenda";
+    var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    var defaultViewNav = mobile ? "agenda" : "agendaFourDay";
+    var viewAvail = mobile ? "agendaFourDay,agenda" : "listFourDay,agendaFourDay,agenda";
     // see: https://fullcalendar.io/docs/views/Custom_Views/
     return {
       views: {
@@ -71,14 +72,14 @@ var viewOptions = function(name, numberOfDays) {
   }
 }
 
-const editableCalendarOptions = {
+var editableCalendarOptions = {
   editable: true,
   eventDrop: postEventData,
   eventResize: postEventData,
 }
 
-const commonOptions = function(day, editable) {
-  options = {
+var commonOptions = function(day, editable) {
+  var options = {
     defaultDate: day,
     minTime:'08:00:00',
     maxTime:'20:00:00',
@@ -99,6 +100,6 @@ const commonOptions = function(day, editable) {
 }
 
 function setupFullCalendarOn(elemId, day, numberOfDays, viewName, options, editable) {
-  calendarOptions = Object.assign(commonOptions(day, editable), viewOptions(viewName, numberOfDays), options);
+  var calendarOptions = Object.assign(commonOptions(day, editable), viewOptions(viewName, numberOfDays), options);
   $(elemId).fullCalendar(calendarOptions);
 }

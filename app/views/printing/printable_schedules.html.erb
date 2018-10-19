@@ -1,111 +1,63 @@
-<script>
-// TODO: extract 'printable' to a layout
-// TODO: generate calendars based on the competition's date
-// SAVED: https://github.com/c3js/c3/issues/552#issuecomment-55269072
-Function.prototype.bind = Function.prototype.bind || function (thisp) {
-  var fn = this;
-  return function () {
-    return fn.apply(thisp, arguments);
-  };
-};
-</script>
 <style>
-.no_break_inside, h1, h2, h3, li, p, tr, .calendar-cell {
-  page-break-inside: avoid !important;
-}
+  .fc-list-item-time {
+    width: 40px;
+  }
 
-.name {
-  margin-top: 1cm;
-  page-break-after: avoid !important;
-}
-.navbar {
-  display: none;
-}
-.fc-list-table td {
-  padding: 3px;
-}
+  .fc-list-item-time {
+    white-space: normal;
+  }
 
-.fc-list-item-time {
-  white-space: normal;
-  text-align: center;
-}
+  .fc-scroller {
+    height: auto !important;
+    overflow-x: initial !important;
+    overflow-y: initial !important;
+  }
 
-.fc-event-dot {
-  margin-top: 3px;
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-}
-
-.fc-ltr .fc-list-item-marker {
-  padding-left: 0px;
-  padding-right: 5px;
-}
-
-// specific
-.fc-list-item-time {
-  width: 40px;
-}
-
-
-.fc-scroller {
-  height: auto !important;
-  overflow-x: initial !important;
-  overflow-y: initial !important;
-}
-
-.col-xs-4 {
-  width: 5.7cm;
-  display: inline-block;
-}
+  .col-xs-4 {
+    width: 6.8cm;
+    display: inline-block;
+  }
 </style>
 <script>
-var commonOptionsi = function(day, eventsParam) {
-
-return {
-  // see: https://fullcalendar.io/docs/views/Custom_Views/
-  views: {
-    listFourDay: {
-      type: 'list',
-      duration: { days: 4 },
-      buttonText: 'Printable',
-    },
-  },
-  defaultView: 'list',
-  header: false,
-  // yep, hardcoded
-  defaultDate: day,
-  minTime:'08:00:00',
-  maxTime:'20:00:00',
-  contentHeight: 'auto',
-  //aspectRatio: '3',
-  slotDuration: '00:15:00',
-  displayEventEnd: false,
-  timeFormat: 'H:mm',
-  slotLabelFormat: 'H:mm',
-  events: eventsParam,
-  schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-  eventRender: function(event, element) {
-    if (event.staff_event) {
-      element.addClass("staff_event");
-    }
-  },
-  /*eventRender: function(event, element) {
-    element.html(element.html().replace(" -",""));
-  },*/
-};
-}
+  var options = function(eventsParam) {
+    return {
+      events: eventsParam,
+      eventRender: function(event, element) {
+        if (event.staff_event) {
+          element.addClass("staff_event");
+        }
+      },
+    };
+  };
 </script>
 <div class="row">
-<% @registrations.each_slice((@registrations.size/3.to_f).ceil).each do |slice| %>
+  <% @registrations.each_slice((@registrations.size/3.to_f).ceil).each do |slice| %>
 
-  <div class="col-xs-4">
-  <% slice.each do |r| %>
-  <% groups = r.groups %>
-  <% individual_staff = r.staff_registrations_groups.map(&:group) %>
-  <% staff_team_groups = r.staff_teams_groups.map(&:group) %>
-  <% staff_team_groups.reject! { |g| @side_event.include?(g.event_id) && groups.include?(g) } %>
-<script>
+    <div class="col-xs-4">
+      <% slice.each do |r| %>
+        <% groups = r.groups %>
+        <% individual_staff = r.staff_registrations_groups.map(&:group) %>
+        <% staff_team_groups = r.staff_teams_groups.map(&:group) %>
+        <% staff_team_groups.reject! { |g| @side_event.include?(g.event_id) && groups.include?(g) } %>
+        <% events_count = {} %>
+        <% days = (managed_competition.start_date..managed_competition.end_date) %>
+        <% days.each do |d| %>
+          <% function_select = lambda { |g| g.start.day == d.day } %>
+          <% events_count[d.day] = groups.select(&function_select).size +
+            individual_staff.select(&function_select).size +
+            staff_team_groups.select(&function_select).size %>
+        <% end %>
+        <% days.each do |d| %>
+          <%  if events_count[d.day] > 0 %>
+            <div class="calendar-cell">
+              <p class="name"><b><%= r.name %></b></p>
+              <div id="calendar-<%= "#{r.id}-#{d.day}" %>"></div>
+            </div>
+          <% end %>
+        <% end %>
+        <script>
+
+// Registration-specific js
 var events<%= r.id %> = [
   <% groups.each do |g| %>
     <%= raw(render('groups/group.json.jbuilder', group: g, short: true)) %>,
@@ -117,64 +69,14 @@ var events<%= r.id %> = [
     <%= raw(render('groups/group.json.jbuilder', group: g, short: true, staff: true, registration: r)) %>,
   <% end %>
 ];
-<%
-events_count = {}
-[19,20,21,22].each do |i|
-  function_select = lambda { |g| g.start.day == i }
-  events_count[i] = groups.select(&function_select).size +
-                 individual_staff.select(&function_select).size +
-                 staff_team_groups.select(&function_select).size
-end
-%>
-</script>
-<% if events_count[19] > 0 %>
-    <div class="calendar-cell">
-    <p class="name"><b><%= r.name %></b></p>
-    <div id="calendar-<%= r.id %>"></div>
-    </div>
-<% end %>
-<% if events_count[20] > 0 %>
-    <div class="calendar-cell">
-    <p class="name"><b><%= r.name %></b></p>
-    <div id="calendar-<%= r.id %>-friday"></div>
-    </div>
-<% end %>
-<% if events_count[21] > 0 %>
-    <div class="calendar-cell">
-    <p class="name"><b><%= r.name %></b></p>
-    <div id="calendar-<%= r.id %>-saturday"></div>
-    </div>
-<% end %>
-<% if events_count[22] > 0 %>
-    <div class="calendar-cell">
-    <p class="name"><b><%= r.name %></b></p>
-    <div id="calendar-<%= r.id %>-sunday"></div>
-    </div>
-<% end %>
-    <!--
-    <div class="calendar-cell calendar-<%= r.id %> friday"></div>
-    <div class="calendar-cell calendar-<%= r.id %> saturday"></div>
-    <div class="calendar-cell calendar-<%= r.id %> sunday"></div>
-    -->
-<script>
-<% if events_count[19] > 0 %>
-$('#calendar-<%= r.id %>').fullCalendar(commonOptionsi("2018-07-19", events<%= r.id %>));
-<% end %>
-<% if events_count[20] > 0 %>
-$('#calendar-<%= r.id %>-friday').fullCalendar(commonOptionsi("2018-07-20", events<%= r.id %>));
-<% end %>
-<% if events_count[21] > 0 %>
-$('#calendar-<%= r.id %>-saturday').fullCalendar(commonOptionsi("2018-07-21", events<%= r.id %>));
-<% end %>
-<% if events_count[22] > 0 %>
-$('#calendar-<%= r.id %>-sunday').fullCalendar(commonOptionsi("2018-07-22", events<%= r.id %>));
-<% end %>
-</script>
-<% end %>
-  </div>
-<% end %>
-<script>
 
-
-</script>
+<% days.each do |d| %>
+  <% if events_count[d.day] > 0 %>
+    setupFullCalendarOn('#calendar-<%= "#{r.id}-#{d.day}" %>', "<%= d %>", "<%= managed_competition.number_of_days %>", "fullcomp-list", options(events<%= r.id %>), false);
+  <% end %>
+<% end %>
+        </script>
+      <% end %>
+    </div><!-- col-xs-4 -->
+  <% end %>
 </div>

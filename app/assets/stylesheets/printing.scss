@@ -1,0 +1,36 @@
+.no_break_inside, h1, h2, h3, li, p, tr, .calendar-cell {
+  page-break-inside: avoid !important;
+}
+
+.people-list {
+  page-break-after: always !important;
+}
+
+.name {
+  margin-top: 1cm;
+  page-break-after: avoid !important;
+}
+
+.navbar {
+  display: none;
+}
+
+.fc-list-table td {
+  padding: 3px;
+}
+
+.fc-list-item-time {
+  text-align: center;
+}
+
+.fc-event-dot {
+  margin-top: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+}
+
+.fc-ltr .fc-list-item-marker {
+  padding-left: 0px;
+  padding-right: 5px;
+}

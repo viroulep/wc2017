@@ -28,10 +28,9 @@ var options = {
   ],
 };
 
-alert("toto");
+setupFullCalendarOn("#calendar", "2018-09-08", "1", "fullcomp-list", options, false);
 
 $('#calendar').ready(function (){
-  setupFullCalendarOn("#calendar", '<%= managed_competition.start_date %>', '<%= managed_competition.number_of_days %>', "fullcomp-list", options, false);
   $('#calendar').find('.fc-scroller').removeAttr("style");
 });
 </script>

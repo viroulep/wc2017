@@ -2,6 +2,8 @@ class PrintingController < ApplicationController
   #before_action :authenticate_user!
   #before_action :redirect_unless_admin!
 
+  layout 'print'
+
   def printable_schedules
     @registrations = Registration.includes([registration_detail: [], scramble_events: [], user: [], groups: [:round], staff_registrations_groups: { group: [:round] }, staff_teams_groups: { group: [:round] }])
     @side_event = ["333mbf", "444bf", "555bf"]
@@ -22,7 +24,6 @@ class PrintingController < ApplicationController
   def printable_groups_schedule
     @groups = Group.includes(staff_teams: {staff_team_members: {registration: [:user]}}, round:[]).all.order(:id)
     @schedule_events = ScheduleEvent.all
-    render layout: "print"
   end
 
   def printable_rounds_schedule
@@ -67,7 +68,7 @@ class PrintingController < ApplicationController
 
     @side_events.each do |e|
       @registrations[e] = Registration.with_event(e.id, inclusion)
-      @registrations[e].sort_by! { |r| r.best_for(e.id, "single")&.as_solve_time }
+      @registrations[e].sort_by! { |r| r.best_for(e.id, "single")&.as_solve_time || SolveTime::DNF }
     end
   end
 end
