@@ -27,15 +27,14 @@ Rails.application.routes.draw do
     get 'top3' => 'registrations#top3'
     get 'registrations/cleanup' => 'registrations#cleanup'
 
+    get 'printing' => 'printing#index'
     get 'printable_schedules' => 'printing#printable_schedules'
     get 'printable_groups' => 'printing#printable_groups'
     get 'printable_groups_only' => 'printing#printable_groups_only'
     get 'printable_groups_schedule' => 'printing#printable_groups_schedule'
     get 'printable_rounds_schedule' => 'printing#printable_rounds_schedule'
     get 'printable_teams' => 'printing#printable_teams'
-    get 'staff_lunches' => 'printing#staff_lunches'
     get 'rooms_side' => 'printing#rooms_side'
-    get 'registrations_sheet' => 'printing#registrations'
 
     resources :groups, param: :group_id
     resources :groups, only: [] do

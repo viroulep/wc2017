@@ -220,6 +220,12 @@ class GroupsController < ApplicationController
     end
   end
 
+  def groups_repartition_for_round
+    @round = Round.find(params[:round_id])
+    @event = Event.find(@round.event_id)
+    set_groups_ungrouped!
+  end
+
   def destroy_registration_group
     rg = RegistrationGroup.find(params[:id])
     round_back = rg.group.round

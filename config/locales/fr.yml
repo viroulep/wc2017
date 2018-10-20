@@ -72,6 +72,7 @@ fr:
       staff_registrations: Inscriptions staff
       #original_hash: ae9629f
       groups: Groupes
+      print: Trucs à imprimer
     staff:
       #original_hash: 7eddd0c
       groups_schedule: Planning des groupes

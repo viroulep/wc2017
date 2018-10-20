@@ -1,0 +1,20 @@
+<h1><%= t("printing.title") %></h1>
+
+<p>
+<%= t("printing.description") %>
+<br>
+<%= t("printing.example") %>
+<pre>wkhtmltopdf -T 2 -B 2 -L 0 -R 0 --disable-smart-shrinking "<%= printable_schedules_url(type: "staff") %>" printable_schedule.pdf</pre>
+<%= t("printing.landscape_html") %>
+</p>
+
+<div class="list-group">
+  <% t("printing.links").each do |action, info| %>
+    <% page_url = url_for(action: action, controller: "printing", only_path: false) %>
+    <div class="list-group-item">
+      <h4 class="list-group-item-heading"><%= info[:title] %></h4>
+      <p class="list-group-item-text"><%= raw(info[:description]) %></p>
+      <p class="list-group-item-text">URL: <%= link_to page_url, page_url %></p>
+    </div>
+  <% end %>
+</div>

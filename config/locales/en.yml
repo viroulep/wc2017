@@ -55,6 +55,7 @@ en:
       registrations: "Registrations"
       staff_registrations: "Staff registrations"
       groups: "Groups"
+      print: "Printing stuff"
     staff:
       groups_schedule: "Groups schedule"
       teams: "Teams"
@@ -160,3 +161,27 @@ en:
       you_are_in_the_following_html: "You are in the following staff teams: %{teams}"
       your_schedule_is_here_html: "Your schedule is %{here}!"
       here: "here"
+  printing:
+    title: "List of printable stuff"
+    description: "Please see below for a printable export of several useful stuff. Most of the time these pages do not look very good when printing from the browser, the recommended approach is to use a headless browser (such as wkhtmltopdf) to generate a pdf version of the page."
+    example: "For instance, to get the staff personal schedules you would do:"
+    landscape_html: "Sometimes (such as for the groups composition), the page looks better in landscape. You can pass <code>-O Landscape</code> as an option to wkhtmltopdf to get the pdf in landscape."
+    links:
+      printable_schedules:
+        title: "Personal schedules"
+        description: "This is the page gathering all personal schedule in a printable format (to fit in a 7cm wide badge holder). By default it only prints the <i>competitors</i> schedules. You can pass 'type=staff' as a parameter to print the staff members schedules. The default number of competitors printed at the same time is 500 (for performance reason), if you have more than that, you will have to pass the parameter 'offset=500' to have the others."
+      printable_groups_schedule:
+        title: "Groups schedules"
+        description: "The overall groups schedule as a list, with the staff teams leader(s) assigned."
+      printable_rounds_schedule:
+        title: "Competition's schedule"
+        description: "The competition's schedule as a list."
+      printable_groups:
+        title: "Groups composition"
+        description: "List of groups and their competitors"
+      printable_teams:
+        title: "Staff teams composition"
+        description: "List of staff teams and their members"
+      rooms_side:
+        title: "Side events"
+        description: "List of competitors by side event"
