@@ -1,0 +1,12 @@
+<% registrations.each do |r| %>
+  <div class="list-group-item" data-registration="<%= r.id %>">
+    <%= r.name %>
+    <% unless (r.events & ["333mbf"]).empty? %>
+      M
+    <% end %>
+    <% unless (r.events & ["444bf", "555bf"]).empty? %>
+      BBF
+    <% end %>
+    <%= array_to_s(r.staff_teams.map(&:team_id)) %>
+  </div>
+<% end %>

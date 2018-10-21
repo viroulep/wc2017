@@ -226,6 +226,36 @@ class GroupsController < ApplicationController
     set_groups_ungrouped!
   end
 
+  def move_registrations_to_group
+    # patch 'groups/move_to/:round_id/(:group_id/:registration_ids)' => 'groups#move_registrations_to_group', :as => :move_to_group
+    @round = Round.includes(:groups).find(params[:round_id])
+    groups_for_round = @round.groups.map(&:id)
+    # NOTE: to_i is defined for nil
+    group_id = (groups_for_round & [params[:group_id].to_i]).first
+    @group = Group.find(group_id)
+    registration_ids = params[:registration_ids]&.split("-") || []
+    # Destroy existing groups for these registrations
+    RegistrationGroup.where(group_id: groups_for_round, registration_id: registration_ids).destroy_all
+    # Rebuild with the correct group, for actually existing ids
+    Registration.where(id: registration_ids).each do |r|
+      if r.events.include?(@round.event_id)
+        new_rg = RegistrationGroup.new(group_id: @group.id, registration_id: r.id)
+        # validation is expensive, we already did some kind of manual check
+        new_rg.save!(validate: false)
+      end
+    end
+    render json: {}, status: :ok
+  end
+
+  def drop_groups_from_round
+    # Expect param 'round_id' and 'registration_ids' ('-' separated list of registration ids)
+    @round = Round.includes(:groups).find(params[:round_id])
+    groups_for_round = @round.groups.map(&:id)
+    registration_ids = params[:registration_ids]&.split("-") || []
+    RegistrationGroup.where(group_id: groups_for_round, registration_id: registration_ids).destroy_all
+    render json: {}, status: :ok
+  end
+
   def destroy_registration_group
     rg = RegistrationGroup.find(params[:id])
     round_back = rg.group.round
@@ -317,7 +347,10 @@ class GroupsController < ApplicationController
                     else
                       Registration.includes(:registration_detail, :staff_teams).with_event_without_group_for(@round, :user)
                     end
+    @all_without_group = registrations
+
     registrations, registrations_staff = registrations.partition { |r| !r.details.staff }
+
 
     @ungrouped = Group.new(registration_groups: registrations.map { |r| r.registration_groups.build })
     @ungrouped_staff = Group.new(registration_groups: registrations_staff.map { |r| r.registration_groups.build })

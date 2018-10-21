@@ -14,6 +14,7 @@ gem 'rack-cors'
 gem 'momentjs-rails', '~> 2.9',  :github => 'derekprior/momentjs-rails'
 gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
 gem 'fullcalendar-rails', '~> 3.2'
+gem 'dragula-rails'
 
 group :development, :test do
   gem 'dotenv-rails'

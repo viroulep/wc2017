@@ -48,6 +48,9 @@ Rails.application.routes.draw do
     get 'groups-schedule' => 'groups#schedule', :as => :groups_schedule
     get 'groups/e/:event_id' => 'groups#show_for_event', :as => :groups_for_event
     get 'groups/r/:round_id' => 'groups#show_for_round', :as => :groups_for_round
+    get 'groups/for_round/:round_id' => 'groups#groups_repartition_for_round', :as => :groups_repartition_for_round
+    patch 'groups/move_to/:round_id/(:group_id/:registration_ids)' => 'groups#move_registrations_to_group', :as => :move_to_group
+    patch 'groups/drop_group_from/:round_id(/:registration_ids)' => 'groups#drop_groups_from_round', :as => :drop_group_for_round
     patch 'groups/r/:round_id' => 'groups#update_for_round'
 
     delete 'registration_groups/:id' => 'groups#destroy_registration_group', :as => :delete_from_group

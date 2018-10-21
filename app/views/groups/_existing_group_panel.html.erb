@@ -1,0 +1,24 @@
+<% staff_teams_ids = group.id.nil? ? [] : group.staff_teams.map(&:team_id) %>
+<div class="col-xs-6 col-sm-3">
+  <div class="panel <%= "panel-#{group.color}" unless group.color.blank? %>">
+    <div class="panel-heading heading-as-link" data-toggle="collapse" data-target="#collapse-<%= group.id %>">
+      <h3 class="panel-title">
+        <% if staff_teams_ids.any? %>
+          [<%= array_to_s(staff_teams_ids) %>]
+        <% end %>
+        <%= group.name %>
+        <span class="badge"><%= group.registration_groups.size %></span>
+        <%= link_to icon('pencil'), edit_group_path(group.id) if group.id %>
+        <%= link_to icon('trash'), group_path(group.id), id: "delete-group-#{group.id}", method: "delete" if group.id %>
+        <%= link_to "+top", top_low_groups_path(group.id, "top") if group.id %>
+        <%= link_to "+low", top_low_groups_path(group.id, "low") if group.id %>
+        <span class="collapse-indicator"></span>
+      </h3>
+    </div>
+    <div id="collapse-<%= group.id %>" class="panel-groups collapse in">
+      <div class="list-people list-group" data-group="<%= group.id %>">
+        <%= render "registrations_as_list", registrations: group.registration_groups.map(&:registration).sort_by(&:name) %>
+      </div>
+    </div>
+  </div>
+</div>

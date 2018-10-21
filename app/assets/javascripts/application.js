@@ -21,6 +21,7 @@
 //= require calendars
 //= require bootstrap-datetimepicker
 //= require pickers
+//= require dragula
 //= require_tree .
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()

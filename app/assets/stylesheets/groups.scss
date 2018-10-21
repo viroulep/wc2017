@@ -7,6 +7,30 @@
   margin: 10px 0 10px 0;
 }
 
+.row-all-existing-groups {
+  /* Fix for group cell behavior */
+  /* Each row-all-existing-groups has two elements: */
+  /* the main panel, and the div with .may-clearfix */
+  /* On medium/large screens, we want 4 groups per row, so we need to activate the */
+  /* clearfix on the 4*2th element */
+  /* 4 panels per row => 4*2th element */
+  .may-clearfix:nth-child(8n) {
+    @extend .visible-md-block;
+    @extend .visible-lg-block;
+    @extend .visible-sm-block;
+    @extend .clearfix;
+  }
+  /* 2 panels per row => 2*2th element */
+  .may-clearfix:nth-child(4n) {
+    @extend .visible-xs-block;
+    @extend .clearfix;
+  }
+}
+
+.list-people {
+  min-height: 50px;
+}
+
 .row-all-groups {
   /* Fix for group cell behavior */
   /* Each row-all-groups has three elements: */
