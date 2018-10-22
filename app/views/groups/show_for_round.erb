@@ -26,7 +26,7 @@ let additionalOptions = {
   minTime:'<%= (@round.start - 1.hours).strftime("%H:%M:%S") %>',
   maxTime:'<%= (@round.end + 1.hours).strftime("%H:%M:%S") %>',
   events: '<%= groups_for_round_path(@round, format: :json) %>',
-  slotDuration: '00:10:00',
+  slotDuration: '00:05:00',
   eventRender: function(event, element) {
     if (event.hasOwnProperty('edit_url')) {
       // FIXME: maybe for this it actually makes sense to edit everything in the modal!

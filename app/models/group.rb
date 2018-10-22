@@ -28,6 +28,21 @@ class Group < ApplicationRecord
   validates_presence_of :round_id, allow_blank: false
   validates_inclusion_of :color, in: COLORS.keys
 
+  validate :included_in_round
+  def included_in_round
+    return unless errors.blank?
+
+    unless start >= round.start
+      errors.add(:start, "should be after parent's start_time")
+    end
+    unless self[:end] <= round.end
+      errors.add(:end, "should be before parent's end_time")
+    end
+    unless start <= self[:end]
+      errors.add(:end, "should be after start")
+    end
+  end
+
   accepts_nested_attributes_for :registration_groups
   accepts_nested_attributes_for :staff_teams_groups
   accepts_nested_attributes_for :staff_registrations_groups

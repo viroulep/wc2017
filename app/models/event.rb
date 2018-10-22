@@ -14,6 +14,10 @@ class Event
     ALL_EVENTS_BY_ID[id] or raise ActiveRecord::RecordNotFound
   end
 
+  def self.find_or_nil(id)
+    ALL_EVENTS_BY_ID[id]
+  end
+
   def self.all
     ALL_EVENTS
   end

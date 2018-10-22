@@ -12,8 +12,8 @@ var postEventData = function(event, delta, revertFunc) {
     data: event_data,
     type: 'PATCH',
   })
-  .fail(function() {
-    alert("Failed to update the event, reverting");
+  .fail(function(jqXHR, text) {
+    alert(`Failed to update the event, reverting (${jqXHR.responseText})`);
     revertFunc();
   });
 };
@@ -58,6 +58,7 @@ var viewOptions = function(name, numberOfDays) {
       },
       defaultView: 'listFourDay',
       header: false,
+      displayEventEnd: false,
     };
   } else if (name == "day-list") {
     return {
@@ -87,8 +88,9 @@ var commonOptions = function(day, editable) {
     aspectRatio: '0.75',
     slotDuration: '00:15:00',
     snapDuration: '00:05:00',
-    displayEventEnd: false,
+    displayEventEnd: true,
     timeFormat: 'H:mm',
+    timezone: false,
     slotLabelFormat: 'H:mm',
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
     eventOrder: "id",
