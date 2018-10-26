@@ -15,7 +15,7 @@ class RegistrationsController < ApplicationController
     case source
     when "wca"
       begin
-        registrations_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}/wcif"), { Authorization: "Bearer #{session[:access_token]}"})
+        registrations_response = RestClient.get(wca_api_url("/competitions/#{managed_competition.id}/wcif"), { Authorization: "Bearer #{session[:access_token]}"})
         wcif_string_content = registrations_response.body
       rescue RestClient::ExceptionWithResponse => err
         return redirect_to(registrations_url, alert: "Failed to fetch WCA data: #{err.message}")
@@ -151,7 +151,7 @@ class RegistrationsController < ApplicationController
         registration_detail: [],
       },
     }
-    comp = Competition.includes(associations).find_by_id!(app_comp_id)
+    comp = Competition.includes(associations).find_by_id!(managed_competition.id)
     render json: JSON.pretty_generate(comp.to_wcif, indent: "    ")
   end
 
@@ -293,7 +293,7 @@ class RegistrationsController < ApplicationController
     @user = @registration.user
     @mine = (@user == current_user)
 
-    if current_user.can_edit_guests?(managed_competition)
+    if current_user.can_edit_guests?
       # Taking care of guests
       guests = params.require(:registration).permit(:guests_attributes => [:name, :id])
       # We need to manipulate guests without saving anything right now to the db, so we:
@@ -314,7 +314,7 @@ class RegistrationsController < ApplicationController
     end
 
     permitted_details = [:mbf1, :tshirt, :restaurant_guests, :nb_vg]
-    if current_user.can_manage_competition?(managed_competition)
+    if current_user.can_manage_competition?
       permitted_details << [:staff, :runner_only, :mbf_judge, :orga]
     end
     details = params.require(:registration).permit(:registration_detail_attributes => permitted_details)
@@ -325,7 +325,7 @@ class RegistrationsController < ApplicationController
 
     scramble_events_params = params.require(:registration).permit(:scramble_events_attributes => [:id, :event_id, :_destroy])
     scramble_events = scramble_events_params[:scramble_events_attributes] || []
-    if current_user.can_manage_competition?(managed_competition)
+    if current_user.can_manage_competition?
       @registration.assign_attributes(scramble_events_params)
     end
 
@@ -429,7 +429,7 @@ class RegistrationsController < ApplicationController
     if params[:id].nil? && registration.nil?
       return
     end
-    unless current_user.can_edit_registration?(managed_competition, registration)
+    unless current_user.can_edit_registration?(registration)
       flash[:danger] = "Cannot edit this registration"
       redirect_to root_url
       return

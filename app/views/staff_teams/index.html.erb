@@ -16,7 +16,7 @@
       <tr>
         <td>
           <%= link_to render("shared/team_name", team: staff_team), staff_team %>
-          <% if current_user.can_manage_competition?(managed_competition) %>
+          <% if current_user.can_manage_competition? %>
             <%= link_to icon('pencil'), edit_staff_team_path(staff_team), class: "btn btn-primary btn-sm" %>
             <%= link_to icon('trash'), staff_team, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %>
           <% end %>
@@ -30,6 +30,6 @@
 
 <br>
 
-<% if current_user.can_manage_competition?(managed_competition) %>
+<% if current_user.can_manage_competition? %>
   <%= link_to 'New Staff Team', new_staff_team_path %>
 <% end %>

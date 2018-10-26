@@ -21,7 +21,7 @@
 <h2><%= t('public_guests.list.title') %></h2>
 
 <table class="table table-hover"
-  <% if current_user&.can_manage_competition?(managed_competition) %>
+  <% if current_user&.can_manage_competition? %>
     data-toggle="table"
     data-search="true"
   <% end %>
@@ -29,7 +29,7 @@
   <thead>
     <tr>
       <th><%= t('public_guests.list.fullname') %></th>
-      <% if current_user&.can_manage_competition?(managed_competition) %>
+      <% if current_user&.can_manage_competition? %>
         <th><%= t('public_guests.list.email') %></th>
         <th><%= t('public_guests.list.actions') %></th>
       <% end %>
@@ -40,7 +40,7 @@
     <% @public_guests.each do |public_guest| %>
       <tr>
         <td><%= public_guest.fullname %></td>
-        <% if current_user&.can_manage_competition?(managed_competition) %>
+        <% if current_user&.can_manage_competition? %>
           <td><%= public_guest.email %></td>
           <td>
             <%= link_to t('usual_buttons.edit'), edit_public_guest_path(public_guest) %>

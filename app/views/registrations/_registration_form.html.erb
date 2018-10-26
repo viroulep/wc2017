@@ -26,7 +26,7 @@
                 <%= g.input_field :name, as: :guest %>
               </td>
               <td class="col-xs-2 action-cell">
-                <% if current_user.can_edit_guests?(managed_competition) %>
+                <% if current_user.can_edit_guests? %>
                   <%= link_to_with_tooltip(icon('pencil', class: "text-info"), '#', t('registration.guests.edit'), class: 'edit-link', onclick: raw("startEdit('#{input_id}')"), id: "#{input_id}_s") %>
                   <%= link_to_with_tooltip(icon('remove', class: "text-warning"), '#', t('registration.guests.cancel_edit'), class: 'cancel-link', onclick: "cancelEdit('#{input_id}')", id: "#{input_id}_c") %>
                   <%= link_to_with_tooltip(icon('minus-circle', class: "text-danger"), '#', t('registration.guests.delete'), class: 'delete-link', onclick: "removeGuest($(this))") %>
@@ -44,7 +44,7 @@
               </td>
             </tr>
           <% end %>
-          <% if current_user.can_edit_guests?(managed_competition) %>
+          <% if current_user.can_edit_guests? %>
             <tr id="add-row" class="row">
               <td colspan="2" data-toggle="tooltip" data-trigger="hover" title="<%= t('registration.guests.add') %>">
                 <%= link_to icon('plus', class: "text-success"), '#', class: 'add-link' %>
@@ -127,7 +127,7 @@
               </div>
             </div>
             -->
-            <% if current_user.can_manage_competition?(managed_competition) %>
+            <% if current_user.can_manage_competition? %>
               <hr/>
               <%= d.input :staff %>
               <%= d.input :orga %>
@@ -136,7 +136,7 @@
             <% end %>
           <% end %>
 
-          <% if current_user.can_manage_competition?(managed_competition) %>
+          <% if current_user.can_manage_competition? %>
             <%= render 'shared/associated_events_picker', form_builder: r %>
             <hr/>
             <div class="col-xs-12 form-group">

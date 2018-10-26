@@ -5,7 +5,7 @@
   <% else %>
     <h2>
       <%= t('registration.edit.title', person: @user.name) %> (<%= @user.wca_id %>)
-      <% if current_user.can_manage_competition?(managed_competition) %>
+      <% if current_user.can_manage_competition? %>
         (<%= link_to t('registration.edit.schedule'), registration_schedule_path(@registration)  %>)
       <% end %>
     </h2>
@@ -30,7 +30,7 @@
       </div>
     <% end %>
     <hr/>
-    <% unless current_user.can_edit_guests?(managed_competition) %>
+    <% unless current_user.can_edit_guests? %>
       <p class="help-block"><%= t('registration.edit.help_block') %></p>
     <% end %>
     <%= render "registration_form", registration: @registration %>

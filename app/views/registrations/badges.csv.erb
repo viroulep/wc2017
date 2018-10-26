@@ -3,7 +3,7 @@
 <%= CSV.generate_line(headers).html_safe -%>
 <% @staff.each do |registration| %>
   <%= CSV.generate_line([
-    registration.user.can_manage_competition?(managed_competition) ? "Core Team" : "Staff",
+    registration.user.can_manage_competition? ? "Core Team" : "Staff",
     registration.name,
     Country.find_by_iso2(registration.user.country_iso2)[:name],
     registration.user.wca_id,

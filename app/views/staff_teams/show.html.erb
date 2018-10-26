@@ -35,7 +35,7 @@
     <% @staff_team.registrations.sort_by(&:name).each do |registration| %>
       <tr>
         <td>
-          <% if current_user.can_manage_competition?(managed_competition) %>
+          <% if current_user.can_manage_competition? %>
             <%= link_to registration.name, edit_registration_path(registration) %>
           <% else %>
             <%= registration.name %>
@@ -57,6 +57,6 @@
   <br/>
 <% end %>
 </p>
-<% if current_user.can_manage_competition?(managed_competition) %>
+<% if current_user.can_manage_competition? %>
   <%= link_to 'Edit', edit_staff_team_path(@staff_team) %> |
 <% end %>

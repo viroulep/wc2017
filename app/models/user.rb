@@ -33,8 +33,8 @@ class User < ApplicationRecord
     I18n.transliterate(name)
   end
 
-  def can_edit_guests?(comp)
-    Registration::EDIT_GUESTS || can_manage_competition?(comp)
+  def can_edit_guests?
+    Registration::EDIT_GUESTS || can_manage_competition?
   end
 
   def best_for(event_id, type)
@@ -43,12 +43,12 @@ class User < ApplicationRecord
     @best_for[event_id][type] ||= personal_bests.select { |pb| pb.event_id == event_id && pb.result_type == type }.first
   end
 
-  def can_manage_competition?(comp)
-    comp.admin_ids.split(",").include?(id.to_s)
+  def can_manage_competition?
+    managed_competition.admin_ids.split(",").include?(id.to_s)
   end
 
-  def can_edit_registration?(comp, registration)
-    !registration.nil? && (can_manage_competition?(comp) || id == registration.user_id)
+  def can_edit_registration?(registration)
+    !registration.nil? && (can_manage_competition? || id == registration.user_id)
   end
 
   def has_avatar?
@@ -60,7 +60,7 @@ class User < ApplicationRecord
   end
 
   def staff?
-    registration&.details&.staff || can_manage_competition?(managed_competition)
+    registration&.details&.staff || can_manage_competition?
   end
 
   def self.process_json(json_user)

@@ -8,8 +8,8 @@ class ApplicationController < ActionController::Base
   helper_method :user_signed_in?
   helper_method :correct_user?
 
-  before_action :check_managed_competition
   before_action :set_locale
+  before_action :redirect_unless_setup!
 
   private
     def current_user
@@ -39,8 +39,14 @@ class ApplicationController < ActionController::Base
     end
 
     def redirect_unless_admin!
-      unless current_user&.can_manage_competition?(managed_competition)
+      unless current_user&.can_manage_competition?
         redirect_to root_url, :alert => 'You need to be admin to access this page'
+      end
+    end
+
+    def redirect_unless_setup!
+      unless managed_competition
+        redirect_to competition_setup_url
       end
     end
 
@@ -72,7 +78,7 @@ class ApplicationController < ActionController::Base
     end
 
     def redirect_unless_staff!
-      unless current_user&.can_manage_competition?(managed_competition) || current_user&.registration&.details.staff
+      unless current_user&.can_manage_competition? || current_user&.registration&.details.staff
         flash[:danger] = "You can't access this page"
         redirect_to root_url
       end

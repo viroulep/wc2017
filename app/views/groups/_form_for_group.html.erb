@@ -100,7 +100,7 @@ $(document).ready(function () {
             <tr id="team-<%= "#{stm.object.staff_team_id}" %>">
               <td></td>
               <td>
-                <% if current_user.can_manage_competition?(managed_competition) %>
+                <% if current_user.can_manage_competition? %>
                   [<%= stm.object.staff_team.id %>]
                 <% end %>
                 <%= render "shared/team_name", team: stm.object %>
@@ -131,7 +131,7 @@ $(document).ready(function () {
             <tr id="team-<%= "#{sa.id}" %>">
               <td></td>
               <td>
-                <% if current_user.can_manage_competition?(managed_competition) %>
+                <% if current_user.can_manage_competition? %>
                   [<%= sa.id %>]
                 <% end %>
                 <%= render "shared/team_name", team: sa %>

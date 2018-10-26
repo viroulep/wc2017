@@ -5,7 +5,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">
           Information for <%= @group.name %>
-          <% if current_user&.can_manage_competition?(managed_competition) %>
+          <% if current_user&.can_manage_competition? %>
             <%= link_to icon('pencil'), edit_group_path(@group), class: "btn btn-primary btn-sm" %>
           <% end %>
         </h4>
@@ -26,7 +26,7 @@
                 <% @group.registrations.sort_by(&:name).each do |comp|%>
                   <tr>
                     <td>
-                      <% if current_user&.can_manage_competition?(managed_competition) %>
+                      <% if current_user&.can_manage_competition? %>
                         <%= link_to comp.name, registration_schedule_path(comp) %>
                       <% else %>
                         <%= comp.name %>
@@ -57,7 +57,7 @@
                       <% elsif stg.runner_only? %>
                         [R]
                       <% end %>
-                      <% if current_user&.can_manage_competition?(managed_competition) %>
+                      <% if current_user&.can_manage_competition? %>
                         <%= link_to stg.name, registration_schedule_path(stg) %>
                       <% else %>
                         <%= stg.name %>

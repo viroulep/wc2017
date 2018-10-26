@@ -1,6 +1,6 @@
 module ApplicationHelper
   def managed_competition
-    @managed_competition ||= Competition.find_by_id(app_comp_id)
+    @managed_competition ||= Competition.first
   end
 
   def app_comp_id
