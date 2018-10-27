@@ -1,0 +1,17 @@
+<% provide(:title, "Sign in with a WCA account") %>
+<h1 class="text-center">Sign in with a WCA account</h1>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p class="text-center">
+    To log in this website, you need an account on the <%= link_to "World Cube Association", wca_base_url, target: "_blank" %>.
+    <br/>
+    When clicking "Sign in with WCA", you will be redirected to the WCA website to login, which then will redirect you back here where you will be logged in.
+    </p>
+    <%= simple_form_for :signin, url: signin_with_wca_path, html: { class: "text-center" }, wrapper: :horizontal_form do |f| %>
+      <%= f.button :submit, class: "btn btn-primary", value: t("navigation.signin_with_wca") %>
+      <%= f.input :can_manage, as: :boolean %>
+    <% end %>
+  </div>
+</div>
+

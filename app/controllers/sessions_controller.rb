@@ -1,18 +1,22 @@
 class SessionsController < ApplicationController
-  before_action only: [:anon_staff, :login_anon_staff] do
+  before_action only: [:anon_staff, :login_anon_staff, :new, :signin_with_wca] do
     if current_user
       redirect_to root_url, flash: { success: 'Already in' }
     end
   end
 
   def new
-    # NOTE: we import user data from registrations with admin rights, we don't
-    # actually need these scopes.
-    scopes = "public email dob"
-    if params[:admin]
-      scopes += " manage_competitions"
+  end
+
+  def signin_with_wca
+    scopes = %w(public email dob)
+    can_manage = params.require(:signin).require(:can_manage)
+    if can_manage == "1"
+      scopes << "manage_competitions"
     end
-    redirect_to wca_login_url(scopes)
+    session[:scopes] = scopes
+
+    redirect_to wca_login_url(scopes.join(" "))
   end
 
   def anon_staff

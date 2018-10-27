@@ -70,6 +70,7 @@ class ApplicationController < ActionController::Base
     end
 
     def redirect_unless_can_view_groups!
+      #TODO: use managed_competition.groups_visibility in a current_user.can_see_groups
       unless (ENV['GROUPS_VISIBLE'])
         return redirect_unless_staff!
         flash[:danger] = "Groups are not yet done, or you don't have groups."
