@@ -1,9 +1,13 @@
 class Competition < ApplicationRecord
   include WCAModel
+  # Group visibility permissions, from the strongest (admin) to the weakest (all)
+  GROUPS_VISIBILITIES = %w(admin staff all).freeze
+
   has_many :registrations
 
   validates :name, presence: true
   validates :admin_ids, presence: true, allow_blank: false
+  validates_inclusion_of :groups_visibility, in: GROUPS_VISIBILITIES
 
   # NOTE: we *should* be validating start_date <= end_date,
   # but we fetch data from the WCA and we assume it's alright.

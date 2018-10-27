@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181018194757) do
+ActiveRecord::Schema.define(version: 20181027092739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,10 +18,11 @@ ActiveRecord::Schema.define(version: 20181018194757) do
   create_table "competitions", id: :string, force: :cascade do |t|
     t.string   "name"
     t.string   "admin_ids"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.date     "start_date"
     t.date     "end_date"
+    t.string   "groups_visibility", default: "admin"
   end
 
   create_table "groups", force: :cascade do |t|

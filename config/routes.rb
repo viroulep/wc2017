@@ -66,7 +66,8 @@ Rails.application.routes.draw do
     get '/import_registrations' => 'registrations#import'
     patch '/import_registrations' => 'registrations#import_all'
 
-    get '/competition/show' => 'competitions#show'
+    get '/competition' => 'competitions#show'
+    patch '/competition' => 'competitions#update'
     get '/competition/setup' => 'competitions#setup'
 
     root to: 'visitors#index'

@@ -1,3 +1,13 @@
 <div class="container">
   <h1>Application setup for <%= managed_competition.name %></h1>
+  <p>You can adjust the settings for the competition below:</p>
+  <%= simple_form_for managed_competition, url: competition_path do |f| %>
+    <%= f.input :groups_visibility, collection: Competition::GROUPS_VISIBILITIES %>
+    <%= f.button :submit, class: "btn-primary", value: "Save competition's settings" %>
+  <% end %>
+  <hr/>
+  <%= alert :danger do %>
+    Danger Zone!
+  <% end %>
+  TODO: delete everything
 </div>
