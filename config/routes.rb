@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     get '/competition' => 'competitions#show'
     patch '/competition' => 'competitions#update'
     get '/competition/setup' => 'competitions#setup'
+    patch '/competition/import/:competition_id' => 'competitions#import_competition', :as => :competition_import
 
     root to: 'visitors#index'
 

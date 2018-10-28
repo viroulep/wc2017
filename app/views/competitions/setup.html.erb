@@ -1,0 +1,29 @@
+<% provide(:title, "Setup the competition") %>
+<h1 class="text-center">Setup the competition</h1>
+
+<% unless session[:scopes].include?("manage_competitions") %>
+  <%= alert :danger do %>
+    You didn't authorize this application to manage your competitions when loging in.
+    Please <%= link_to "log out", signout_path %> and log in again ticking the appropriate checkbox on the login form.
+  <% end %>
+<% end %>
+<%= alert :danger, "An error occurred when getting your competition: #{@error}" if @error %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    Your upcoming competitions
+  </div>
+  <div class="panel-body">
+    <% if @my_competitions.empty? %>
+      You don't manage any upcoming competitions.
+    <% else %>
+      <p>Click an upcoming competition to setup this application for it.</p>
+      <p>TODO: importing unvisible competitions doesn't work (and should)!</p>
+      <div class="list-group">
+        <% @my_competitions.each do |c| %>
+          <%= link_to c["name"], competition_import_path(competition_id: c["id"]), method: "patch", class: "list-group-item" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

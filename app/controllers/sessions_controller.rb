@@ -4,6 +4,7 @@ class SessionsController < ApplicationController
       redirect_to root_url, flash: { success: 'Already in' }
     end
   end
+  skip_before_action :redirect_unless_setup!
 
   def new
   end

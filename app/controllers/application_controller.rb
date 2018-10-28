@@ -50,25 +50,6 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    def check_managed_competition
-      unless managed_competition
-        begin
-          competition_response = RestClient.get(wca_api_url("/competitions/#{app_comp_id}"))
-          competition_data = JSON.parse(competition_response.body)
-          admins = competition_data["organizers"] + competition_data["delegates"]
-          obj_attr = {
-            admin_ids: admins.map { |person| person["id"] }.uniq.join(",")
-          }
-          status, competition = Competition.wca_create_or_update(competition_data, obj_attr)
-          unless status
-            return redirect_to(root_url, alert: "Failed to fetch competition info")
-          end
-        rescue RestClient::ExceptionWithResponse => err
-          redirect_to(root_url, alert: "Failed to fetch competition info")
-        end
-      end
-    end
-
     def redirect_unless_can_view_groups!
       #TODO: use managed_competition.groups_visibility in a current_user.can_see_groups
       unless (ENV['GROUPS_VISIBLE'])

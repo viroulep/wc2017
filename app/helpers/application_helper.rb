@@ -3,10 +3,6 @@ module ApplicationHelper
     @managed_competition ||= Competition.first
   end
 
-  def app_comp_id
-    ENV['WCA_COMP_ID']
-  end
-
   def wca_base_url
     ENV['WCA_BASE_URL']
   end
@@ -17,6 +13,10 @@ module ApplicationHelper
 
   def wca_api_url(resource)
     "#{wca_base_url}/api/v0#{resource}"
+  end
+
+  def wca_api_competitions_url(competition_id="")
+    wca_api_url("/competitions/#{competition_id}")
   end
 
   def wca_client_id

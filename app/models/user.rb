@@ -44,7 +44,7 @@ class User < ApplicationRecord
   end
 
   def can_manage_competition?
-    managed_competition.admin_ids.split(",").include?(id.to_s)
+    managed_competition ?  managed_competition.admin_ids.split(",").include?(id.to_s) : false
   end
 
   def can_edit_registration?(registration)
