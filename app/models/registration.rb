@@ -204,4 +204,83 @@ class Registration < ApplicationRecord
   def self.with_event(event_id, *relations)
     filter_collection_for(Registration.accepted, event_id, relations)
   end
+
+  def self.import_registrations(wcif)
+    all_users = []
+    all_registrations = []
+    all_registrations_details = []
+    original_registrations_details = RegistrationDetail.all.group_by(&:registration_id)
+    all_scramble_events = []
+    all_pb = []
+
+    wcif["persons"]&.each do |json_user|
+      json_registration = json_user.delete("registration")
+      personal_bests = json_user.delete("personalBests")
+      json_user = User.process_json(json_user)
+      user = User.wca_new(json_user)
+      if json_registration
+        json_registration["event_ids"] = json_registration.delete("eventIds")&.join(",")
+        unless json_registration["id"]
+          json_registration["id"] = json_registration["wcaRegistrationId"]
+        end
+        unless json_registration["id"]
+          json_registration["id"] = user.id
+        end
+        json_registration["user_id"] = json_user["id"]
+        json_registration["competition_id"] = wcif["id"]
+        attrs = {
+          registration_id: json_registration["id"],
+          staff: json_user["roles"]&.include?("staff"),
+          orga: json_user["roles"]&.include?("organization"),
+        }
+        if json_user["extensions"]
+          attrs[:days_helping] = json_user["extensions"]["days"].join(",")
+          attrs[:warmup] = json_user["extensions"]["events_w"].join(",")
+          attrs[:not_scramble] = json_user["extensions"]["events_n"].join(",")
+        end
+        registration_details = original_registrations_details[attrs[:registration_id]]&.first || RegistrationDetail.new
+        registration_details.assign_attributes(attrs)
+        all_registrations_details << registration_details
+        if attrs[:staff]
+          json_user["extensions"]["events_s"].each do |eventId|
+            se_attr = {
+              registration_id: json_registration["id"],
+              event_id: eventId,
+            }
+            all_scramble_events << ScrambleEvent.new(se_attr)
+          end
+        end
+
+        json_registration.delete("guests")
+        all_registrations << Registration.wca_new(json_registration)
+      end
+      personal_bests&.each do |json_pb|
+        user.personal_bests.build(PersonalBest.attrs_from_json(json_pb))
+      end
+      all_users << user
+    end
+    if all_users.any?
+      # Checking everything all the time is long, let's just clear the table...
+      User.delete_all
+      Registration.delete_all
+      RegistrationDetail.delete_all
+      PersonalBest.delete_all
+      if all_scramble_events.any?
+        # we're importing a wcif with extensions
+        ScrambleEvent.delete_all
+      end
+      ActiveRecord::Base.logger.silence do
+        User.import(all_users, recursive: true)
+        Registration.import(all_registrations)
+        RegistrationDetail.import(all_registrations_details)
+        ScrambleEvent.import(all_scramble_events)
+      end
+
+      Registration.where("comments ILIKE :search", search: "%staff%").each do |r|
+        r.details.staff = true
+        r.details.save!(validate: false)
+      end
+    end
+    all_registrations.size
+  end
 end

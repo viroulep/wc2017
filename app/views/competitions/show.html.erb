@@ -6,6 +6,28 @@
     <%= f.button :submit, class: "btn-primary", value: "Save competition's settings" %>
   <% end %>
   <hr/>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Import data
+    </div>
+    <div class="panel-body">
+      <p>Data can be (re)-imported from a WCIF.</p>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 text-center">
+          <%= image_tag "wca_logo.svg", width: "140px" %>
+          <%= link_to "Import from the WCA", import_wcif_path(source: "wca"), method: "patch", class: "btn btn-primary" %>
+        </div>
+        <div class="col-xs-12 col-md-6 text-center">
+          <%= simple_form_for :wcif, url: import_wcif_path(source: 'url'), method: :patch do |f| %>
+            <%= icon("link", style: "font-size: 100px") %><br/>
+            <%= f.input :url, label: false %>
+            <%= f.submit class: "btn btn-primary", value: "Import from an URL" %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr/>
   <div class="panel panel-danger">
     <div class="panel-heading">
       <%= link_to "Danger Zone!", "https://www.youtube.com/watch?v=kUsFWO08CO0", target: "_blank", class: "text-danger" %>

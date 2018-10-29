@@ -63,14 +63,12 @@ Rails.application.routes.draw do
     get '/my_registration' => 'registrations#edit'
     get '/my_schedule' => 'registrations#schedule'
 
-    get '/import_registrations' => 'registrations#import'
-    patch '/import_registrations' => 'registrations#import_all'
-
     get '/competition' => 'competitions#show'
     patch '/competition' => 'competitions#update'
     get '/competition/setup' => 'competitions#setup'
     patch '/competition/import/:competition_id' => 'competitions#import_competition', :as => :competition_import
     post '/competition/reset' => 'competitions#reset'
+    patch '/competition/import_wcif' => 'competitions#import_wcif', :as => :import_wcif
 
     root to: 'visitors#index'
 

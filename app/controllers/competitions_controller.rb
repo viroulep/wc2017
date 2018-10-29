@@ -47,6 +47,41 @@ class CompetitionsController < ApplicationController
     end
   end
 
+  def import_wcif
+    source = params.require(:source)
+    wcif_string_content = ""
+    case source
+    when "wca"
+      begin
+        registrations_response = RestClient.get(wca_api_url("/competitions/#{managed_competition.id}/wcif"), { Authorization: "Bearer #{session[:access_token]}"})
+        wcif_string_content = registrations_response.body
+      rescue RestClient::ExceptionWithResponse => err
+        return redirect_to(registrations_url, alert: "Failed to fetch WCA data: #{err.message}")
+      end
+    when "url"
+      # We're loading remote content. It's extremely dangerous, but hopefully only rightful people have access to this
+      remote_url = params.require(:wcif).require(:url)
+      begin
+        wcif_response = RestClient.get(remote_url)
+        wcif_string_content = wcif_response.body
+      rescue RestClient::ExceptionWithResponse => err
+        return redirect_to(registrations_url, alert: "Failed to fetch url data: #{err.message}")
+      end
+    else
+      raise ArgumentError.new("Only 'wca' and 'file' are supported.")
+    end
+    wcif = JSON.parse(wcif_string_content)
+
+    unless managed_competition.id == wcif["id"]
+      return redirect_to(competition_url, flash: { danger: "WCIF is for the wrong competition!" })
+    end
+
+    Competition.import_schedule(wcif)
+    registrations_size = Registration.import_registrations(wcif)
+
+    redirect_to(registrations_url, flash: { success: "Imported #{registrations_size} registrations and users successfully!" })
+  end
+
   def reset
     confirmation = params.require(:delete_all).permit(:confirm)
     if confirmation[:confirm] == managed_competition.id

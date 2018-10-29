@@ -83,22 +83,4 @@ module ApplicationHelper
     html_options[:class] += " flag-icon flag-icon-#{iso2.downcase}"
     content_tag :span, "", html_options
   end
-
-  def convert_to_zone_and_strip(datetime_string, tz_string)
-    # Fullcalendar will use ambiguously zoned time (ie: will strip the timezone),
-    # so we need to store all the datetime in the same timezone
-    # (chosen arbitrarily to be UTC).
-    # Any external datetime is properly formatted with a timezone (we're the bad guys here),
-    # so we need to first convert the datetime to its timezone,
-    # then "replace" the zone with UTC without changing the time
-
-    # This turns:
-    # Sat, 08 Sep 2018 07:55:00 UTC +00:00
-    # into
-    # Sat, 08 Sep 2018 09:55:00 CEST +02:00
-    itz = DateTime.parse(datetime_string).in_time_zone(tz_string)
-    # This turns itz into
-    # 2018-09-08 09:55:00 UTC
-    ActiveSupport::TimeZone.new("UTC").local_to_utc(itz)
-  end
 end
