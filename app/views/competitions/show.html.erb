@@ -6,8 +6,15 @@
     <%= f.button :submit, class: "btn-primary", value: "Save competition's settings" %>
   <% end %>
   <hr/>
-  <%= alert :danger do %>
-    Danger Zone!
-  <% end %>
-  TODO: delete everything
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      <%= link_to "Danger Zone!", "https://www.youtube.com/watch?v=kUsFWO08CO0", target: "_blank", class: "text-danger" %>
+    </div>
+    <div class="panel-body">
+      <%= simple_form_for :delete_all, url: competition_reset_path do |f| %>
+        <%= f.button :submit, class: "delete-btn", value: "Delete everything" %>
+        <%= f.input :confirm, as: :string, label: "Confirm with the competition's id:", hint: "There is no turning back", input_html: { autocomplete: "off" } %>
+      <% end %>
+    </div>
+  </div>
 </div>

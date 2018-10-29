@@ -31,7 +31,7 @@ class CompetitionsController < ApplicationController
   def import_competition
     competition_id = params.require(:competition_id)
     begin
-      competition_response = RestClient.get(wca_api_competitions_url(competition_id))
+      competition_response = RestClient.get(wca_api_competitions_url(competition_id), { Authorization: "Bearer #{session[:access_token]}" })
       competition_data = JSON.parse(competition_response.body)
       admins = competition_data["organizers"] + competition_data["delegates"]
       obj_attr = {
@@ -44,6 +44,18 @@ class CompetitionsController < ApplicationController
       redirect_to competition_url
     rescue RestClient::ExceptionWithResponse => err
       redirect_to(competition_setup_url, alert: "Failed to fetch competition info")
+    end
+  end
+
+  def reset
+    confirmation = params.require(:delete_all).permit(:confirm)
+    if confirmation[:confirm] == managed_competition.id
+      Competition::MODEL_USED.each do |m|
+        m.delete_all
+      end
+      redirect_to competition_setup_url
+    else
+      redirect_to competition_url, flash: { danger: "Confirmation doesn't match the competition's id!" }
     end
   end
 

@@ -70,6 +70,7 @@ Rails.application.routes.draw do
     patch '/competition' => 'competitions#update'
     get '/competition/setup' => 'competitions#setup'
     patch '/competition/import/:competition_id' => 'competitions#import_competition', :as => :competition_import
+    post '/competition/reset' => 'competitions#reset'
 
     root to: 'visitors#index'
 

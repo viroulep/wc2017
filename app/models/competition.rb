@@ -2,6 +2,15 @@ class Competition < ApplicationRecord
   include WCAModel
   # Group visibility permissions, from the strongest (admin) to the weakest (all)
   GROUPS_VISIBILITIES = %w(admin staff all).freeze
+  # List of models to clear up.
+  # 'User' is intentionally left there.
+  # FIXME: there must be a better way...
+  MODEL_USED = [
+    Competition, Group, Guest, PersonRoundColor, PersonalBest,
+    PublicGuest, RegistrationDetail, RegistrationGroup, Registration,
+    Round, ScheduleEvent, ScrambleEvent, StaffRegistrationsGroup,
+    StaffTeam, StaffTeamMember, StaffTeamsGroup
+  ].freeze
 
   has_many :registrations
 

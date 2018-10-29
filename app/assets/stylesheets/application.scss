@@ -76,6 +76,11 @@
   }
 }
 
+.delete-btn {
+  @extend .btn, .btn-danger;
+  margin-bottom: 15px;
+}
+
 $blue: #2e81f8;
 $orange: #ff9307;
 $green: #46c81c;
