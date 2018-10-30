@@ -13,7 +13,7 @@ var postEventData = function(event, delta, revertFunc) {
     type: 'PATCH',
   })
   .fail(function(jqXHR, text) {
-    alert(`Failed to update the event, reverting (${jqXHR.responseText})`);
+    alert("Failed to update the event, reverting (" + jqXHR.responseText + ")");
     revertFunc();
   });
 };
