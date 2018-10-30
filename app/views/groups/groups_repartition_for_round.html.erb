@@ -7,15 +7,33 @@
   <p>
   Sort by : <%= link_to "Name", "#", id: "sort_name_link", class: "icon-after alpha_asc" %>, <%= link_to "Psychsheet", "#", id: "sort_pb_link", class: "icon-after num_desc" %>
   </p>
+  <p>
+  Each group has two actions to add groups of competitors to them:
+  </p>
+  <ul>
+    <li><%= icon("toggle-up") %>: add the top N people to the group</li>
+    <li><%= icon("toggle-down") %>: add the bottom N people to the group</li>
+  </ul>
+  <p class="form-inline">
+  Where N is <%= number_field_tag("N", 20, min: 1, class: "form-control", id: "batch-size") %>.
+  </p>
+  <p class="form-inline">
+  Complementarily, you can <%= link_to("automatically fill", "#", onclick: "alert('todo')") %> the groups up to
+  <%= number_field_tag("N", 20, min: 1, class: "form-control", id: "group-size") %>
+  competitors.
+  <br/>
+  The groups will be filled from last to first, taking the top of the unassigned competitors list, as it is currently sorted.
+  </p>
   <% if @round.r_id != 1 %>
     <%= alert(:info, "This is not the first round of an event, you won't be able to add competitors there", note: false) %>
   <% end %>
   <div class="row">
     <div class="col-xs-6 col-md-3">
-      <div class="panel panel-default">
+      <div id="group-0" class="panel panel-default">
         <div class="panel-heading">
           <h3 class="panel-title">
             Competitors without groups
+            <span class="badge"><%= @all_without_group.size %></span>
           </h3>
         </div>
         <div id="without-group" class="list-people list-group" data-group="0">
@@ -58,10 +76,10 @@ drake.on('remove', function(el, container, source) {
       $prev.append($el);
     };
     cancelled = !removeGroupForRegistration($el.data("registration"), revert);
-    recomputeSizeForGroups([$prev]);
   }
   if (!cancelled) {
     $("#without-group").append($el);
+    recomputeSizeForGroups([$prev, $("#without-group")]);
   }
 }).on('drop', function(el, target, source, sibling) {
   let $el = $(el);
@@ -77,11 +95,10 @@ drake.on('remove', function(el, container, source) {
     return;
   } else if (to == "0") {
     removeGroupForRegistration(registration_id, revert);
-    recomputeSizeForGroups([$source]);
   } else {
     moveTo(to, [registration_id], revert);
-    recomputeSizeForGroups([$target, $source]);
   }
+  recomputeSizeForGroups([$target, $source]);
 })
 
 sortGroupsBy = function(attr, asc = true) {
@@ -109,5 +126,32 @@ $("#sort_pb_link").click(function(ev) {
 
   sortGroupsBy("pb", asc);
 });
+
+let selectAndMove = function(ev, side, $group) {
+  let groupId = $group.data("group");
+  ev.preventDefault();
+  ev.stopPropagation();
+  let $elems = selectNComps(side);
+  let ids = $elems.map((_, el) => $(el).data("registration")).get();
+  if (ids.length == 0)
+    return;
+  if (moveTo(groupId, ids, function() {})) {
+    $elems.detach().appendTo($group);
+    recomputeSizeForGroups([$group, $("#without-group")]);
+  }
+}
+
+// Activate onclick for add top/bottom competitors
+$(".panel-dg").each(function(index, el) {
+  let $pan = $(el);
+  let $group = $pan.find(".list-people");
+  $pan.find(".add-top").click(function(ev) {
+    selectAndMove(ev, "top", $group);
+  });
+  $pan.find(".add-bottom").click(function(ev) {
+    selectAndMove(ev, "bottom", $group);
+  });
+});
+
   </script>
 <% end %>

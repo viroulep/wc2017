@@ -233,7 +233,7 @@ class GroupsController < ApplicationController
     # NOTE: to_i is defined for nil
     group_id = (groups_for_round & [params[:group_id].to_i]).first
     @group = Group.find(group_id)
-    registration_ids = params[:registration_ids]&.split("-") || []
+    registration_ids = params[:registration_ids]&.split(",") || []
     # Destroy existing groups for these registrations
     RegistrationGroup.where(group_id: groups_for_round, registration_id: registration_ids).destroy_all
     # Rebuild with the correct group, for actually existing ids

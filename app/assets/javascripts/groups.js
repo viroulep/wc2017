@@ -113,7 +113,12 @@ function ajaxAction(url, revertFunc) {
 function recomputeSizeForGroups(elems) {
   $.each(elems, function(index, $el) {
     let $panel = $(`#group-${$el.data("group")}`)
-    console.log($panel);
     $panel.find(".badge").text($el.children().length);
   });
+}
+
+function selectNComps(side) {
+  let $competitors = $("#without-group > .list-group-item");
+  let N = $("#batch-size").val() || 0;
+  return (side == "top") ? $competitors.slice(0, N) : $competitors.slice(-N);
 }

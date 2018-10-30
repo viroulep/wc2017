@@ -10,8 +10,8 @@
         <%= group.name %>
         <span class="badge"><%= group.registration_groups.size %></span>
         <%# link_to icon('pencil'), edit_group_path(group.id) if group.id %>
-        <%= link_to "+top", top_low_groups_path(group.id, "top") if group.id %>
-        <%= link_to "+low", top_low_groups_path(group.id, "low") if group.id %>
+        <%= link_to(icon("toggle-up"), "#", class: "add-top") %>
+        <%= link_to(icon("toggle-down"), "#", class: "add-bottom") %>
         <span class="collapse-indicator"></span>
       </h3>
       TODO: filter
