@@ -2,10 +2,11 @@
 <% registrations.each do |r| %>
   <div class="list-group-item"
        data-registration="<%= r.id %>"
-       data-name="<%= r.name %>"
-       data-pb="<%= r.any_best_for_as_int(event_id) || "undefined" %>"
+       data-name="<%= I18n.transliterate(r.name) %>"
+       data-pb="<%= r.any_best_for(event_id) %>"
   >
     <%= r.name %>
+    <%# FIXME: proper hint about events and staff %>
     <% unless (r.events & ["333mbf"]).empty? %>
       M
     <% end %>

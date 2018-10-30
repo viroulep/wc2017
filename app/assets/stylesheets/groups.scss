@@ -7,6 +7,32 @@
   margin: 10px 0 10px 0;
 }
 
+.icon-after::after {
+  margin-left: 5px;
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  font-family: FontAwesome;
+  -webkit-font-smoothing: antialiased;
+}
+
+.alpha_desc::after {
+  content: "\f15e";
+}
+
+.alpha_asc::after {
+  content: "\f15d";
+}
+
+.num_desc::after {
+  content: "\f163";
+}
+
+.num_asc::after {
+  content: "\f162";
+}
+
 .row-all-existing-groups {
   /* Fix for group cell behavior */
   /* Each row-all-existing-groups has two elements: */
@@ -29,6 +55,11 @@
 
 .list-people {
   min-height: 50px;
+  .list-group-item {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }
 
 .row-all-groups {

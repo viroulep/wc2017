@@ -7,7 +7,7 @@
           [<%= array_to_s(staff_teams_ids) %>]
         <% end %>
         <%= group.name %>
-        <span class="badge"><%= group.registration_groups.size %></span>
+        <!-- <span class="badge"><%= group.registration_groups.size %></span> -->
         <%= link_to icon('pencil'), edit_group_path(group.id) if group.id %>
         <%= link_to icon('trash'), group_path(group.id), id: "delete-group-#{group.id}", method: "delete" if group.id %>
         <%= link_to "+top", top_low_groups_path(group.id, "top") if group.id %>
