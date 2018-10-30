@@ -71,3 +71,49 @@ function moveSelectedTo(tableElem, inputElem) {
     elem.find('.hidden-group-input').val(newGroup);
   });
 }
+
+function sortCollectionBy($collection, attr, asc = true) {
+  $collection.sort(function (lhs, rhs) {
+    let pbLhs = $(lhs).data(attr);
+    let pbRhs = $(rhs).data(attr);
+    let ret;
+    if (!pbLhs && !pbRhs)
+      ret = 0;
+    else if (!pbRhs)
+      ret = -1;
+    else if (!pbLhs)
+      ret = 1;
+    else {
+      if (pbLhs < pbRhs)
+        ret = -1;
+      else if (pbLhs > pbRhs)
+        ret = 1;
+      else
+        ret = 0;
+    }
+    if (!asc)
+      ret = -ret;
+    return ret;
+  });
+  return $collection;
+}
+
+function ajaxAction(url, revertFunc) {
+  $.ajax({
+    url: url,
+    type: 'PATCH',
+  }).fail(function () {
+    alert("Failed to execute action :(");
+    revertFunc();
+    return false;
+  });
+  return true;
+}
+
+function recomputeSizeForGroups(elems) {
+  $.each(elems, function(index, $el) {
+    let $panel = $(`#group-${$el.data("group")}`)
+    console.log($panel);
+    $panel.find(".badge").text($el.children().length);
+  });
+}

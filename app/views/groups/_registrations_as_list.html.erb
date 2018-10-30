@@ -2,7 +2,7 @@
 <% registrations.each do |r| %>
   <div class="list-group-item"
        data-registration="<%= r.id %>"
-       data-name="<%= I18n.transliterate(r.name) %>"
+       data-name="<%= r.transliterated_name %>"
        data-pb="<%= r.any_best_for(event_id) %>"
   >
     <%= r.name %>

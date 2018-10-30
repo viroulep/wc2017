@@ -347,7 +347,7 @@ class GroupsController < ApplicationController
                     else
                       Registration.includes(:registration_detail, :staff_teams, user: [:personal_bests]).with_event_without_group_for(@round, :user)
                     end
-    @all_without_group = registrations
+    @all_without_group = registrations.sort_by(&:transliterated_name)
 
     registrations, registrations_staff = registrations.partition { |r| !r.details.staff }
 
