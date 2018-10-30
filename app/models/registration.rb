@@ -52,6 +52,10 @@ class Registration < ApplicationRecord
 
   @@obj_info = %w(id user_id competition_id comments status event_ids)
 
+  def any_best_for_as_int(event_id)
+    (best_for(event_id, "average") || best_for(event_id, "single"))&.best
+  end
+
   def accepted?
     status == 'accepted'
   end

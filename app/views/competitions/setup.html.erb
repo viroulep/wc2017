@@ -17,7 +17,6 @@
       You don't manage any upcoming competitions.
     <% else %>
       <p>Click an upcoming competition to setup this application for it.</p>
-      <p>TODO: importing unvisible competitions doesn't work (and should)!</p>
       <div class="list-group">
         <% @my_competitions.each do |c| %>
           <%= link_to c["name"], competition_import_path(competition_id: c["id"]), method: "patch", class: "list-group-item" %>

@@ -1,5 +1,10 @@
+<% event_id ||= "magic" %>
 <% registrations.each do |r| %>
-  <div class="list-group-item" data-registration="<%= r.id %>">
+  <div class="list-group-item"
+       data-registration="<%= r.id %>"
+       data-name="<%= r.name %>"
+       data-pb="<%= r.any_best_for_as_int(event_id) || "undefined" %>"
+  >
     <%= r.name %>
     <% unless (r.events & ["333mbf"]).empty? %>
       M

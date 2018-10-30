@@ -4,6 +4,9 @@
   <a href="#" onclick="$('.collapse').collapse('show');">Expand all</a>
   | <a href="#" onclick="$('.collapse').collapse('hide');">Collapse all</a>
   </p>
+  <p>
+  Sort by : <%= link_to "Name", "#", onclick: "sortByPB()" %>
+  </p>
   <% if @round.r_id != 1 %>
     <%= alert(:info, "This is not the first round of an event, you won't be able to add competitors there", note: false) %>
   <% end %>
@@ -16,7 +19,7 @@
           </h3>
         </div>
         <div id="without-group" class="list-people list-group" data-group="0">
-          <%= render "registrations_as_list", registrations: @all_without_group %>
+          <%= render "registrations_as_list", registrations: @all_without_group, event_id: @round.event_id %>
         </div>
       </div>
     </div>
@@ -84,5 +87,29 @@ drake.on('remove', function(el, container, source) {
     });
   }
 })
+// TODO: sort by X
+sortByPB = function () {
+  $(".list-people").each(function (index, element) {
+    let titi = $(this).children().sort(function (lhs, rhs) {
+      let = pbLhs = $(lhs).data("pb");
+      let = pbRhs = $(rhs).data("pb");
+      if (pbLhs === undefined && pbRhs === undefined)
+        return 0;
+      else if (pbLhs === undefined)
+        return 1;
+      else if (pbRhs === undefined)
+        return -1;
+      else {
+        if (pbLhs < pbRhs)
+          return -1;
+        else if (pbLhs > pbRhs)
+          return 1;
+        else
+          return 0;
+      }
+    }).detach().appendTo($(this));
+    console.log(titi);
+  });
+}
   </script>
 <% end %>

@@ -334,7 +334,7 @@ class GroupsController < ApplicationController
   end
 
   def set_groups!
-    @groups = Group.for_round(@round.id).includes(registration_groups: { registration: [:user, :staff_teams] }, staff_teams: []).order(:id)
+    @groups = Group.for_round(@round.id).includes(registration_groups: { registration: { user: [:personal_bests], staff_teams: [] } }, staff_teams: []).order(:id)
   end
 
   def set_groups_ungrouped!
@@ -343,9 +343,9 @@ class GroupsController < ApplicationController
                       # Can't now who is qualified... Groups for non-first rounds are here for schedule!
                       []
                     elsif @event.id == "333fm" || @event.id == "333mbf"
-                      Registration.includes(:registration_detail, :staff_teams).with_event(@event.id)
+                      Registration.includes(:registration_detail, :staff_teams, user: [:personal_bests]).with_event(@event.id)
                     else
-                      Registration.includes(:registration_detail, :staff_teams).with_event_without_group_for(@round, :user)
+                      Registration.includes(:registration_detail, :staff_teams, user: [:personal_bests]).with_event_without_group_for(@round, :user)
                     end
     @all_without_group = registrations
 
