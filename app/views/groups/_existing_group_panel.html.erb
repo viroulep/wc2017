@@ -14,9 +14,12 @@
         <%= link_to(icon("toggle-down"), "#", class: "add-bottom") %>
         <span class="collapse-indicator"></span>
       </h3>
-      TODO: filter
     </div>
     <div id="collapse-<%= group.id %>" class="panel-groups collapse in list-group">
+      <div class="search">
+        <input class="form-control" type="text" placeholder="Filter people">
+        <span class="glyphicon glyphicon-remove-circle"></span>
+      </div>
       <div class="list-people" data-group="<%= group.id %>">
         <%= render "registrations_as_list", registrations: group.registration_groups.map(&:registration).sort_by(&:transliterated_name), event_id: group.event_id %>
       </div>

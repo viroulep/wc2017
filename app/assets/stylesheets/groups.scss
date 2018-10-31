@@ -61,14 +61,39 @@
   .badge {
     margin-bottom: 3px;
   }
+  .search {
+    position: relative;
+    .glyphicon-remove-circle {
+      position: absolute;
+      right: 5px;
+      top: 7px;
+      height: 20px;
+      margin: 0px;
+      font-size: 20px;
+      cursor: pointer;
+      color: #AAA;
+      &:hover {
+        color: #888;
+      }
+    }
+  }
+  .list-people {
+    min-height: 50px;
+  }
 }
 
-.list-people {
-  min-height: 50px;
-  .list-group-item {
-    &:hover {
-      cursor: pointer;
-    }
+// Leave this out for drag and drop
+.list-group-item.registration-item {
+  &:hover {
+    cursor: pointer;
+  }
+  display: flex;
+  justify-content: space-between;
+  .name {
+    display: inline-block;
+  }
+  .events {
+    display: inline-block;
   }
 }
 
@@ -101,7 +126,7 @@
 
   th {
     .form-control {
-    border: 0px;
+      border: 0px;
     }
     .glyphicon-remove-circle {
       position: absolute;

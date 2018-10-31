@@ -1,18 +1,17 @@
 <% event_id ||= "magic" %>
 <% registrations.each do |r| %>
-  <div class="list-group-item"
+  <div class="list-group-item registration-item"
        data-registration="<%= r.id %>"
        data-name="<%= r.transliterated_name %>"
        data-pb="<%= r.any_best_for(event_id) %>"
   >
-    <%= r.name %>
+    <div class="name">
+      <%= r.name %>
+      <%= array_to_s(r.staff_teams.map(&:team_id)) %>
+    </div>
     <%# FIXME: proper hint about events and staff %>
-    <% unless (r.events & ["333mbf"]).empty? %>
-      M
-    <% end %>
-    <% unless (r.events & ["444bf", "555bf"]).empty? %>
-      BBF
-    <% end %>
-    <%= array_to_s(r.staff_teams.map(&:team_id)) %>
+    <div class="events">
+      <%= render "shared/event_id_collection", event_ids: r.events & ["444bf", "555bf", "333mbf"] %>
+    </div>
   </div>
 <% end %>
