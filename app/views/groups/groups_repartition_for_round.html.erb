@@ -18,7 +18,7 @@
   Where N is <%= number_field_tag("N", 20, min: 1, class: "form-control", id: "batch-size") %>.
   </p>
   <p class="form-inline">
-  Complementarily, you can <%= link_to("automatically fill", "#", onclick: "alert('todo')") %> the groups up to
+  Complementarily, you can <%= link_to("automatically fill", "#", onclick: "autoFill()") %> the groups up to
   <%= number_field_tag("N", 20, min: 1, class: "form-control", id: "group-size") %>
   competitors.
   <br/>
@@ -139,6 +139,30 @@ let selectAndMove = function(ev, side, $group) {
     $elems.detach().appendTo($group);
     recomputeSizeForGroups([$group, $("#without-group")]);
   }
+}
+
+let autoFill = function() {
+  let groupSize = $("#group-size").val();
+  let availableCompetitors = $("#group-0");
+  let allGroups = $($(".list-people").get().reverse());
+  allGroups.each(function(index, group) {
+    let $group = $(group);
+    let groupId = $group.data("group");
+    if (groupId == "0")
+      return;
+    let competitorsInGroup = $group.find(".list-group-item").length;
+    let missing = groupSize - competitorsInGroup;
+    if (missing <= 0)
+      return;
+    let $selected = selectNComps("top", missing);
+    if ($selected.length <= 0)
+      return;
+    let ids = $selected.map((_, el) => $(el).data("registration")).get();
+    if (moveTo(groupId, ids, function() {})) {
+      $selected.detach().appendTo($group);
+    }
+  });
+  recomputeSizeForGroups(allGroups.map((_, el) => $(el)));
 }
 
 // Activate onclick for add top/bottom competitors

@@ -117,8 +117,9 @@ function recomputeSizeForGroups(elems) {
   });
 }
 
-function selectNComps(side) {
+function selectNComps(side, N = undefined) {
   let $competitors = $("#without-group > .list-group-item");
-  let N = $("#batch-size").val() || 0;
+  if (!N)
+    N = $("#batch-size").val() || 0;
   return (side == "top") ? $competitors.slice(0, N) : $competitors.slice(-N);
 }
