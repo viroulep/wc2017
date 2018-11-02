@@ -29,15 +29,21 @@
   <% end %>
   <div class="row">
     <div class="col-xs-6 col-md-3">
-      <div id="group-0" class="panel panel-default">
+      <div id="group-0" class="panel panel-default panel-dg">
         <div class="panel-heading">
           <h3 class="panel-title">
             Competitors without groups
             <span class="badge"><%= @all_without_group.size %></span>
           </h3>
         </div>
-        <div id="without-group" class="list-people list-group" data-group="0">
-          <%= render "registrations_as_list", registrations: @all_without_group, event_id: @round.event_id %>
+        <div class="panel-groups list-group">
+          <div class="search">
+            <input class="form-control" type="text" placeholder="Filter people">
+            <span class="glyphicon glyphicon-remove-circle"></span>
+          </div>
+          <div id="without-group" class="list-people" data-group="0">
+            <%= render "registrations_as_list", registrations: @all_without_group, event_id: @round.event_id %>
+          </div>
         </div>
       </div>
     </div>
@@ -175,6 +181,14 @@ $(".panel-dg").each(function(index, el) {
   $pan.find(".add-bottom").click(function(ev) {
     selectAndMove(ev, "bottom", $group);
   });
+});
+
+$(".panel-groups").each((index, el) => {
+  let $pan = $(el);
+  // The clear search icon
+  $pan.find(".search > .glyphicon-remove-circle").click(clearSearch);
+  // The clear search icon
+  $pan.find(".search > input").change(filterRegistrations);
 });
 
   </script>

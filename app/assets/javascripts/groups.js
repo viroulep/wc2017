@@ -123,3 +123,25 @@ function selectNComps(side, N = undefined) {
     N = $("#batch-size").val() || 0;
   return (side == "top") ? $competitors.slice(0, N) : $competitors.slice(-N);
 }
+
+function filterRegistrations(ev) {
+  // search input
+  let $input = $(ev.target);
+  let $searchString = $input.val();
+  // Parent panel
+  let $pan = $input.parent().parent();
+  let $registrations = $pan.find(".registration-item");
+  if ($searchString.length == 0)
+    return $registrations.toggleClass("hidden", false);
+  $registrations.each(function() {
+    let $el = $(this);
+    let matches = $el.find(".name").text().includes($searchString);
+    $el.toggleClass("hidden", !matches);
+  });
+}
+
+function clearSearch(ev) {
+  let $input = $(ev.target).parent().find("input");
+  $input.val("");
+  $input.trigger("change");
+}
