@@ -24,6 +24,16 @@
   <br/>
   The groups will be filled from last to first, taking the top of the unassigned competitors list, as it is currently sorted.
   </p>
+
+  <% if ["333mbf", "333fm"].include?(@round.event_id) %>
+    <%= alert(:warning) do %>
+      It looks like you are editing groups for FM or MBF, due to the attempt-based
+      nature of the event this group editor won't quite work (because unlike
+      other events, all competitors will need to be in all "groups").
+      <br/>
+      You can click <%= link_to "here", fm_mbf_special_fill_path(@round), method: "patch" %> to fill all the groups automatically.
+    <% end %>
+  <% end %>
   <% if @round.r_id != 1 %>
     <%= alert(:info, "This is not the first round of an event, you won't be able to add competitors there", note: false) %>
   <% end %>

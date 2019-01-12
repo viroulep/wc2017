@@ -53,6 +53,7 @@ Rails.application.routes.draw do
     patch 'groups/drop_group_from/:round_id(/:registration_ids)' => 'groups#drop_groups_from_round', :as => :drop_group_for_round
     patch 'groups/r/:round_id' => 'groups#update_for_round'
     patch 'groups/create_for_round/:round_id' => 'groups#create_groups_for_round', :as => :create_groups_for_round
+    patch 'groups/add_everyone_to_all/:round_id' => 'groups#add_everyone_to_all_groups', :as => :fm_mbf_special_fill
 
     delete 'registration_groups/:id' => 'groups#destroy_registration_group', :as => :delete_from_group
 

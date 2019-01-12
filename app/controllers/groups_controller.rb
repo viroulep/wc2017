@@ -241,7 +241,7 @@ class GroupsController < ApplicationController
   def groups_repartition_for_round
     @round = Round.find(params[:round_id])
     @event = Event.find(@round.event_id)
-    set_groups_ungrouped!
+    set_groups_ungrouped!(ignore_special: true)
   end
 
   def move_registrations_to_group
@@ -263,6 +263,25 @@ class GroupsController < ApplicationController
       end
     end
     render json: {}, status: :ok
+  end
+
+  def add_everyone_to_all_groups
+    # Special action for FM and 333MBF as they are attempt-based!
+    @round = Round.includes(:groups).find(params[:round_id])
+    unless ["333mbf", "333fm"].include?(@round.event_id)
+      flash[:danger] = "This action is only valid for MBF and FM."
+      return redirect_to groups_for_round_path(@round)
+    end
+    groups_for_round = @round.groups.map(&:id)
+    RegistrationGroup.where(group_id: groups_for_round).destroy_all
+    new_registration_groups = []
+    competitors_registered = Registration.with_event(@round.event_id)
+    @round.groups.each do |g|
+      new_registration_groups << competitors_registered.map { |r| RegistrationGroup.new(group_id: g.id, registration_id: r.id) }
+    end
+    new_registration_groups.flatten!
+    RegistrationGroup.import(new_registration_groups)
+    redirect_to groups_for_round_path(@round)
   end
 
   def drop_groups_from_round
@@ -355,12 +374,12 @@ class GroupsController < ApplicationController
     @groups = Group.for_round(@round.id).includes(registration_groups: { registration: { user: [:personal_bests], staff_teams: [] } }, staff_teams: []).order(:id)
   end
 
-  def set_groups_ungrouped!
+  def set_groups_ungrouped!(ignore_special: false)
     set_groups!
     registrations = if @round.r_id > 1
                       # Can't now who is qualified... Groups for non-first rounds are here for schedule!
                       []
-                    elsif @event.id == "333fm" || @event.id == "333mbf"
+                    elsif !ignore_special && (@event.id == "333fm" || @event.id == "333mbf")
                       Registration.includes(:registration_detail, :staff_teams, user: [:personal_bests]).with_event(@event.id)
                     else
                       Registration.includes(:registration_detail, :staff_teams, user: [:personal_bests]).with_event_without_group_for(@round, :user)
