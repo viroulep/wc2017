@@ -15,11 +15,11 @@
     <li><%= icon("toggle-down") %>: add the bottom N people to the group</li>
   </ul>
   <p class="form-inline">
-  Where N is <%= number_field_tag("N", 20, min: 1, class: "form-control", id: "batch-size") %>.
+  Where N is <%= number_field_tag("N", 20, min: 1, class: "form-control inline-integer", id: "batch-size") %>.
   </p>
   <p class="form-inline">
   Complementarily, you can <%= link_to("automatically fill", "#", onclick: "autoFill()") %> the groups up to
-  <%= number_field_tag("N", 20, min: 1, class: "form-control", id: "group-size") %>
+  <%= number_field_tag("N", 20, min: 1, class: "form-control inline-integer", id: "group-size") %>
   competitors.
   <br/>
   The groups will be filled from last to first, taking the top of the unassigned competitors list, as it is currently sorted.

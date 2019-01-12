@@ -10,6 +10,15 @@
     </p>
     <!--<p><%= link_to "Autogenerate groups (will erase current registration groups!)", generate_groups_path(@round.id), method: "patch" %></p>-->
     <p><%= link_to "Edit #{@round.name} schedule", edit_round_path(@round) %></p>
+
+    <%= simple_form_for :create_groups,
+      url: create_groups_for_round_path(@round.id),
+      method: :patch do |f| %>
+      <p class="form-inline">
+      Want to create <%= number_field_tag("n", 2, min: 1, class: "form-control inline-integer", id: "number-groups") %> groups each lasting <%= number_field_tag("duration", 15, min: 5, class: "form-control inline-integer", id: "duration") %> minutes ?
+      <%= f.submit "Do it!", class: "btn btn-primary" %>
+      </p>
+    <% end %>
     <div class="row row-all-groups">
       <% @groups.sort.each do |g| %>
         <%= render 'group_panel', group_id: g.id, title: g.name, color: g.color, group: g %>

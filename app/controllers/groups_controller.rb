@@ -155,6 +155,24 @@ class GroupsController < ApplicationController
     end
   end
 
+  def create_groups_for_round
+    @round = Round.includes(:groups).find(params[:round_id])
+    number = params.require(:n).to_i
+    duration_in_minutes = params.require(:duration).to_i
+    start_number = (@round.groups.map(&:group_number).max || 0) + 1
+    group_start_time = @round.start
+    group_end_time = group_start_time + duration_in_minutes.minutes
+    group_end_time = @round.end if group_end_time > @round.end
+    number.times do
+      group_name = "#{@round.name} Group #{start_number}"
+      @round.groups.create!(name: group_name, start: group_start_time, end: group_end_time, color: "blue")
+      start_number += 1
+    end
+    flash[:success] = "#{number} group(s) of #{duration_in_minutes} min successfully created!"
+    redirect_to groups_for_round_path(@round)
+  end
+
+
   def destroy
     @group.destroy
     redirect_to groups_for_round_path(@group.round_id)
