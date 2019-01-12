@@ -1,16 +1,7 @@
 <%= render 'nav', active_event: @event.id do %>
   <% if @round %>
-    <p>
-    <%= alert(:info) do %>
-      WIP: you can try the 'drag and drop' group interface <%= link_to("here", groups_repartition_for_round_path(@round)) %>
-    <% end %>
-    <a href="#" id="groups-action-expand">Expand all</a>
-    | <a href="#" id="groups-action-collapse">Collapse all</a>
-    | <%= link_to "Fillup remaining groups", fill_remaining_path(@round) %>
-    </p>
-    <!--<p><%= link_to "Autogenerate groups (will erase current registration groups!)", generate_groups_path(@round.id), method: "patch" %></p>-->
-    <p><%= link_to "Edit #{@round.name} schedule", edit_round_path(@round) %></p>
 
+    <br/>
     <%= simple_form_for :create_groups,
       url: create_groups_for_round_path(@round.id),
       method: :patch do |f| %>
@@ -19,14 +10,8 @@
       <%= f.submit "Do it!", class: "btn btn-primary" %>
       </p>
     <% end %>
-    <div class="row row-all-groups">
-      <% @groups.sort.each do |g| %>
-        <%= render 'group_panel', group_id: g.id, title: g.name, color: g.color, group: g %>
-        <div class="may-clearfix"></div>
-      <% end %>
-      <%= render 'group_panel', title: "No groups", group: @ungrouped %>
-      <%= render 'group_panel', title: "No groups (Staff)", group_id: "nogroup-staff", group: @ungrouped_staff %>
-    </div>
+    <p><%= link_to "Edit #{@round.name}'s start and end time", edit_round_path(@round) %></p>
+    <p><%= link_to "Manage the composition of groups for #{@round.name}", groups_repartition_for_round_path(@round) %></p>
     <div class="row">
       <div id="calendar" class="col-xs-12"></div>
     </div>
