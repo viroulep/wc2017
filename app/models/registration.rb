@@ -232,9 +232,10 @@ class Registration < ApplicationRecord
         end
         json_registration["user_id"] = json_user["id"]
         json_registration["competition_id"] = wcif["id"]
+        registration_details = original_registrations_details[json_registration["id"]]&.first || RegistrationDetail.new
         attrs = {
           registration_id: json_registration["id"],
-          staff: json_user["roles"]&.include?("staff"),
+          staff: json_user["roles"]&.include?("staff") || registration_details.staff,
           orga: json_user["roles"]&.include?("organization"),
         }
         if json_user["extensions"]
@@ -242,10 +243,9 @@ class Registration < ApplicationRecord
           attrs[:warmup] = json_user["extensions"]["events_w"].join(",")
           attrs[:not_scramble] = json_user["extensions"]["events_n"].join(",")
         end
-        registration_details = original_registrations_details[attrs[:registration_id]]&.first || RegistrationDetail.new
         registration_details.assign_attributes(attrs)
         all_registrations_details << registration_details
-        if attrs[:staff]
+        if attrs[:staff] && json_user["extensions"]
           json_user["extensions"]["events_s"].each do |eventId|
             se_attr = {
               registration_id: json_registration["id"],
