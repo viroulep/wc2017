@@ -1,48 +1,64 @@
 <!-- Page Content -->
 <div class="container">
 
-    <hr>
-
-    <!-- Call to Action Well -->
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="well text-center">
-                <%= t('homepage.welcome_html', login_link: link_to(t('homepage.login'), signin_path)) %>
-                <% if params[:with_scopes] %>
-                    <br/>
-                    <%= link_to "With scopes", signin_path(admin: true) %>
-                    <br/>
-                <% end %>
-            </div>
-        </div>
-        <!-- /.col-lg-12 -->
+  <!-- Call to Action Well -->
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="well text-center mt">
+        <%= t('homepage.welcome_html', comp_name: managed_competition.name) %>
+      </div>
     </div>
-    <!-- /.row -->
+    <!-- /.col-lg-12 -->
+  </div>
+  <!-- /.row -->
 
-    <!-- Content Row -->
+  <!-- Content Row -->
+  <div class="row">
+    <% if managed_competition.groups_visible_for_all? %>
+      <div class="col-xs-12">
+        <%= simple_form_for :schedules do |f| %>
+          <%= f.input :competitors, collection: @all_competitors, prompt: :translate, input_html: { id: "competitors_list" } %>
+        <% end %>
+      </div>
+      <div class="col-xs-12">
+        <div id="calendar"></div>
+      </div>
+      <script>
+var personal_schedule_url = "<%= registration_schedule_path(registration_id:0) %>";
+$("#competitors_list").change(function(e) {
+  let registrationId = Number(e.target.value);
+  if (registrationId == 0)
+    return;
+  let $cal = $("#calendar");
+  let eventsUrl = personal_schedule_url.replace("0", e.target.value);
+  if ($cal.hasClass("fc")) {
+    // FC is already initialized
+    $cal.fullCalendar('removeEventSources');
+    $cal.fullCalendar('addEventSource', eventsUrl);
+  } else {
+    let options = {
+      events: eventsUrl,
+    }
+    setupFullCalendarOn("#calendar", '<%= managed_competition.start_date %>', '<%= managed_competition.number_of_days %>', "fullcomp", options, false);
+  }
+});
+      </script>
+    <% else %>
+      <div class="col-xs-12">
+        The groups and personal schedules are not yet available, please come back later.
+      </div>
+    <% end %>
+  </div>
+  <!-- /.row -->
+
+  <!-- Footer -->
+  <footer>
     <div class="row">
-        <div class="col-md-6">
-            <h2><%= t('homepage.how_to.title') %></h2>
-            <p><%= t('homepage.how_to.content') %></p>
-            <h2><%= t('homepage.more_info.title') %></h2>
-            <p><%= t('homepage.more_info.content_html', wca_website: link_to(t('homepage.more_info.wca_website'), 'https://www.worldcubeassociation.org/competitions/France2018/register'), only_cube_website: link_to(t('homepage.more_info.only_cube_website'),'https://onlycube.jimdo.com/championnats-de-france-2018/')) %>
-            <h2><%= t('homepage.contact.title') %></h2>
-            <p><%= t('homepage.contact.content') %> <a href='mailto:onlycube69@gmail.com'>onlycube69@gmail.com</a>.</p>
-        </div>
-        <div class="col-md-6">
-            <%= image_tag('affiche.jpg') %>
-        </div>
+      <div class="col-lg-12">
+        <p></p>
+      </div>
     </div>
-    <!-- /.row -->
-
-    <!-- Footer -->
-    <footer>
-        <div class="row">
-            <div class="col-lg-12">
-                <p></p>
-            </div>
-        </div>
-    </footer>
+  </footer>
 
 </div>
 <!-- /.container -->

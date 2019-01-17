@@ -31,6 +31,10 @@ class Competition < ApplicationRecord
     (end_date - start_date).to_i + 1
   end
 
+  def groups_visible_for_all?
+    groups_visibility == "all"
+  end
+
   def to_wcif
     {
       "formatVersion" => "1.0",

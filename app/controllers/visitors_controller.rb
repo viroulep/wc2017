@@ -1,7 +1,9 @@
 class VisitorsController < ApplicationController
   def index
-    if current_user
-      redirect_to my_registration_path
-    end
+    @all_competitors = if managed_competition.groups_visible_for_all?
+                         Registration.includes(:user).sort_by(&:name)
+                       else
+                         []
+                       end
   end
 end

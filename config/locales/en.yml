@@ -28,7 +28,7 @@ en:
   alerts:
     are_you_sure: "Are you sure?"
   homepage:
-    welcome_html: "Welcome to the French Championship 2018 Registration Manager. Please %{login_link} in order to edit or complete your additional registration data."
+    welcome_html: "Welcome on the schedule application for %{comp_name}."
     login: "login"
     how_to:
       title: "How to use this website?"
@@ -66,6 +66,8 @@ en:
         restaurant_guests: "Number of people coming"
   simple_form:
     labels:
+      schedules:
+        competitors: "Competitors"
       registration_detail:
         tshirt: "Your t-shirt size"
         nb_vg: "Number of vegetarians"
@@ -79,7 +81,10 @@ en:
         fullname: "Fullname"
         email: "Email"
       signin:
-        can_manage: "I authorize this application to manage my competitions. You don't need to check this if you're not one of the administrators."
+        can_manage: "I authorize this application to manage my competitions. You don't need to check this unless you're one of the administrators."
+    prompts:
+      schedules:
+        competitors: "Select a competitor to display their schedule"
   groups:
     move_selection: "Move selection to"
     reset_changes: "Reset changes for selection"

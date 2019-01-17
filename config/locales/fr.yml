@@ -16,9 +16,7 @@ fr:
   homepage:
     #original_hash: ecea03c
     welcome_html: >-
-      Bienvenue sur l'application de gestion des inscriptions du championnat de
-      France 2018. Merci de vous %{login_link} pour éditer ou ajouter des
-      informations à votre inscription.
+      Bienvenue sur l'application de gestion du planning du %{comp_name}
     #original_hash: 2736fab
     login: connecter
     how_to:
@@ -85,6 +83,8 @@ fr:
         restaurant_guests: Nombre de personnes à venir
   simple_form:
     labels:
+      schedules:
+        competitors: "Compétiteurs"
       registration_detail:
         #original_hash: 28739bc
         tshirt: Votre taille de t-shirt
@@ -107,6 +107,9 @@ fr:
         fullname: Nom complet
         #original_hash: 84add5b
         email: Email
+    prompts:
+      schedules:
+        competitors: "Sélectionnez un compétiteur pour afficher son planning"
   groups:
     #original_hash: eec6be7
     move_selection: Déplacer la sélection vers

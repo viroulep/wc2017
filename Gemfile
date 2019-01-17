@@ -18,6 +18,7 @@ gem 'dragula-rails'
 
 group :development, :test do
   gem 'dotenv-rails'
+  gem 'i18n-tasks'
   gem 'byebug'
   gem 'bullet'
   gem 'web-console', '~> 2.0'
