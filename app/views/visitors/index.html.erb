@@ -36,8 +36,10 @@ $("#competitors_list").change(function(e) {
     $cal.fullCalendar('removeEventSources');
     $cal.fullCalendar('addEventSource', eventsUrl);
   } else {
+    let mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     let options = {
       events: eventsUrl,
+      defaultView: mobile ? "listFourDay" : "agendaFourDay",
     }
     setupFullCalendarOn("#calendar", '<%= managed_competition.start_date %>', '<%= managed_competition.number_of_days %>', "fullcomp", options, false);
   }

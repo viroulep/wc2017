@@ -22,7 +22,7 @@ var viewOptions = function(name, numberOfDays) {
   if (name == "fullcomp") {
     var mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     var defaultViewNav = mobile ? "agenda" : "agendaFourDay";
-    var viewAvail = mobile ? "agendaFourDay,agenda" : "listFourDay,agendaFourDay,agenda";
+    var viewAvail = "listFourDay,agendaFourDay,agenda";
     // see: https://fullcalendar.io/docs/views/Custom_Views/
     return {
       views: {
