@@ -4,59 +4,43 @@ pull_latest() {
   git pull
 }
 
-restart_app() {
-  # Attempt to restart unicorn gracefully as per
-  #  http://unicorn.bogomips.org/SIGNALS.html
-  pid=$(<"pids/unicorn.pid")
-  kill -SIGUSR2 $pid
-  sleep 5
-  kill -SIGQUIT $pid
+bootstrap_rails() {
+  gem install bundler -v '1.16.5'
+  gem install pg -v '1.0.0'
+  bundle install --path=vendor/bundle
+  echo "SECRET_KEY_BASE=`bin/rails secret`" >> .env.production
+  bin/rails db:setup
+}
+
+setup_env() {
+  read -p "Please input the WCA_CLIENT_ID for the website: " client_id
+  echo "WCA_CLIENT_ID=$client_id" >> .env.production
+  read -p "Please input the WCA_CLIENT_SECRET for the website: " client_secret
+  echo "WCA_CLIENT_SECRET=$client_secret" >> .env.production
+  echo "Bootstrap done, now please run rebuild_rails"
 }
 
 rebuild_rails() {
-  (
-    bundle install
-    bundle exec rake assets:clean assets:precompile
-  )
-
+  bundle install
+  bundle exec rake assets:clean assets:precompile
   restart_app
 }
 
-cd "$(dirname "$0")"
-. ~/.bash_profile
-source .env.production
-allowed_commands="pull_latest restart_app rebuild_rails"
-
-# From http://stackoverflow.com/a/8064551
-listcontains() {
-  for word in $1; do
-    [[ $word = $2 ]] && return 0
-  done
-  return 1
-}
-
-# Validate command line arguments
-print_usage_and_exit() {
-  echo -n "Usage: $0 "
-  for command in $allowed_commands; do
-    echo -n "[$command] "
-  done
-  echo
-  exit
-}
-if [ $# -lt 1 ]; then
-  print_usage_and_exit
-fi
-for command in "$@"; do
-  if ! listcontains "$allowed_commands" $command; then
-    echo "Unrecognized command: $command"
-    print_usage_and_exit
+restart_app() {
+  if ps -efw | grep "unicorn master" | grep -v grep; then
+    # Found a unicorn master process, restart it gracefully as per
+    #  http://unicorn.bogomips.org/SIGNALS.html
+    pid=$(<"pids/unicorn.pid")
+    kill -SIGUSR2 $pid
+    sleep 5
+    kill -SIGQUIT $pid
+  else
+    # We could not find a unicorn master process running, lets start one up!
+    bundle exec unicorn -D -c config/unicorn.rb &
   fi
-done
+}
 
-# Comands have been validated, so execute them!
-# Show commands before running them.
-set -ex
-for command in "$@"; do
-  $command
-done
+cd "$(dirname "$0")"/..
+
+allowed_commands="pull_latest bootstrap_rails setup_env rebuild_rails restart_app"
+source scripts/_parse_args.sh
