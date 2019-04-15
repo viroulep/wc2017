@@ -24,7 +24,7 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   gem 'spring'
 end
-gem 'bootstrap-sass'
+gem 'bootstrap-sass', ">= 3.4.1"
 gem 'bootstrap-table-rails'
 gem 'high_voltage'
 gem 'pg', '~> 0.21.0'
