@@ -16,9 +16,9 @@ development:
   adapter:  postgresql
   host:     localhost
   encoding: unicode
-  database: euro2018_development
+  database: wc2019_development
   pool:     5
-  username: wc2017
+  username: wc2019
   password: wca
   template: template0
 
@@ -44,14 +44,16 @@ test:
   adapter:  postgresql
   host:     localhost
   encoding: unicode
-  database: euro2018_test
+  database: wc2019_test
   pool:     5
-  username: wc2017
+  username: wc2019
   password: wca
   template: template0
 
 production:
   adapter:  postgresql
   encoding: unicode
+  database: wc2019
+  username: wc2019
   pool:     5
-  template: template0
+  password: <%= ENV['DATABASE_PASSWORD'] %>
