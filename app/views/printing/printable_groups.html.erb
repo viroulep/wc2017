@@ -22,7 +22,7 @@ p {
   padding-left: 15px;
 }
 </style>
-<% @groups.in_groups_of(6) do |groups| %>
+<% @groups.reject { |g| g.registrations.empty? }.in_groups_of(6) do |groups| %>
   <div class="row people-list">
     <% groups.compact.each do |g| %>
       <% title = raw("") %>

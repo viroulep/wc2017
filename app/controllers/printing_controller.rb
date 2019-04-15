@@ -39,7 +39,7 @@ class PrintingController < ApplicationController
   end
 
   def printable_groups
-    @groups = Group.includes(round: [], staff_teams: { staff_team_members: { registration: [:user] }}, registrations: [:user], staff_registrations: [:user]).all.order(:start).reject { |g| ["magic"].include?(g.event_id) || g.registrations.empty? }
+    @groups = Group.includes(round: [], staff_teams: { staff_team_members: { registration: [:user] }}, registrations: [:user], staff_registrations: [:user]).all.order(:start).reject { |g| ["magic"].include?(g.event_id) }
   end
 
   def printable_groups_only
