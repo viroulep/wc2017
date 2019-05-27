@@ -1,0 +1,25 @@
+<% require 'csv' %>
+<% headers = ["Status", "Name", "Email", "Country", "WCA ID", "Competitions",
+              "TShirt", "Th", "Fr", "Sat", "Sun", "Score-taking", "Check-in",
+              "Booth", "Staff without registration"] %>
+<%= CSV.generate_line(headers).html_safe -%>
+<% @registrations.each do |registration| %>
+  <%= CSV.generate_line([
+    registration.user.can_manage_competition? ? "Core Team" : "Staff",
+    registration.name,
+    registration.email,
+    Country.find_by_iso2(registration.user.country_iso2)[:name],
+    registration.user.wca_id,
+    User::COMP_PER_PERSON[registration.user.wca_id],
+    registration.details.tshirt,
+    registration.days_helping.include?("0") ? 1 : 0,
+    registration.days_helping.include?("1") ? 1 : 0,
+    registration.days_helping.include?("2") ? 1 : 0,
+    registration.days_helping.include?("3") ? 1 : 0,
+    # TODO
+    "",
+    "",
+    "",
+    registration.status == "deleted" ? "yes" : nil,
+  ]).html_safe -%>
+<% end %>
