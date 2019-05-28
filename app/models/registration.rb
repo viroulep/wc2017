@@ -242,6 +242,10 @@ class Registration < ApplicationRecord
           attrs[:days_helping] = json_user["extensions"]["days"].join(",")
           attrs[:warmup] = json_user["extensions"]["events_w"].join(",")
           attrs[:not_scramble] = json_user["extensions"]["events_n"].join(",")
+          attrs[:tshirt] = json_user["extensions"]["t_shirt_size"]
+          [:wca_booth, :score_taking, :check_in].each do |key|
+            attrs[key] = json_user["extensions"][key.to_s]
+          end
         end
         registration_details.assign_attributes(attrs)
         all_registrations_details << registration_details

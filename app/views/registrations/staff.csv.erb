@@ -16,10 +16,9 @@
     registration.days_helping.include?("1") ? 1 : 0,
     registration.days_helping.include?("2") ? 1 : 0,
     registration.days_helping.include?("3") ? 1 : 0,
-    # TODO
-    "",
-    "",
-    "",
+    registration.details.score_taking ? 1 : 0,
+    registration.details.check_in ? 1 : 0,
+    registration.details.wca_booth ? 1 : 0,
     registration.status == "deleted" ? "yes" : nil,
   ]).html_safe -%>
 <% end %>
