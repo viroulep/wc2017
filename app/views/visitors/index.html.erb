@@ -14,7 +14,7 @@
 
   <!-- Content Row -->
   <div class="row">
-    <% if managed_competition.groups_visible_for_all? %>
+    <% if managed_competition.groups_visible_for_all? || current_user&.staff? && managed_competition.groups_visible_for_staff? %>
       <div class="col-xs-12">
         <%= simple_form_for :schedules do |f| %>
           <%= f.input :competitors, collection: @all_competitors, prompt: :translate, input_html: { id: "competitors_list" } %>

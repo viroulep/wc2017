@@ -35,6 +35,10 @@ class Competition < ApplicationRecord
     groups_visibility == "all"
   end
 
+  def groups_visible_for_staff?
+    groups_visibility == "staff"
+  end
+
   def to_wcif
     {
       "formatVersion" => "1.0",
