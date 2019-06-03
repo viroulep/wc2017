@@ -130,13 +130,11 @@ class RegistrationsController < ApplicationController
     @staff_registrations_groups = @registration.staff_registrations_groups.map(&:group)
     # staff schedule affectation
     @staff_groups = @registration.staff_teams_groups.map(&:group)
-    side_event = ["333mbf", "444bf", "555bf"]
-    side_events_registered_to = @registration.events.select { |e| side_event.include?(e) }
     # Groups for which the person is replaced
     replacement_groups = StaffRegistrationsGroup.includes(group: [:round]).replacements_for(@registration.name).map(&:group)
     @staff_groups.reject! do |g|
       # filter out staff assignment if they have to compete too
-      @groups.include?(g) || side_events_registered_to.include?(g.event_id) || replacement_groups.include?(g)
+      @groups.include?(g) || replacement_groups.include?(g)
     end
   end
 
