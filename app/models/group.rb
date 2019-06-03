@@ -96,8 +96,9 @@ class Group < ApplicationRecord
   end
 
   def all_staff_people
-    # For events like MBF and big blinds, staff teams contain competitors and staff !
-    ((staff_registrations + staff_teams.map(&:registrations)).flatten - registrations).sort_by(&:name)
+    replacement_names = staff_registrations_groups.map(&:replacement_name).compact
+    regular_staff = staff_teams.map(&:registrations).flatten.reject { |r| replacement_names.include?(r.name) }
+    (regular_staff + staff_registrations).flatten.sort_by(&:name)
   end
 
   def to_wcif(timezone)
