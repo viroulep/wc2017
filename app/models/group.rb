@@ -97,7 +97,8 @@ class Group < ApplicationRecord
 
   def all_staff_people
     replacement_names = staff_registrations_groups.map(&:replacement_name).compact
-    regular_staff = staff_teams.map(&:registrations).flatten.reject { |r| replacement_names.include?(r.name) }
+    regular_competitor_names = registrations.map(&:name)
+    regular_staff = staff_teams.map(&:registrations).flatten.reject { |r| replacement_names.include?(r.name) || regular_competitor_names.include?(r.name) }
     (regular_staff + staff_registrations).flatten.sort_by(&:name)
   end
 
