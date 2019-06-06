@@ -9,6 +9,6 @@ class StaffRegistrationsGroup < ApplicationRecord
   delegate :name, to: :registration
 
   def replacement_name
-    role.start_with?(REPLACEMENT_TAG) ? role[REPLACEMENT_TAG.length..-1] : nil
+    role&.start_with?(REPLACEMENT_TAG) ? role[REPLACEMENT_TAG.length..-1] : nil
   end
 end
