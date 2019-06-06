@@ -32,6 +32,7 @@ class Registration < ApplicationRecord
   delegate :gender, to: :user
   delegate :best_for, to: :user
   delegate :days_helping_as_string, to: :registration_detail
+  delegate :activities_as_string, to: :registration_detail
 
   validate :validate_guests
 

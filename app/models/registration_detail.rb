@@ -33,4 +33,12 @@ class RegistrationDetail < ApplicationRecord
   def days_helping_as_string
     days_helping.split(",").map { |d| DAYS[d.to_i] }.join(" ")
   end
+
+  def activities_as_string
+    activities = []
+    activities << "S." if score_taking
+    activities << "C." if check_in
+    activities << "B." if wca_booth
+    activities.join(" ")
+  end
 end

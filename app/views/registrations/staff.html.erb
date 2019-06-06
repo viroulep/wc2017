@@ -10,6 +10,7 @@
           <th>Name</th>
           <th>Days Helping</th>
           <th>Warm up</th>
+          <th>Activities</th>
           <!--<th>Confirmation status</th>-->
           <th>Events</th>
           <th>Scrambles for</th>
@@ -27,6 +28,7 @@
             <td>
               <%= registration.days_helping_as_string %>
             </td>
+            <td><%= registration.activities_as_string %></rd>
             <td>
               <% if registration.warmup_events.any? %>
                 <%= render "shared/event_id_collection", event_ids: registration.warmup_events.sort %>
