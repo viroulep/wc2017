@@ -1,5 +1,5 @@
 <% require 'csv' %>
-<% headers = ["Event", "Round", "Group", "Color", "Day", "Start", "End", "Role", "Name"] %>
+<% headers = ["Event", "Round", "Group", "Color", "Day", "Start", "End", "Role", "WCA ID", "Name"] %>
 <%# BEURK %>
 <% date_to_int = { "11" => "1", "12" => "2", "13" => "3", "14" => "4" } %>
 <%= CSV.generate_line(headers).html_safe -%>
@@ -15,6 +15,7 @@
       group.end.strftime("%H:%M"),
       "Competitor",
       competitor.name,
+      competitor.wca_id,
     ]).html_safe -%>
   <% end %>
   <% group.staff_registrations.each do |registration| %>
@@ -35,6 +36,7 @@
       group.end.strftime("%H:%M"),
       role,
       registration.name,
+      registration.wca_id,
     ]).html_safe -%>
   <% end %>
   <% group.staff_teams.each do |team| %>
@@ -56,6 +58,7 @@
         group.end.strftime("%H:%M"),
         role,
         registration.name,
+        registration.wca_id,
       ]).html_safe -%>
     <% end %>
   <% end %>
