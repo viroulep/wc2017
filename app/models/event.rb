@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 class Event
-  attr_accessor(:id, :name, :short_name, :rank, :limit)
+  attr_accessor(:id, :name, :short_name, :rank, :limit, :cutoff)
 
   def initialize(attributes={})
     @id = attributes[:id]
@@ -8,6 +8,7 @@ class Event
     @short_name = attributes[:short_name]
     @rank = attributes[:rank]
     @limit = attributes[:limit]
+    @cutoff = attributes[:cutoff]
   end
 
   def self.find(id)
@@ -69,6 +70,7 @@ class Event
       short_name: "6x6",
       rank: 50,
       limit: SolveTime.new('666', :average, 21000),
+      cutoff: SolveTime.new('666', :average, 18000),
     },
     {
       id: "777",
@@ -76,6 +78,7 @@ class Event
       short_name: "7x7",
       rank: 60,
       limit: SolveTime.new('777', :average, 30000),
+      cutoff: SolveTime.new('666', :average, 24000),
     },
     {
       id: "333bf",
