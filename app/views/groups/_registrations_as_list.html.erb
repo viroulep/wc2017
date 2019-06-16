@@ -1,10 +1,11 @@
 <% event_id ||= "magic" %>
 <% cutoff = Event.find(event_id).cutoff&.wca_value %>
 <% registrations.each do |r| %>
-  <div class="list-group-item registration-item <%= "over_cutoff" if cutoff && r.any_best_for(event_id) > cutoff %>"
+  <% best_for_event = r.any_best_for(event_id) %>
+  <div class="list-group-item registration-item <%= "over_cutoff" if cutoff && (!best_for_event || best_for_event > cutoff) %>"
        data-registration="<%= r.id %>"
        data-name="<%= r.transliterated_name %>"
-       data-pb="<%= r.any_best_for(event_id) %>"
+       data-pb="<%= best_for_event %>"
   >
     <div class="name">
       <%= r.name %>
