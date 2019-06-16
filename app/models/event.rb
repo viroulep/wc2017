@@ -49,6 +49,7 @@ class Event
       short_name: "2x2",
       rank: 20,
       limit: SolveTime.new('222', :single, -1),
+      cutoff: SolveTime.new('222', :single, 1000),
     },
     {
       id: "444",
@@ -70,7 +71,7 @@ class Event
       short_name: "6x6",
       rank: 50,
       limit: SolveTime.new('666', :average, 21000),
-      cutoff: SolveTime.new('666', :average, 18000),
+      cutoff: SolveTime.new('666', :single, 18000),
     },
     {
       id: "777",
@@ -78,7 +79,7 @@ class Event
       short_name: "7x7",
       rank: 60,
       limit: SolveTime.new('777', :average, 30000),
-      cutoff: SolveTime.new('666', :average, 24000),
+      cutoff: SolveTime.new('777', :single, 24000),
     },
     {
       id: "333bf",
@@ -114,6 +115,7 @@ class Event
       short_name: "Mega",
       rank: 110,
       limit: SolveTime.new('minx', :average, 11000),
+      cutoff: SolveTime.new('minx', :single, 9000),
     },
     {
       id: "pyram",
@@ -121,6 +123,7 @@ class Event
       short_name: "Pyra",
       rank: 120,
       limit: SolveTime.new('pyram', :single, -1),
+      cutoff: SolveTime.new('pyram', :single, 1000),
     },
     {
       id: "clock",
@@ -135,6 +138,7 @@ class Event
       short_name: "Skewb",
       rank: 140,
       limit: SolveTime.new('skewb', :average, 1200),
+      cutoff: SolveTime.new('skewb', :single, 1000),
     },
     {
       id: "sq1",
