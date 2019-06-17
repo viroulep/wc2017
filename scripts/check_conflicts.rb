@@ -1,3 +1,4 @@
+IGNORE=["Puzzle submission attempt #1"].freeze
 Registration.includes(:groups, staff_registrations_groups: [:group], staff_teams_groups: [:group]).all.each do |r|
   last = nil
   replacements = StaffRegistrationsGroup.includes(:group).replacements_for(r.name).map(&:group).uniq
@@ -6,7 +7,7 @@ Registration.includes(:groups, staff_registrations_groups: [:group], staff_teams
   conflicts = []
   all_groups.each do |g|
     if last
-      conflicts << [last.name, g.name] if g.start < last.end
+      conflicts << [last.name, g.name] if g.start < last.end && !IGNORE.include?(g.name) && !IGNORE.include?(last.name)
     end
     last = g
   end
