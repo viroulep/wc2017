@@ -39,6 +39,7 @@ class RegistrationsController < ApplicationController
         },
         scramble_events: [],
         competition: [],
+        personal_bests: [],
         user: [],
         registration_detail: [],
       },

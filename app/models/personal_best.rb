@@ -16,6 +16,17 @@ class PersonalBest < ApplicationRecord
     as_solve_time.clock_format
   end
 
+  def to_wcif
+    {
+      "eventId": self.event_id,
+      "best": self.best,
+      "worldRanking": self.world_ranking,
+      "continentalRanking": self.continental_ranking,
+      "nationalRanking": self.national_ranking,
+      "type": self.result_type
+    }
+  end
+
   private
   def self.attrs_from_json(json_pb)
     json_pb["result_type"] = json_pb.delete("type")

@@ -18,10 +18,17 @@ class Competition < ApplicationRecord
   validates :admin_ids, presence: true, allow_blank: false
   validates_inclusion_of :groups_visibility, in: GROUPS_VISIBILITIES
 
+  attr_accessor :last_id
+
   # NOTE: we *should* be validating start_date <= end_date,
   # but we fetch data from the WCA and we assume it's alright.
 
   @@obj_info = %w(id name admin_ids start_date end_date)
+  @@registrant_id = 0
+
+  def self.next_registrant_id
+    @@registrant_id += 1
+  end
 
   def admins_array
     @admins_array ||= admin_ids.split(",").map(&:to_i)
@@ -40,63 +47,91 @@ class Competition < ApplicationRecord
   end
 
   def to_wcif
+    @@registrant_id = 0
     {
       "formatVersion" => "1.0",
       "id" => id,
       "name" => name,
       "shortName" => name,
-      "persons" => registrations.sort_by(&:transliterated_name).map(&:to_wcif),
+      "persons" => registrations.sort_by { |r| r.wca_id || "ZZZZZZZZ" }.map(&:to_wcif),
       "schedule" => {
-        # FIXME: hardcoded....
-        "startDate": "2018-07-19",
-        "numberOfDays": 4,
+        "startDate": start_date,
+        "numberOfDays": number_of_days,
         "venues": [
           "id": 1,
-          "name": "Glass Pavilion",
+          "name": "Convention Center",
           "latitudeMicrodegrees": 0,
           "longitudeMicrodegrees": 0,
-          "timezone": "Europe/Madrid",
+          "timezone": "Australia/Melbourne",
           "rooms": [
             {
               "id": 2,
               "name": "Stage 1",
-              "activities": Competition.activities_for_room("blue"),
+              "activities": activities_for_room("blue"),
             },
             {
               "id": 3,
               "name": "Stage 2",
-              "activities": Competition.activities_for_room("orange"),
+              "activities": activities_for_room("orange"),
             },
             {
               "id": 4,
               "name": "Stage 3",
-              "activities": Competition.activities_for_room("green"),
+              "activities": activities_for_room("green"),
             },
             {
               "id": 5,
               "name": "Stage 4",
-              "activities": Competition.activities_for_room("yellow"),
+              "activities": activities_for_room("yellow"),
             },
             {
               "id": 6,
               "name": "Side room",
-              "activities": Competition.activities_for_room("white"),
+              "activities": activities_for_room("white"),
             },
           ],
         ],
       },
-      "extensions": {
-        "staff_teams": StaffTeam.all.includes(staff_team_members: { registration: :user }).map(&:to_wcif),
-      },
+      #TODO: get events wcif from WCA, and output it here
+      "extensions": [
+        {
+          "id": "groupifier.CompetitionConfig",
+          "specUrl": "https://jonatanklosko.github.io/groupifier-next/wcif-extensions/CompetitionConfig.json",
+          "data": {
+            "localNamesFirst": false,
+            "scorecardsBackgroundUrl": "",
+            "competitorsSortingRule": "ranks",
+            "noTasksForNewcomers": true,
+            "tasksForOwnEventsOnly": false
+          }
+        }
+        #"staff_teams": StaffTeam.all.includes(staff_team_members: { registration: :user }).map(&:to_wcif),
+      ],
     }
   end
 
-  def self.activities_for_room(color)
+  def activities_for_room(color)
+    self.last_id ||= Group.last.id + 1
     associations = {
       round: [],
     }
-    timezone = ActiveSupport::TimeZone.new("Europe/Madrid")
-    Group.includes(associations).for_color(color).map { |g| g.to_wcif(timezone) }
+    timezone = ActiveSupport::TimeZone.new("Australia/Melbourne")
+    activity_by_round = Group.includes(associations).for_color(color).group_by { |g| "#{g.event_id}-r#{g.round.r_id}" }
+    all_activities = []
+    # dirty hack to get scorecards working
+    activity_by_round.delete("333mbf-r1")&.each { |g| all_activities << g.to_wcif(timezone) }
+    activity_by_round.map do |rid, groups|
+      self.last_id += 1
+      all_activities << {
+        "id": self.last_id,
+        "name": rid,
+        "activityCode": rid,
+        "startTime": nil,
+        "endTime": nil,
+        "childActivities": groups.map { |g| g.to_wcif(timezone) }
+      }
+    end
+    all_activities
   end
 
   def self.convert_to_zone_and_strip(datetime_string, tz_string)

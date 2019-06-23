@@ -133,10 +133,12 @@ class Registration < ApplicationRecord
       roles << "organization"
     end
     # individual group assignment
-    competitor_groups = self.groups
+    # TMP hack: without multi submission for scorecards generation
+    competitor_groups = self.groups.reject { |g| g.name =~ /submission/ || (g.event_id == "333mbf" && g.activity_code != "333mbf-r1-a1") }
     competitor_assignment = competitor_groups.map do |g|
       {
         "activityId": g.id,
+        "stationNumber": nil,
         "assignmentCode": "competitor",
       }
     end
@@ -151,6 +153,7 @@ class Registration < ApplicationRecord
              end
       {
         "activityId": g.id,
+        "stationNumber": nil,
         "assignmentCode": code,
       }
     end
@@ -168,11 +171,12 @@ class Registration < ApplicationRecord
              end
       {
         "activityId": g.id,
+        "stationNumber": nil,
         "assignmentCode": code,
       }
     end
     {
-      "registrantId": self.id,
+      "registrantId": Competition.next_registrant_id,
       "name": self.name,
       "wcaUserId": self.user_id,
       "wcaId": self.wca_id,
@@ -182,16 +186,18 @@ class Registration < ApplicationRecord
       "email": self.email,
       "roles": roles,
       "registration": {
+        "wcaRegistrationId": self.id,
         "eventIds": self.events,
         "status": self.status,
       },
       "assignments": (competitor_assignment + individual_staff_assignment + staff_team_assignment).flatten,
-      "extensions": {
-        "events_s": scramble_events.map(&:event_id),
-        "events_n": registration_detail.not_scramble.split(","),
-        "events_w": registration_detail.warmup.split(","),
-        "days": registration_detail.days_helping.split(","),
-      },
+      "personalBests": self.personal_bests.map(&:to_wcif),
+      #"extensions": {
+        #"events_s": scramble_events.map(&:event_id),
+        #"events_n": registration_detail.not_scramble.split(","),
+        #"events_w": registration_detail.warmup.split(","),
+        #"days": registration_detail.days_helping.split(","),
+      #},
     }
   end
 

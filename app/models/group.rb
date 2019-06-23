@@ -107,8 +107,8 @@ class Group < ApplicationRecord
       "id": self.id,
       "name": self.name,
       "activityCode": self.activity_code,
-      "startTime": timezone.local_to_utc(self.start),
-      "endTime": timezone.local_to_utc(self[:end]),
+      "startTime": timezone.local_to_utc(self.start).iso8601,
+      "endTime": timezone.local_to_utc(self[:end]).iso8601,
       "childActivities": [],
     }
   end
