@@ -4,8 +4,9 @@
 <% date_to_int = { "11" => "1", "12" => "2", "13" => "3", "14" => "4" } %>
 <%= CSV.generate_line(headers).html_safe -%>
 <% @groups.each do |group| -%>
-  <% group.registrations.each do |competitor| %>
-<%= CSV.generate_line([
+  <% group_registrations = group.registrations %>
+  <% group_registrations.each do |competitor| %>
+    <%= CSV.generate_line([
       group.event_id,
       group.round.r_id,
       group.name,
@@ -20,13 +21,13 @@
   <% end %>
   <% group.staff_registrations.each do |registration| %>
     <% role = if registration.scrambles_for?(group.event_id)
-      "Scrambler"
-    elsif registration.runner_only?
-      "Runner"
-    else
-      "Juge/Runner"
-    end %>
-<%= CSV.generate_line([
+                "Scrambler"
+              elsif registration.runner_only?
+                "Runner"
+              else
+                "Juge/Runner"
+              end %>
+    <%= CSV.generate_line([
       group.event_id,
       group.round.r_id,
       group.name,
@@ -40,15 +41,15 @@
     ]).html_safe -%>
   <% end %>
   <% group.staff_teams.each do |team| %>
-    <% team.registrations.each do |registration| %>
+    <% team.registrations.reject { |r| group_registrations.include?(r) }.each do |registration| %>
       <% role = if registration.scrambles_for?(group.event_id)
-        "Scrambler"
-      elsif registration.runner_only?
-        "Runner"
-      else
-        "Juge/Runner"
-      end %>
-<%= CSV.generate_line([
+                  "Scrambler"
+                elsif registration.runner_only?
+                  "Runner"
+                else
+                  "Juge/Runner"
+                end %>
+      <%= CSV.generate_line([
         group.event_id,
         group.round.r_id,
         group.name,
