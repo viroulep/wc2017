@@ -3,7 +3,7 @@
 # /!\ assumed to be executed by root!
 
 create_cert() {
-  certbot certonly --webroot -w /home/wc2019/wc2019/public -d wc2019sched.speedcubing.org.au
+  certbot certonly --webroot -w /home/schedapp/wc2017/public -d sched.wcaeuro2020.com
 }
 
 renew_cert() {
