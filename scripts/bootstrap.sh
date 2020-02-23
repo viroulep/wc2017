@@ -66,7 +66,7 @@ if [ ! -d /home/schedapp/wc2017 ]; then
   su schedapp -c "cd /home/schedapp && git clone https://github.com/viroulep/wc2017.git /home/schedapp/wc2017"
 fi
 apt-get install -y nginx
-cp /home/schedapp/wc2017/conf/nginx.conf /etc/nginx/conf.d/
+cp /home/schedapp/wc2017/conf/nginx_server.conf /etc/nginx/conf.d/
 cp /home/schedapp/wc2017/conf/pre_certif.conf /etc/nginx/conf.d/
 # Create an empty https conf since we don't have a certificate yet
 touch /etc/nginx/nginx_https.conf
