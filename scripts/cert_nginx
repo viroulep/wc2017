@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-/home/wc2019/wc2019/prod_cert.sh renew_cert
+/home/schedapp/wc2017/prod_cert.sh renew_cert
 # Restarting nginx is necessary for the potential new certificate to be taken into account.
 /usr/sbin/service nginx restart
