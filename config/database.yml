@@ -53,7 +53,7 @@ test:
 production:
   adapter:  postgresql
   encoding: unicode
-  database: wc2019
-  username: wc2019
+  database: schedapp
+  username: schedapp
   pool:     5
   password: <%= ENV['DATABASE_PASSWORD'] %>
