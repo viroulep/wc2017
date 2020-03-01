@@ -277,9 +277,14 @@ class Registration < ApplicationRecord
     if all_users.any?
       # Checking everything all the time is long, let's just clear the table...
       User.delete_all
-      Registration.delete_all
-      RegistrationDetail.delete_all
       PersonalBest.delete_all
+      if all_registrations.any?
+        # we're importing a wcif with registrations
+        # (wcif without registrations can happen, if using myeuro for registrations
+        # and the WCA website for the schedule)
+        Registration.delete_all
+        RegistrationDetail.delete_all
+      end
       if all_scramble_events.any?
         # we're importing a wcif with extensions
         ScrambleEvent.delete_all
