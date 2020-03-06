@@ -299,7 +299,9 @@ class Registration < ApplicationRecord
         ScrambleEvent.import(all_scramble_events)
       end
 
-      Registration.where("comments ILIKE :search", search: "%staff%").each do |r|
+      #Registration.where("comments ILIKE :search", search: "%staff%").each do |r|
+      #FIXME: cdf2020 only
+      Registration.all.each do |r|
         r.details.staff = true
         r.details.save!(validate: false)
       end
