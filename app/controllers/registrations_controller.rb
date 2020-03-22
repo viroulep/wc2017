@@ -114,6 +114,7 @@ class RegistrationsController < ApplicationController
 
   def staff
     @registrations = Registration.includes(:user, :registration_detail, :scramble_events, :staff_team_members, :staff_teams).where(registration_details: { staff: true })
+    @unassigned_staff = @registrations.select { |r| r.staff_team_members.empty? }.size
   end
 
   def schedule
