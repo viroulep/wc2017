@@ -30,7 +30,7 @@ class RegistrationsController < ApplicationController
   def show_wcif
     associations = {
       registrations: {
-        groups: [],
+        groups: [:round],
         staff_registrations_groups: {
           group: [:round],
         },

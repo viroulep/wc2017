@@ -122,13 +122,14 @@ class Competition < ApplicationRecord
     activity_by_round.delete("333mbf-r1")&.each { |g| all_activities << g.to_wcif(timezone) }
     activity_by_round.map do |rid, groups|
       self.last_id += 1
+      children = groups.sort_by(&:start)
       all_activities << {
         "id": self.last_id,
         "name": rid,
         "activityCode": rid,
-        "startTime": nil,
-        "endTime": nil,
-        "childActivities": groups.map { |g| g.to_wcif(timezone) }
+        "startTime": children.first&.to_wcif(timezone)[:startTime],
+        "endTime": children.max_by(&:end)&.to_wcif(timezone)[:endTime],
+        "childActivities": children.map { |g| g.to_wcif(timezone) },
       }
     end
     all_activities
