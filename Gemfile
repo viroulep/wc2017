@@ -12,7 +12,7 @@ gem 'rest-client'
 gem 'activerecord-import'
 gem 'rack-cors'
 
-gem 'momentjs-rails', '~> 2.9',  :github => 'derekprior/momentjs-rails'
+gem 'momentjs-rails', '~> 2.9',  :github => 'derekprior/momentjs-rails', branch: 'main'
 gem 'datetimepicker-rails', github: 'zpaulovics/datetimepicker-rails', branch: 'master', submodules: true
 gem 'fullcalendar-rails', '~> 3.2'
 gem 'dragula-rails'
