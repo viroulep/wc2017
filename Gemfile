@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.5.1'
+git_source(:github) { |name| "https://github.com/#{name}.git" }
 gem 'rails', '5.0.7'
 gem 'sass-rails', '~> 5.0'
 gem 'font-awesome-sass', '~> 4.7.0'
