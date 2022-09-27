@@ -76,10 +76,24 @@ class CompetitionsController < ApplicationController
       return redirect_to(competition_url, flash: { danger: "WCIF is for the wrong competition!" })
     end
 
-    Competition.import_schedule(wcif)
+    managed_competition.import_schedule(wcif)
     registrations_size = Registration.import_registrations(wcif)
 
-    redirect_to(registrations_url, flash: { success: "Imported #{registrations_size} registrations and users successfully!" })
+    redirect_to(schedule_url, flash: { success: "Imported #{registrations_size} registrations and users successfully!" })
+  end
+
+  def export_wcif
+    comp = Competition.includes(Competition::WCIF_ASSOCIATIONS).find_by_id!(managed_competition.id)
+    begin
+      update_response = RestClient.patch(
+        wca_api_url("/competitions/#{managed_competition.id}/wcif"),
+        { "_json": comp.to_wcif }.to_json,
+        { Authorization: "Bearer #{session[:access_token]}", content_type: :json }
+      )
+      redirect_to(competition_path, flash: { success: "Saved to the WCA successfully!" })
+    rescue RestClient::ExceptionWithResponse => err
+      return redirect_to(competition_url, alert: "Failed to saved to the WCA #{err.message}")
+    end
   end
 
   def reset

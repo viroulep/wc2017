@@ -16,7 +16,7 @@ class StaffTeamMember < ApplicationRecord
 
   def to_wcif
     {
-      "registrantId": self.registration_id,
+      "registrantId": registration.registrantId,
       "name": self.name,
       "teamLeader": self.team_leader,
     }

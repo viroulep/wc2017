@@ -51,7 +51,7 @@ class Registration < ApplicationRecord
 
   scope :without_group_for, -> (round_id) { where.not(id: Group.for_round(round_id).joins(:registrations).select(:'registrations.id')) }
 
-  @@obj_info = %w(id user_id competition_id comments status event_ids)
+  @@obj_info = %w(id user_id competition_id registrant_id comments status event_ids)
 
   def any_best_for(event_id)
     (best_for(event_id, "average") || best_for(event_id, "single"))&.best
@@ -135,63 +135,46 @@ class Registration < ApplicationRecord
     # individual group assignment
     # TMP hack: without multi submission for scorecards generation
     competitor_groups = self.groups.reject { |g| g.name =~ /submission/ || (g.event_id == "333mbf" && g.activity_code != "333mbf-r1-a1") }
-    competitor_assignment = competitor_groups.map do |g|
-      {
-        "activityId": g.id,
-        "stationNumber": nil,
-        "assignmentCode": "competitor",
-      }
+    competitor_assignment = competitor_groups.map(&:to_wcif_assignment)
+
+    generate_assignment_code = lambda do |event_id|
+      if details.runner_only
+        "staff-runner"
+      elsif scrambles_for?(event_id)
+        "staff-scrambler"
+      else
+        "staff-judgeOrRunner"
+      end
     end
     # individual schedule assignment
-    individual_staff_assignment = self.staff_registrations_groups.map(&:group).map do |g|
-      code = if details.runner_only
-               "staff-runner"
-             elsif scrambles_for?(g.event_id)
-               "staff-scrambler"
-             else
-               "staff-judge-runner"
-             end
-      {
-        "activityId": g.id,
-        "stationNumber": nil,
-        "assignmentCode": code,
-      }
+    individual_staff_assignment = self.staff_registrations_groups.map do |g|
+      g.to_wcif_assignment(generate_assignment_code)
     end
-    # staff schedule affectation
-    staff_team_assignment = self.staff_teams_groups.map(&:group).reject do |g|
+
+    # staff schedule assignments
+    staff_team_assignment = self.staff_teams_groups.reject do |g|
       # reject duplicate assignment
-      ["333mbf", "444bf", "555bf"].include?(g.event_id) && competitor_groups.include?(g)
+      ["333mbf", "444bf", "555bf"].include?(g.group.event_id) && competitor_groups.include?(g.group)
     end.map do |g|
-      code = if details.runner_only
-               "staff-runner"
-             elsif scrambles_for?(g.event_id)
-               "staff-scrambler"
-             else
-               "staff-judge-runner"
-             end
-      {
-        "activityId": g.id,
-        "stationNumber": nil,
-        "assignmentCode": code,
-      }
+      g.to_wcif_assignment(generate_assignment_code)
     end
     {
-      "registrantId": Competition.next_registrant_id,
       "name": self.name,
       "wcaUserId": self.user_id,
       "wcaId": self.wca_id,
+      "registrantId": self.registrant_id,
       "countryIso2": self.country_iso2,
       "gender": self.gender,
-      "birthdate": self.birthdate,
-      "email": self.email,
-      "roles": roles,
       "registration": {
         "wcaRegistrationId": self.id,
         "eventIds": self.events,
         "status": self.status,
       },
+      "roles": roles,
       "assignments": (competitor_assignment + individual_staff_assignment + staff_team_assignment).flatten,
       "personalBests": self.personal_bests.map(&:to_wcif),
+      "birthdate": self.birthdate,
+      "email": self.email,
       #"extensions": {
         #"events_s": scramble_events.map(&:event_id),
         #"events_n": registration_detail.not_scramble.split(","),
@@ -238,6 +221,7 @@ class Registration < ApplicationRecord
           json_registration["id"] = user.id
         end
         json_registration["user_id"] = json_user["id"]
+        json_registration["registrant_id"] = json_user["registrantId"]
         json_registration["competition_id"] = wcif["id"]
         registration_details = original_registrations_details[json_registration["id"]]&.first || RegistrationDetail.new
         attrs = {

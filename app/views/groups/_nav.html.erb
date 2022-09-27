@@ -22,13 +22,6 @@
               <%= link_to(r.name, groups_for_round_path(r.id)) %>
             </li>
           <% end %>
-          <li class="<%= "active" if rounds.empty? %>">
-            <% icon_text = "Add round for event" if rounds.empty? %>
-            <%= link_to(icon('plus', icon_text), add_round_path(@event.id), method: 'patch') %>
-          </li>
-          <li>
-            <%= link_to(icon('minus'), remove_round_path(@event.id), method: 'patch') %>
-          </li>
         </ul>
       </div>
     <% end %>

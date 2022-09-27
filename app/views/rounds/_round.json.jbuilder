@@ -3,7 +3,6 @@ json.class "round"
 json.title round.name
 bg, fg = round_colors(round)
 json.color bg
-json.allDay (round.event_id == "magic")
 json.textColor fg
 json.update_url round_url(round, format: :json)
 json.edit_url edit_round_url(round) if current_user&.can_manage_competition?

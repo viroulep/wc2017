@@ -11,4 +11,10 @@ class StaffRegistrationsGroup < ApplicationRecord
   def replacement_name
     role&.start_with?(REPLACEMENT_TAG) ? role[REPLACEMENT_TAG.length..-1] : nil
   end
+
+  def to_wcif_assignment(generate_assignment_code)
+    group.to_wcif_assignment.merge({
+      "assignmentCode": generate_assignment_code.call(group.event_id),
+    })
+  end
 end

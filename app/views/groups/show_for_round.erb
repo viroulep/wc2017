@@ -1,6 +1,7 @@
 <%= render 'nav', active_event: @event.id do %>
   <% if @round %>
-
+    <br/>
+    <p>This round will occur in room "<%= @round.venue_room.name %>"</p>
     <br/>
     <%= simple_form_for :create_groups,
       url: create_groups_for_round_path(@round.id),

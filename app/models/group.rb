@@ -2,11 +2,11 @@ class Group < ApplicationRecord
   #Colors are BLUE > YELLOW > RED > GREEN
   COLORS = Hash[
     #Five stage colors, blue is the front row, red the back row, +white the side venue
-    "blue" => "#e02826",
-    "orange" => "#ddda45",
-    "green" => "#304a96",
-    "yellow" => "#3d9c46",
-    "red" => "#ff9307",
+    "red" => "#e02826",
+    "yellow" => "#ddda45",
+    "blue" => "#304a96",
+    "green" => "#3d9c46",
+    "orange" => "#ff9307",
     "white" => "#dddddd",
   ].freeze
 
@@ -27,6 +27,10 @@ class Group < ApplicationRecord
   validates_presence_of :name, allow_blank: false
   validates_presence_of :round_id, allow_blank: false
   validates_inclusion_of :color, in: COLORS.keys
+  # FIXME: migrate color to use round->room->color
+  def round_color
+    round&.color
+  end
 
   validate :included_in_round
   def included_in_round
@@ -52,17 +56,6 @@ class Group < ApplicationRecord
 
   def hex_color
     COLORS[self[:color]]
-  end
-
-  def activity_code
-    code = "#{event_id}-r#{round.r_id}"
-    if name =~ /Group/
-      code += "-g#{name.sub(/.*( Group[ ]+(?<n>[0-9]*))/,'\k<n>')}"
-    end
-    if name =~ /Attempt/
-      code += "-a#{name.sub(/.*( Attempt[ ]+(?<n>[0-9]*))/, '\k<n>')}"
-    end
-    code
   end
 
   def group_number
@@ -91,6 +84,11 @@ class Group < ApplicationRecord
     end
   end
 
+  def attempt_number
+    parts = Group.parse_activity_code(activity_code)
+    parts[:attempt_number] || 0
+  end
+
   def text_color
     "#000000"
   end
@@ -104,12 +102,20 @@ class Group < ApplicationRecord
 
   def to_wcif(timezone)
     {
-      "id": self.id,
+      "id": self.wcif_id,
       "name": self.name,
       "activityCode": self.activity_code,
       "startTime": timezone.local_to_utc(self.start).iso8601,
       "endTime": timezone.local_to_utc(self[:end]).iso8601,
       "childActivities": [],
+    }
+  end
+
+  def to_wcif_assignment
+    {
+      "activityId": wcif_id,
+      "stationNumber": nil,
+      "assignmentCode": "competitor",
     }
   end
 
@@ -130,5 +136,29 @@ class Group < ApplicationRecord
       # There is no :dependent destroy, we can just delete all!
       g.registration_groups.delete_all
     end
+  end
+
+  def self.parse_activity_code(activity_code)
+    parts = activity_code.split("-")
+    parts_hash = {
+      event_id: parts.shift,
+      round_number: nil,
+      group_number: nil,
+      attempt_number: nil,
+    }
+
+    return parts_hash if parts_hash[:event_id] == "other"
+
+    parts.each do |p|
+      case p[0]
+      when "a"
+        parts_hash[:attempt_number] = p[1..-1].to_i
+      when "g"
+        parts_hash[:group_number] = p[1..-1].to_i
+      when "r"
+        parts_hash[:round_number] = p[1..-1].to_i
+      end
+    end
+    parts_hash
   end
 end

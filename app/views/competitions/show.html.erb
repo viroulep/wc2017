@@ -27,6 +27,35 @@
       </div>
     </div>
   </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      Export data
+    </div>
+    <div class="panel-body">
+      <p>Data can be saved back, either by downloading the WCIF, or by syncing back to the WCA.</p>
+      <div class="row">
+        <div class="col-xs-12 col-md-6 text-center">
+          <% if managed_competition.competition_venues.any? %>
+            <div class="alert alert-danger">
+              This will override the competition's schedule and people's assignment
+              on the WCA website!
+            </div>
+            <%= image_tag "wca_logo.svg", width: "140px" %>
+            <%= link_to "Save to the WCA", export_wcif_path, method: "patch", class: "btn btn-primary" %>
+        <% else %>
+          <div class="alert alert-danger">
+            It looks like the schedule is empty, I will not let you save to the
+            WCA.
+          </div>
+        <% end %>
+        </div>
+        <div class="col-xs-12 col-md-6 text-center">
+          <%= icon("link", style: "font-size: 100px") %><br/>
+          <%= link_to "Download WCIF", wcif_path(format: :json), class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
   <hr/>
   <div class="panel panel-danger">
     <div class="panel-heading">

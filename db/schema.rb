@@ -10,10 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190528151632) do
+ActiveRecord::Schema.define(version: 20220927190413) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "competition_venues", force: :cascade do |t|
+    t.string  "competition_id",         null: false
+    t.integer "wcif_id",                null: false
+    t.string  "name",                   null: false
+    t.integer "latitude_microdegrees",  null: false
+    t.integer "longitude_microdegrees", null: false
+    t.string  "timezone",               null: false
+    t.string  "country_iso2",           null: false
+    t.index ["competition_id", "wcif_id"], name: "index_competition_venues_on_competition_id_and_wcif_id", unique: true, using: :btree
+    t.index ["competition_id"], name: "index_competition_venues_on_competition_id", using: :btree
+  end
 
   create_table "competitions", id: :string, force: :cascade do |t|
     t.string   "name"
@@ -29,11 +41,14 @@ ActiveRecord::Schema.define(version: 20190528151632) do
     t.string   "name"
     t.datetime "start"
     t.datetime "end"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
     t.integer  "round_id"
     t.string   "color"
+    t.integer  "wcif_id",       null: false
+    t.string   "activity_code", null: false
     t.index ["round_id"], name: "index_groups_on_round_id", using: :btree
+    t.index ["wcif_id"], name: "index_groups_on_wcif_id", using: :btree
   end
 
   create_table "guests", force: :cascade do |t|
@@ -109,6 +124,7 @@ ActiveRecord::Schema.define(version: 20190528151632) do
     t.string   "competition_id"
     t.string   "comments"
     t.string   "status"
+    t.integer  "registrant_id",  null: false
     t.index ["user_id"], name: "index_registrations_on_user_id", using: :btree
   end
 
@@ -117,17 +133,26 @@ ActiveRecord::Schema.define(version: 20190528151632) do
     t.string   "event_id"
     t.datetime "start"
     t.datetime "end"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "venue_room_id"
+    t.integer  "wcif_id",       null: false
     t.index ["event_id"], name: "index_rounds_on_event_id", using: :btree
+    t.index ["venue_room_id"], name: "index_rounds_on_venue_room_id", using: :btree
+    t.index ["wcif_id"], name: "index_rounds_on_wcif_id", using: :btree
   end
 
   create_table "schedule_events", force: :cascade do |t|
     t.string   "name"
     t.datetime "start"
     t.datetime "end"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "venue_room_id"
+    t.integer  "wcif_id",       null: false
+    t.string   "activity_code", null: false
+    t.index ["venue_room_id"], name: "index_schedule_events_on_venue_room_id", using: :btree
+    t.index ["wcif_id"], name: "index_schedule_events_on_wcif_id", using: :btree
   end
 
   create_table "scramble_events", force: :cascade do |t|
@@ -181,6 +206,15 @@ ActiveRecord::Schema.define(version: 20190528151632) do
     t.string   "avatar_thumb_url"
     t.string   "gender"
     t.date     "birthdate"
+  end
+
+  create_table "venue_rooms", force: :cascade do |t|
+    t.integer "competition_venue_id",           null: false
+    t.integer "wcif_id",                        null: false
+    t.string  "name",                           null: false
+    t.string  "color",                limit: 7, null: false
+    t.index ["competition_venue_id", "wcif_id"], name: "index_venue_rooms_on_competition_venue_id_and_wcif_id", unique: true, using: :btree
+    t.index ["competition_venue_id"], name: "index_venue_rooms_on_competition_venue_id", using: :btree
   end
 
 end

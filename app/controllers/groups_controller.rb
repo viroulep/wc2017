@@ -165,7 +165,10 @@ class GroupsController < ApplicationController
     group_end_time = @round.end if group_end_time > @round.end
     number.times do
       group_name = "#{@round.name} Group #{start_number}"
-      @round.groups.create!(name: group_name, start: group_start_time, end: group_end_time, color: "blue")
+      @round.groups.create!(name: group_name, start: group_start_time,
+                            end: group_end_time, color: "blue",
+                            activity_code: "#{@round.activity_code}-g#{start_number}",
+                            wcif_id: Competition.next_activity_wcif_id)
       start_number += 1
     end
     flash[:success] = "#{number} group(s) of #{duration_in_minutes} min successfully created!"

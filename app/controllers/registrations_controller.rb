@@ -28,23 +28,7 @@ class RegistrationsController < ApplicationController
   end
 
   def show_wcif
-    associations = {
-      registrations: {
-        groups: [:round],
-        staff_registrations_groups: {
-          group: [:round],
-        },
-        staff_teams_groups: {
-          group: [:round],
-        },
-        scramble_events: [],
-        competition: [],
-        personal_bests: [],
-        user: [],
-        registration_detail: [],
-      },
-    }
-    comp = Competition.includes(associations).find_by_id!(managed_competition.id)
+    comp = Competition.includes(Competition::WCIF_ASSOCIATIONS).find_by_id!(managed_competition.id)
     render json: JSON.pretty_generate(comp.to_wcif, indent: "    ")
   end
 

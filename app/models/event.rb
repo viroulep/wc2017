@@ -11,6 +11,14 @@ class Event
     @cutoff = attributes[:cutoff]
   end
 
+  def attempt_based?
+    ["333mbf", "333fm"].include?(id)
+  end
+
+  def magic?
+    id == "magic"
+  end
+
   def self.find(id)
     ALL_EVENTS_BY_ID[id] or raise ActiveRecord::RecordNotFound
   end
@@ -90,14 +98,14 @@ class Event
     },
     {
       id: "333fm",
-      name: "3x3x3 Fewest moves",
+      name: "3x3x3 Fewest Moves",
       short_name: "3x3-FM",
       rank: 80,
       limit: SolveTime.new('333fm', :single, 4000),
     },
     {
       id: "333oh",
-      name: "3x3x3 One-handed",
+      name: "3x3x3 One-Handed",
       short_name: "3x3-OH",
       rank: 90,
       limit: SolveTime.new('333oh', :average, 3000),

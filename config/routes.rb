@@ -8,8 +8,9 @@ Rails.application.routes.draw do
 
     get '/wcif' => 'registrations#show_wcif'
 
-    patch 'rounds/add/:event_id' => 'rounds#add', :as => :add_round
-    patch 'rounds/remove/:event_id' => 'rounds#remove', :as => :remove_round
+    #FIXME: removed in favor of doing this in the WCA website
+    #patch 'rounds/add/:event_id' => 'rounds#add', :as => :add_round
+    #patch 'rounds/remove/:event_id' => 'rounds#remove', :as => :remove_round
 
     get 'registrations/random' => 'registrations#random'
 
@@ -71,6 +72,7 @@ Rails.application.routes.draw do
     patch '/competition/import/:competition_id' => 'competitions#import_competition', :as => :competition_import
     post '/competition/reset' => 'competitions#reset'
     patch '/competition/import_wcif' => 'competitions#import_wcif', :as => :import_wcif
+    patch '/competition/export_wcif' => 'competitions#export_wcif', :as => :export_wcif
 
     root to: 'visitors#index'
 

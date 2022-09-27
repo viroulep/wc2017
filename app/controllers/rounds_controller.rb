@@ -2,7 +2,7 @@ class RoundsController < ApplicationController
   before_action :authenticate_user!, except: [:schedule]
   before_action :redirect_unless_admin!, except: [:schedule]
   before_action :set_round, only: [:edit, :update]
-  before_action :set_event, only: [:add, :remove]
+  #before_action :set_event, only: [:add, :remove]
 
   # GET /rounds
   def index
@@ -28,28 +28,29 @@ class RoundsController < ApplicationController
     end
   end
 
-  def add
-    @event = Event.find(params[:event_id])
-    prev_round_id = Round.where(event_id: @event.id).last&.r_id || 0
-    round = Round.create!(event_id: @event.id, r_id: prev_round_id + 1)
-    redirect_to groups_for_round_path(round.id)
-  end
+  #FIXME: removed in favor of doing this in the WCA website
+  #def add
+    #@event = Event.find(params[:event_id])
+    #prev_round_id = Round.where(event_id: @event.id).last&.r_id || 0
+    #round = Round.create!(event_id: @event.id, r_id: prev_round_id + 1)
+    #redirect_to groups_for_round_path(round.id)
+  #end
 
-  def remove
-    @event = Event.find(params[:event_id])
-    last_round = Round.where(event_id: @event.id).last
-    last_round&.destroy
-    redirect_to groups_for_event_path(@event.id)
-  end
+  #def remove
+    #@event = Event.find(params[:event_id])
+    #last_round = Round.where(event_id: @event.id).last
+    #last_round&.destroy
+    #redirect_to groups_for_event_path(@event.id)
+  #end
 
   def schedule
     # For these, we actually want to display all attempts (ie: groups)
-    fm_mbf = ["333fm", "333mbf"]
+    fm_mbf = ["333fm", "333mbf", "magic"]
     @groups = Group.joins(:round).where('rounds.event_id': fm_mbf)
     # Hack for nations cup
     #@groups = @groups.to_a
     #@groups << Group.find(459)
-    @rounds = Round.where.not(event_id: fm_mbf)
+    @rounds = Round.includes(:venue_room).where.not(event_id: fm_mbf)
     @schedule_events = ScheduleEvent.all
   end
 
