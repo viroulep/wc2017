@@ -16,9 +16,9 @@ development:
   adapter:  postgresql
   host:     localhost
   encoding: unicode
-  database: wc2019_development
+  database: schedapp_development
   pool:     5
-  username: wc2019
+  username: schedapp
   password: wca
   template: template0
 
@@ -44,9 +44,9 @@ test:
   adapter:  postgresql
   host:     localhost
   encoding: unicode
-  database: wc2019_test
+  database: schedapp_test
   pool:     5
-  username: wc2019
+  username: schedapp
   password: wca
   template: template0
 

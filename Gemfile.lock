@@ -1,13 +1,14 @@
 GIT
-  remote: git://github.com/derekprior/momentjs-rails.git
-  revision: e2b2dd166b121ded02cdcc54f49fa1f0146c7094
+  remote: https://github.com/derekprior/momentjs-rails.git
+  revision: de473b81db40d0dc19e277895746c79b41a0607a
+  branch: main
   specs:
-    momentjs-rails (2.20.1)
+    momentjs-rails (2.29.4.1)
       railties (>= 3.1)
 
 GIT
-  remote: git://github.com/zpaulovics/datetimepicker-rails.git
-  revision: 36d21cec5da7f5b214925804f60e63c61c747023
+  remote: https://github.com/zpaulovics/datetimepicker-rails.git
+  revision: 7a4640cb932e55866500a86c4f78808a4fca46e6
   branch: master
   submodules: true
   specs:
