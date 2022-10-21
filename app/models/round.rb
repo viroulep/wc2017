@@ -112,16 +112,17 @@ class Round < ApplicationRecord
   end
 
   def extend_to_include!(start_time, end_time)
-    any_change = false
+    attrs = {
+    }
     if start_time < self.start
-      self.start = start_time
-      any_change = true
+      attrs[:start] = start_time
     end
     if end_time > self.end
-      self.end = end_time
-      any_change = true
+      attrs[:end] = end_time
     end
-    self.save! if any_change
+    # Skip callbacks because we don't want to trigger callbacks which
+    # move groups around!
+    update_columns(attrs) unless attrs.empty?
   end
 
   def self.all_ordered
