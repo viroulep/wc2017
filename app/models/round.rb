@@ -27,6 +27,10 @@ class Round < ApplicationRecord
     self
   end
 
+  def registrant_ids_array
+    registrant_ids.split(",").map(&:to_i)
+  end
+
   def event
     Event.find(event_id)
   end

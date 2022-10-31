@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20220927190413) do
+ActiveRecord::Schema.define(version: 20221031140053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,10 +133,11 @@ ActiveRecord::Schema.define(version: 20220927190413) do
     t.string   "event_id"
     t.datetime "start"
     t.datetime "end"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.integer  "venue_room_id"
-    t.integer  "wcif_id",       null: false
+    t.integer  "wcif_id",                     null: false
+    t.string   "registrant_ids", default: "", null: false
     t.index ["event_id"], name: "index_rounds_on_event_id", using: :btree
     t.index ["venue_room_id"], name: "index_rounds_on_venue_room_id", using: :btree
     t.index ["wcif_id"], name: "index_rounds_on_wcif_id", using: :btree

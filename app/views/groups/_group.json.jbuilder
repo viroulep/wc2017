@@ -3,7 +3,7 @@ json.class "group"
 staff ||= nil
 registration ||= @registration
 display_team_ids ||= nil
-group_name = group.short_name
+group_name = group.short_name(true)
 if staff
   role = "J/R"
   if registration.details.runner_only

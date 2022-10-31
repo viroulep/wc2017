@@ -52,6 +52,7 @@ Rails.application.routes.draw do
     get 'groups/for_round/:round_id' => 'groups#groups_repartition_for_round', :as => :groups_repartition_for_round
     patch 'groups/move_to/:round_id/(:group_id/:registration_ids)' => 'groups#move_registrations_to_group', :as => :move_to_group
     patch 'groups/drop_group_from/:round_id(/:registration_ids)' => 'groups#drop_groups_from_round', :as => :drop_group_for_round
+    patch 'groups/clear_for/:round_id' => 'groups#clear_groups_for_round', :as => :clear_groups_for_round
     patch 'groups/r/:round_id' => 'groups#update_for_round'
     patch 'groups/create_for_round/:round_id' => 'groups#create_groups_for_round', :as => :create_groups_for_round
     patch 'groups/add_everyone_to_all/:round_id' => 'groups#add_everyone_to_all_groups', :as => :fm_mbf_special_fill

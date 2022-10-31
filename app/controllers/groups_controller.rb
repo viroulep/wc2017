@@ -287,6 +287,12 @@ class GroupsController < ApplicationController
     redirect_to groups_for_round_path(@round)
   end
 
+  def clear_groups_for_round
+    @round = Round.includes(:groups).find(params[:round_id])
+    RegistrationGroup.where(group_id: @round.groups.ids).destroy_all
+    redirect_to groups_repartition_for_round_path(@round)
+  end
+
   def drop_groups_from_round
     # Expect param 'round_id' and 'registration_ids' ('-' separated list of registration ids)
     @round = Round.includes(:groups).find(params[:round_id])
@@ -380,20 +386,16 @@ class GroupsController < ApplicationController
   def set_groups_ungrouped!(ignore_special: false)
     set_groups!
     registrations = if @round.r_id > 1
-                      # Can't now who is qualified... Groups for non-first rounds are here for schedule!
-                      []
+                      Registration
+                        .includes(:registration_detail, :staff_teams, user: [:personal_bests])
+                        .where(registrant_id: @round.registrant_ids_array)
+                        .without_group_for(@round.id)
                     elsif !ignore_special && (@event.id == "333fm" || @event.id == "333mbf")
                       Registration.includes(:registration_detail, :staff_teams, user: [:personal_bests]).with_event(@event.id)
                     else
                       Registration.includes(:registration_detail, :staff_teams, user: [:personal_bests]).with_event_without_group_for(@round, :user)
                     end
     @all_without_group = registrations.sort_by(&:transliterated_name)
-
-    registrations, registrations_staff = registrations.partition { |r| !r.details.staff }
-
-
-    @ungrouped = Group.new(registration_groups: registrations.map { |r| r.registration_groups.build })
-    @ungrouped_staff = Group.new(registration_groups: registrations_staff.map { |r| r.registration_groups.build })
   end
 
   def selected_teams_id

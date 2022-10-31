@@ -116,6 +116,21 @@ class Competition < ApplicationRecord
     (ScheduleEvent.pluck(:wcif_id) + Round.pluck(:wcif_id) + Group.pluck(:wcif_id)).max + 1
   end
 
+  def import_results(wcif)
+    events = wcif["events"]
+    return unless events
+
+    events.each do |e|
+      e["rounds"].each do |r|
+        parts = Group.parse_activity_code(r["id"])
+        round = Round.find_by(event_id: parts[:event_id], r_id: parts[:round_number])
+        next unless round
+        registrant_ids = r["results"].map { |person| person["personId"] }.join(",")
+        round.update(registrant_ids: registrant_ids)
+      end
+    end
+  end
+
   def import_schedule(wcif)
     # TODO: validate the schema!
     schedule = wcif["schedule"]

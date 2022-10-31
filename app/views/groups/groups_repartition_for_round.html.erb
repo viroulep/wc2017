@@ -35,8 +35,11 @@
     <% end %>
   <% end %>
   <% if @round.r_id != 1 %>
-    <%= alert(:info, "This is not the first round of an event, you won't be able to add competitors there", note: false) %>
+    <%= alert(:info, "If no competitors show up here, please make sure results are entered in WCA Live, open the next round, sync with the WCA, then import the competition here.", note: false) %>
   <% end %>
+  <p>
+    <%= link_to "Clear all competitors assignment", clear_groups_for_round_path(@round), method: "patch", class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+  </p>
   <div class="row">
     <div class="col-xs-6 col-md-3">
       <div id="group-0" class="panel panel-default panel-dg">

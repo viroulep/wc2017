@@ -78,6 +78,7 @@ class CompetitionsController < ApplicationController
 
     managed_competition.import_schedule(wcif)
     registrations_size = Registration.import_registrations(wcif)
+    managed_competition.import_results(wcif)
 
     redirect_to(schedule_url, flash: { success: "Imported #{registrations_size} registrations and users successfully!" })
   end

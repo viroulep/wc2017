@@ -6,7 +6,8 @@
         <% if staff_teams_ids.any? %>
           [<%= array_to_s(staff_teams_ids) %>]
         <% end %>
-        <%= link_to icon('trash'), group_path(group.id), id: "delete-group-#{group.id}", method: "delete" if group.id %>
+        <%# FIXME kind of dangerous atm, so don't show it %>
+        <%# link_to icon('trash'), group_path(group.id), id: "delete-group-#{group.id}", method: "delete" if group.id %>
         <%= group.name %>
         <span class="badge"><%= group.registration_groups.size %></span>
         <%# link_to icon('pencil'), edit_group_path(group.id) if group.id %>
