@@ -33,6 +33,8 @@
       <br/>
       You can click <%= link_to "here", fm_mbf_special_fill_path(@round), method: "patch" %> to fill all the groups automatically.
     <% end %>
+  <% else %>
+    <p><%= link_to "(Re)Assign stations for this round", round_assign_stations_path(@round), method: :patch %></p>
   <% end %>
   <% if @round.r_id != 1 %>
     <%= alert(:info, "If no competitors show up here, please make sure results are entered in WCA Live, open the next round, sync with the WCA, then import the competition here.", note: false) %>

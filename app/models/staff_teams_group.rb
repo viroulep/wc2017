@@ -8,8 +8,10 @@ class StaffTeamsGroup < ApplicationRecord
   delegate :comments, to: :staff_team
 
   def to_wcif_assignment(generate_assignment_code)
-    group.to_wcif_assignment.merge({
+    {
+      "activityId": group.wcif_id,
+      "stationNumber": nil,
       "assignmentCode": generate_assignment_code.call(group.event_id),
-    })
+    }
   end
 end

@@ -39,6 +39,15 @@ class Round < ApplicationRecord
     "#{event_id}-r#{r_id}"
   end
 
+  def assign_stations
+    groups_by_start = Group.includes(:registration_groups).where(round_id: self.id).group_by(&:start)
+    groups_by_start.each do |_, gs|
+      gs.map(&:registration_groups).flatten.each.with_index(1) do |rg, station|
+        rg.update_attribute(:station, station)
+      end
+    end
+  end
+
   def load_from_attempt!(wcif)
     attrs = Round.wcif_to_attributes(wcif, venue_room.timezone)
     # NOTE: dirty hack, for these rounds we just want to hide them and give

@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
     resources :public_guests, except: [:show]
     resources :schedule_events, except: [:show]
-    resources :rounds, only: [:index, :edit, :update]
+    resources :rounds, only: [:index, :edit, :update] do
+      patch 'assign_stations' => 'rounds#assign_stations'
+    end
 
     get '/schedule' => 'rounds#schedule'
 

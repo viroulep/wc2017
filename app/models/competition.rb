@@ -89,7 +89,20 @@ class Competition < ApplicationRecord
         "numberOfDays": number_of_days,
         "venues": competition_venues.map(&:to_wcif),
       },
-      "extensions": [],
+      "extensions": [{
+        id: "groupifier.CompetitionConfig",
+        specUrl: "https://groupifier.jonatanklosko.com/wcif-extensions/CompetitionConfig.json",
+        data: {
+          localNamesFirst: false,
+          scorecardsBackgroundUrl: "",
+          competitorsSortingRule: "ranks",
+          noTasksForNewcomers: true,
+          tasksForOwnEventsOnly: true,
+          noRunningForForeigners: false,
+          printStations: true,
+          scorecardPaperSize: "a4",
+        },
+      }],
     }
   end
 

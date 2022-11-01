@@ -134,7 +134,7 @@ class Registration < ApplicationRecord
     end
     # individual group assignment
     # TMP hack: without multi submission for scorecards generation
-    competitor_groups = self.groups.reject { |g| g.name =~ /submission/ || (g.event_id == "333mbf" && g.activity_code != "333mbf-r1-a1") }
+    competitor_groups = self.registration_groups.reject { |rg| rg.group.name =~ /submission/ || (rg.group.event_id == "333mbf" && rg.group.activity_code != "333mbf-r1-a1") }
     competitor_assignment = competitor_groups.map(&:to_wcif_assignment)
 
     generate_assignment_code = lambda do |event_id|

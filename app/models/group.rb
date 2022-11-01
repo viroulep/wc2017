@@ -111,14 +111,6 @@ class Group < ApplicationRecord
     }
   end
 
-  def to_wcif_assignment
-    {
-      "activityId": wcif_id,
-      "stationNumber": nil,
-      "assignmentCode": "competitor",
-    }
-  end
-
   def to_event(user, staff=false)
     {
       "id": self.id,

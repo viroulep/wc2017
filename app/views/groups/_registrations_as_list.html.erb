@@ -1,6 +1,12 @@
 <% event_id ||= "magic" %>
 <% cutoff = Event.find(event_id).cutoff&.wca_value %>
-<% registrations.each do |r| %>
+<% registration_groups ||= nil %>
+<% if registration_groups.nil? %>
+  <% registrations = registrations.map { |r| [r, nil] } %>
+<% else %>
+  <% registrations = registration_groups.map { |rg| [rg.registration, rg.station] } %>
+<% end %>
+<% registrations.each do |r, station| %>
   <% best_for_event = r.any_best_for(event_id) %>
   <div class="list-group-item registration-item <%= "over_cutoff" if cutoff && (!best_for_event || best_for_event > cutoff) %>"
        data-registration="<%= r.id %>"
@@ -14,6 +20,9 @@
     <%# FIXME: proper hint about events and staff %>
     <div class="events">
       <%= render "shared/event_id_collection", event_ids: r.events & ["444bf", "555bf", "333mbf", "333fm"] %>
+    </div>
+    <div class="station" data-toggle="tooltip" data-trigger="hover" title="Station number">
+      #: <%= station ? station : "?" %>
     </div>
   </div>
 <% end %>

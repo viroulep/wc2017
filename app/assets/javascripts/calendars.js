@@ -93,7 +93,7 @@ var commonOptions = function(day, editable) {
     timezone: false,
     slotLabelFormat: 'H:mm',
     schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-    eventOrder: "id",
+    eventOrder: "title",
   };
   if(editable) {
     options = Object.assign(options, editableCalendarOptions);

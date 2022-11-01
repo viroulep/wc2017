@@ -22,7 +22,7 @@
         <span class="glyphicon glyphicon-remove-circle"></span>
       </div>
       <div class="list-people" data-group="<%= group.id %>">
-        <%= render "registrations_as_list", registrations: group.registration_groups.map(&:registration).sort_by(&:transliterated_name), event_id: group.event_id %>
+        <%= render "registrations_as_list", registration_groups: group.registration_groups.sort_by { |rg| rg.registration.transliterated_name }, event_id: group.event_id %>
       </div>
     </div>
   </div>

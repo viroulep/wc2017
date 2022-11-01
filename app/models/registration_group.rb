@@ -31,4 +31,12 @@ class RegistrationGroup < ApplicationRecord
     all_groups = registration.registration_groups.select { |eg| (eg.event_id == event_id && eg.id != id) }
     errors.add(:group_id, "Competitor is in two groups for #{event_id}!") if all_groups.size > 0
   end
+
+  def to_wcif_assignment
+    {
+      "activityId": group.wcif_id,
+      "stationNumber": station,
+      "assignmentCode": "competitor",
+    }
+  end
 end

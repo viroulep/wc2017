@@ -1,7 +1,7 @@
 class RoundsController < ApplicationController
   before_action :authenticate_user!, except: [:schedule]
   before_action :redirect_unless_admin!, except: [:schedule]
-  before_action :set_round, only: [:edit, :update]
+  before_action :set_round, only: [:edit, :update, :assign_stations]
   #before_action :set_event, only: [:add, :remove]
 
   # GET /rounds
@@ -54,10 +54,15 @@ class RoundsController < ApplicationController
     @schedule_events = ScheduleEvent.all
   end
 
+  def assign_stations
+    @round.assign_stations
+    redirect_to groups_repartition_for_round_path(@round)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_round
-      @round = Round.find(params[:id])
+      @round = Round.find(params[:id] || params[:round_id])
     end
 
     def set_event
