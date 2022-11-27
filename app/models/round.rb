@@ -40,9 +40,18 @@ class Round < ApplicationRecord
   end
 
   def assign_stations
-    groups_by_start = Group.includes(:registration_groups).where(round_id: self.id).group_by(&:start)
-    groups_by_start.each do |_, gs|
-      gs.map(&:registration_groups).flatten.each.with_index(1) do |rg, station|
+    # NOTE: this is the previous alternate implementation using all groups
+    # starting at the same time to infer the total number of stations.
+    # groups_by_start = Group.includes(:registration_groups).where(round_id: self.id).group_by(&:start)
+    # groups_by_start.each do |_, gs|
+    #   gs.map(&:registration_groups).flatten.each.with_index(1) do |rg, station|
+    #     rg.update_attribute(:station, station)
+    #   end
+    # end
+    Group
+      .includes(:registration_groups)
+      .where(round_id: self.id).each do |g|
+      g.registration_groups.each.with_index(1) do |rg, station|
         rg.update_attribute(:station, station)
       end
     end
