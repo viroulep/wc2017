@@ -36,7 +36,8 @@ class Round < ApplicationRecord
   end
 
   def activity_code
-    "#{event_id}-r#{r_id}"
+    base = event.magic? ? "other-misc" : event_id
+    "#{base}-r#{r_id}"
   end
 
   def assign_stations
