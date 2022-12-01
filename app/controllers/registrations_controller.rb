@@ -29,7 +29,7 @@ class RegistrationsController < ApplicationController
 
   def show_wcif
     comp = Competition.includes(Competition::WCIF_ASSOCIATIONS).find_by_id!(managed_competition.id)
-    render json: JSON.pretty_generate(comp.to_wcif, indent: "    ")
+    render json: comp.to_wcif
   end
 
   def badges
